@@ -173,15 +173,9 @@ body{font-family:'DM Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-seri
 <div class="ctabs">
   <button class="ctab active" onclick="switchClient('nielsen',this)">Nielsen <span class="cdot cdot-live"></span></button>
   <button class="ctab" onclick="switchClient('diagnostico',this)">Diagnóstico <span class="cdot" style="background:#fbbf24;box-shadow:0 0 6px #fbbf24;border-radius:50%;width:7px;height:7px;display:inline-block;margin-left:4px;"></span></button>
-  <button class="ctab" onclick="if(_sellinUnlocked){switchClient('sellin',this)}else{openSellinPwd(this)}">Sell In <span class="cdot" style="background:#34d399;box-shadow:0 0 6px #34d399;border-radius:50%;width:7px;height:7px;display:inline-block;margin-left:4px;"></span></button>
+  <button id="btn-sellin" class="ctab" onclick="switchClient('sellin',this)">Sell In <span class="cdot" style="background:#34d399;box-shadow:0 0 6px #34d399;border-radius:50%;width:7px;height:7px;display:inline-block;margin-left:4px;"></span></button>
   <button class="ctab" onclick="switchClient('ol',this)">OLs <span class="cdot cdot-live"></span></button>
-  <button class="ctab" onclick="switchClient('saojoao',this)">São João <span class="cdot cdot-live"></span></button>
-  <button class="ctab" onclick="switchClient('nissei',this)">Nissei <span class="cdot cdot-live"></span></button>
-  <button class="ctab" onclick="switchClient('clamed',this)">Clamed <span class="cdot cdot-live"></span></button>
-  <button class="ctab" onclick="switchClient('panvel',this)">Panvel <span class="cdot cdot-live"></span></button>
-  <button class="ctab" onclick="switchClient('ddgam',this)">DD-GAM <span class="cdot cdot-live"></span></button>
-  <button class="ctab" onclick="switchClient('ddgaucha',this)">DD-Gaúcha <span class="cdot cdot-live"></span></button>
-  <button class="ctab" onclick="switchClient('ddriomed',this)">DD-Riomed <span class="cdot cdot-live"></span></button>
+  <button class="ctab" onclick="switchClient('sellout',this)">Sell Out <span class="cdot cdot-live"></span></button>
 </div>
 
 <!-- FILTERS -->
@@ -266,13 +260,21 @@ body{font-family:'DM Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-seri
   <div id="sellin-cards-wrap"></div>
 
   <!-- VERBAS -->
-  <div class="card full" style="margin-bottom:14px;border-color:rgba(251,191,36,0.18);">
+  <div id="card-verbas" class="card full" style="margin-bottom:14px;border-color:rgba(251,191,36,0.18);">
     <div class="card-header">
       <div><div style="font-size:10px;font-weight:700;letter-spacing:0.1em;color:#fbbf24;margin-bottom:4px;">VERBAS & INVESTIMENTOS FY26</div>
       <div class="card-title">Liberações por Cliente — FY26</div>
       <div class="card-sub">Total liberado: R$ 2,22M · Fonte: Planilha de Verbas SCJ · São João sem verba registrada</div></div>
     </div>
-    <div id="sellin-verbas-wrap" style="display:grid;grid-template-columns:1fr 1fr;gap:14px;"></div>
+    <!-- Placeholder bloqueado -->
+    <div id="verbas-locked" style="padding:60px 40px;text-align:center;background:rgba(251,191,36,0.03);border-radius:12px;margin:20px;">
+      <div style="font-size:48px;margin-bottom:16px;">🔒</div>
+      <div style="font-size:16px;font-weight:700;color:#fbbf24;margin-bottom:8px;">Conteúdo Protegido</div>
+      <div style="font-size:13px;color:#5a6478;margin-bottom:24px;">Esta seção contém informações confidenciais sobre verbas e investimentos.</div>
+      <button onclick="alert('Botão clicado!'); var senha = prompt('Digite a senha:'); if(senha === 'SCJ2026'){ document.getElementById('verbas-locked').style.display='none'; document.getElementById('sellin-verbas-wrap').style.display='grid'; if(typeof renderSellinVerbas === 'function') renderSellinVerbas(); } else if(senha) { alert('Senha incorreta!'); }" style="padding:12px 32px;border-radius:8px;border:none;background:#fbbf24;color:#0a1218;cursor:pointer;font-weight:700;font-family:inherit;font-size:14px;">🔓 Desbloquear</button>
+    </div>
+    <!-- Conteúdo real (oculto) -->
+    <div id="sellin-verbas-wrap" style="display:none;grid-template-columns:1fr 1fr;gap:14px;"></div>
   </div>
 
   <!-- UPLOAD MODAL -->
@@ -505,8 +507,27 @@ body{font-family:'DM Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-seri
 <div class="dash-footer"><p>Fonte: Estudo ED Giovano · Acompanhamento OLs · FY25 vs FY26</p><p>Abril 2026</p></div>
 </div>
 
+<!-- ═══════════ SELL OUT (CONSOLIDADO) ═══════════ -->
+<div class="main" id="panel-sellout">
+  <!-- Filtro de Cliente -->
+  <div class="filters" style="margin-bottom:16px;">
+    <span class="filter-label">CLIENTE:</span>
+    <select id="sellout-client-selector" class="fsel" onchange="switchSellOutClient(this.value)" style="min-width:180px;">
+      <option value="saojoao">São João</option>
+      <option value="nissei">Nissei</option>
+      <option value="clamed">Clamed</option>
+      <option value="panvel">Panvel</option>
+      <option value="ddgam">DD-GAM</option>
+      <option value="ddgaucha">DD-Gaúcha</option>
+      <option value="ddriomed">DD-Riomed</option>
+    </select>
+  </div>
+
+  <!-- Conteúdos dinâmicos por cliente -->
+  <div id="sellout-content-saojoao" class="sellout-client-content" style="display:block;">
+
 <!-- ═══════════ SÃO JOÃO ═══════════ -->
-<div class="main" id="panel-saojoao">
+<div id="panel-saojoao-inner">
   <div class="sub-tabs">
     <button class="stab active" onclick="switchSJCompradora('isadora',this)">Compradora Isadora <span class="cdot cdot-live"></span></button>
     <button class="stab" onclick="switchSJCompradora('caroline',this)">Compradora Caroline <span class="cdot cdot-empty"></span></button>
@@ -778,9 +799,13 @@ body{font-family:'DM Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-seri
       <div class="dash-footer"><p>Fonte: São João · Sell-Out 2024–2026 · Repelentes &amp; Inseticidas</p><p>Abril 2026</p></div>
   </div>
 </div>
+<!-- Fim conteúdo São João -->
+</div>
 
+<!-- Conteúdo Nissei -->
+<div id="sellout-content-nissei" class="sellout-client-content" style="display:none;">
 <!-- ═══════════ NISSEI ═══════════ -->
-<div class="main" id="panel-nissei">
+<div id="panel-nissei-inner">
   <div class="sub-tabs">
     <button class="stab active" onclick="switchNisseiComp('total',this)">Nissei Total</button>
     <button class="stab" onclick="switchNisseiComp('andre',this)">Comprador Andre</button>
@@ -920,7 +945,11 @@ body{font-family:'DM Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-seri
 </div>
 
 <!-- ═══════════ CLAMED ═══════════ -->
-<div class="main" id="panel-clamed">
+</div><!-- Fim Clamed -->
+</div>
+<!-- Conteúdo Clamed -->
+<div id="sellout-content-clamed" class="sellout-client-content" style="display:none;">
+<div id="panel-clamed-inner">
   <div class="kpi-grid" id="cl-kpis"></div>
 
 <!-- CARD ESTUDO ED SHARE -->
@@ -1054,7 +1083,11 @@ body{font-family:'DM Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-seri
 </div>
 
 <!-- ═══════════ PANVEL ═══════════ -->
-<div class="main" id="panel-panvel">
+</div><!-- Fim Panvel -->
+</div>
+<!-- Conteúdo Panvel -->
+<div id="sellout-content-panvel" class="sellout-client-content" style="display:none;">
+<div id="panel-panvel-inner">
   <div class="kpi-grid" id="pv-kpis"></div>
 <!-- CARD ESTUDO ED SHARE -->
   <div class="card full" style="margin-bottom:14px;border-color:rgba(167,139,250,0.2);">
@@ -1174,7 +1207,11 @@ body{font-family:'DM Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-seri
 </div>
 
 <!-- ═══════════ DD-GAM ═══════════ -->
-<div class="main" id="panel-ddgam">
+</div><!-- Fim DD-GAM -->
+</div>
+<!-- Conteúdo DD-GAM -->
+<div id="sellout-content-ddgam" class="sellout-client-content" style="display:none;">
+<div id="panel-ddgam-inner">
   <div class="kpi-grid" id="gam-kpis"></div>
   <div class="card full" style="margin-bottom:14px;">
     <div class="card-header">
@@ -1461,7 +1498,11 @@ body{font-family:'DM Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-seri
 
 
 <!-- ═══════════ DD-GAÚCHA ═══════════ -->
-<div class="main" id="panel-ddgaucha">
+</div><!-- Fim DD-Gaúcha -->
+</div>
+<!-- Conteúdo DD-Gaúcha -->
+<div id="sellout-content-ddgaucha" class="sellout-client-content" style="display:none;">
+<div id="panel-ddgaucha-inner">
   <div class="kpi-grid" id="gch-kpis"></div>
   <div class="card full" style="margin-bottom:14px;">
     <div class="card-header">
@@ -1751,7 +1792,11 @@ body{font-family:'DM Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-seri
 </div>
 
 <!-- ═══════════ DD-RIOMED ═══════════ -->
-<div class="main" id="panel-ddriomed">
+</div><!-- Fim DD-Riomed -->
+</div>
+<!-- Conteúdo DD-Riomed -->
+<div id="sellout-content-ddriomed" class="sellout-client-content" style="display:none;">
+<div id="panel-ddriomed-inner">
   <div class="kpi-grid" id="rio-kpis"></div>
   <div class="card full" style="margin-bottom:14px;">
     <div class="card-header">
@@ -1834,6 +1879,12 @@ body{font-family:'DM Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-seri
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
 <script>
+// ========== VARIÁVEIS SELL IN (DEVEM ESTAR NO INÍCIO) ==========
+var _sellinUnlocked = false;
+var _sellinPwdHash  = '4adf437430b3677a6ffb4035a8ba869e365572f55d3b114ede0c12e08edb0f45';
+var _sellinPendingBtn = null;
+
+// ========== CONSTANTES ==========
 const LOJA_COLORS = ['#3b82f6','#60a5fa','#818cf8','#a78bfa','#c084fc','#34d399','#2dd4bf','#fb923c','#f472b6','#facc15'];
 
 const MESES = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
@@ -4877,14 +4928,21 @@ function renderSellinKPIs(){
   var ating = t.real/t.meta*100;
   var vs_hist = (t.real-t.hist_per)/t.hist_per*100;
   var vs_plan = (t.real-t.plan)/t.plan*100;
+  var diff_hist = t.real - t.hist_per; // Diferença absoluta
+  
+  // Calcular quantos meses do ano já passaram (Jul-Fev = 8 meses)
+  var meses_decorridos = 8; // Jul, Ago, Set, Out, Nov, Dez, Jan, Fev
+  var meses_totais = 12;
+  var meses_restantes = meses_totais - meses_decorridos;
+  
   document.getElementById('sellin-kpis-total').innerHTML = [
     {l:'Histórico FY25',    v:t.hist.toLocaleString('pt-BR'),    s:'Caixas total FY25',          ac:'#3b82f6'},
     {l:'Planejamento FY26', v:t.plan.toLocaleString('pt-BR'),    s:'Caixas planejadas FY26',     ac:'#8b95a8'},
     {l:'Meta BI FY26',      v:t.meta.toLocaleString('pt-BR'),    s:'Meta acumulada Jul–Fev',     ac:'#fbbf24'},
-    {l:'Real FY26',         v:t.real.toLocaleString('pt-BR'),    s:'Real acumulado Jul–Fev',     ac:t.real>=t.meta?'#34d399':'#fb7185'},
+    {l:'Real FY26',         v:t.real.toLocaleString('pt-BR'),    s:'Real acumulado Jul–Fev ('+meses_decorridos+' meses)',     ac:t.real>=t.meta?'#34d399':'#fb7185'},
     {l:'Atingimento Meta',  v:ating.toFixed(1)+'%',             s:t.real>=t.meta?'✅ Acima meta':'⚠ Abaixo meta', ac:t.real>=t.meta?'#34d399':'#fb7185'},
-    {l:'vs Hist FY25',      v:(vs_hist>=0?'+':'')+vs_hist.toFixed(1)+'%', s:'Real FY26 vs período FY25', ac:vs_hist>=0?'#34d399':'#fb7185'},
-    {l:'vs Planejado FY26',  v:(vs_plan>=0?'+':'')+vs_plan.toFixed(1)+'%', s:'Real vs Plan FY26 acumulado', ac:vs_plan>=0?'#34d399':'#fb7185'},
+    {l:'vs Hist FY25',      v:(vs_hist>=0?'+':'')+vs_hist.toFixed(1)+'%', s:'Diferença: '+(diff_hist>=0?'+':'')+diff_hist.toLocaleString('pt-BR')+' caixas vs mesmo período FY25', ac:vs_hist>=0?'#34d399':'#fb7185'},
+    {l:'vs Planejado FY26',  v:(vs_plan>=0?'+':'')+vs_plan.toFixed(1)+'%', s:'Real vs Plan FY26 acumulado ('+meses_decorridos+' de '+meses_totais+' meses)', ac:vs_plan>=0?'#34d399':'#fb7185'},
   ].map(function(k){
     return '<div style="background:var(--card);border-radius:12px;padding:16px;border-top:2px solid '+k.ac+';border:0.5px solid '+k.ac+'33;">'
       +'<div style="font-size:9px;font-weight:700;letter-spacing:0.1em;color:#3d6b63;margin-bottom:6px;">'+k.l+'</div>'
@@ -5011,7 +5069,6 @@ function renderSellinCards(){
             var col = faltPlan>=0?'#34d399':'#fb7185';
             return '<div style="margin-top:6px;font-size:11px;color:#5a6478;">Cx faltantes vs Planejado ('+realMths+' meses): <strong style="color:'+col+';">'+(faltPlan>=0?'+':'')+faltPlan.toLocaleString('pt-BR')+' cx</strong></div>';
           }())
-          +(d.verba>0?'<div style="margin-top:6px;font-size:11px;color:#fbbf24;">💰 Verba investida: <strong>R$ '+d.verba.toLocaleString('pt-BR')+'</strong></div>':'')
         +'</div>'
         +'<div style="position:relative;height:90px;"><canvas id="'+canvasId+'"></canvas></div>'
       +'</div>'
@@ -7641,13 +7698,51 @@ function setGCHDNIntocSku(sku, btn){
 var activePanel='nielsen';
 var initialized={};
 
+// Função para trocar cliente dentro da aba Sell Out
+function switchSellOutClient(clientId) {
+  // Esconder todos os conteúdos de clientes
+  var contents = document.querySelectorAll('.sellout-client-content');
+  contents.forEach(function(el) {
+    el.style.display = 'none';
+  });
+  
+  // Mostrar o selecionado
+  var selected = document.getElementById('sellout-content-' + clientId);
+  if (selected) {
+    selected.style.display = 'block';
+  }
+  
+  // Inicializar o cliente se necessário
+  var initKey = 'sellout_' + clientId;
+  if(!initialized[initKey]){
+    initialized[initKey] = true;
+    setTimeout(function(){
+      if(clientId === 'saojoao') initSJ();
+      else if(clientId === 'nissei') initNissei();
+      else if(clientId === 'clamed') initClamed();
+      else if(clientId === 'panvel') initPanvel();
+      else if(clientId === 'ddgam') initGAM();
+      else if(clientId === 'ddgaucha') initGCH();
+      else if(clientId === 'ddriomed') initRiomed();
+    }, 60);
+  }
+}
+
 function switchClient(id,btn){
   document.querySelectorAll('.main').forEach(function(p){p.classList.remove('active');});
   document.querySelectorAll('.ctab').forEach(function(b){b.classList.remove('active');});
   document.getElementById('panel-'+id).classList.add('active');
   btn.classList.add('active');
   activePanel=id;
-  if(!initialized[id]){
+  
+  // Se for sellout, inicializar o primeiro cliente (São João)
+  if(id === 'sellout' && !initialized[id]){
+    initialized[id] = true;
+    setTimeout(function(){
+      // Inicializar São João como padrão
+      initSJ();
+    }, 60);
+  } else if(!initialized[id]){
     initialized[id]=true;
     setTimeout(function(){
       if(id==='saojoao') initSJ();
@@ -8188,9 +8283,7 @@ function buildCard(d){
 
 
 /* ═══ SELL IN PASSWORD ═══ */
-var _sellinUnlocked = false;
-var _sellinPwdHash  = '4adf437430b3677a6ffb4035a8ba869e365572f55d3b114ede0c12e08edb0f45';
-var _sellinPendingBtn = null;
+// Variáveis já declaradas no início
 
 async function sha256(msg){
   var buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(msg));
@@ -8198,13 +8291,21 @@ async function sha256(msg){
 }
 
 function openSellinPwd(btn){
+  console.log('openSellinPwd chamado');
   _sellinPendingBtn = btn;
   var modal = document.getElementById('sellin-pwd-modal');
+  if(!modal){
+    console.error('Modal não encontrado!');
+    return;
+  }
   modal.style.display = 'flex';
   var inp = document.getElementById('sellin-pwd-input');
-  inp.value = '';
-  document.getElementById('sellin-pwd-error').textContent = '';
-  setTimeout(function(){ inp.focus(); }, 100);
+  if(inp){
+    inp.value = '';
+    setTimeout(function(){ inp.focus(); }, 100);
+  }
+  var errEl = document.getElementById('sellin-pwd-error');
+  if(errEl) errEl.textContent = '';
 }
 
 function closeSellinPwd(){
@@ -8231,10 +8332,66 @@ function checkSellinPwd(){
   });
 }
 
+/* ═══ VERBAS PASSWORD ═══ */
+var _verbasUnlocked = false;
+var _verbasPwdHash = '4adf437430b3677a6ffb4035a8ba869e365572f55d3b114ede0c12e08edb0f45'; // SCJ2026
+
+function openVerbasPwd(){
+  console.log('openVerbasPwd chamado!');
+  var modal = document.getElementById('verbas-pwd-modal');
+  console.log('Modal encontrado:', modal);
+  if(!modal) {
+    console.error('Modal verbas-pwd-modal NÃO encontrado!');
+    return;
+  }
+  // Forçar visibilidade com z-index muito alto
+  modal.style.cssText = 'display:flex!important;position:fixed!important;top:0!important;left:0!important;right:0!important;bottom:0!important;background:rgba(0,0,0,0.9)!important;z-index:99999!important;align-items:center!important;justify-content:center!important;';
+  var inp = document.getElementById('verbas-pwd-input');
+  if(inp){
+    inp.value = '';
+    setTimeout(function(){ inp.focus(); }, 100);
+  }
+  var errEl = document.getElementById('verbas-pwd-error');
+  if(errEl) errEl.textContent = '';
+  console.log('Modal de verbas aberto!');
+  
+  // Verificar se está realmente visível
+  setTimeout(function(){
+    var styles = window.getComputedStyle(modal);
+    console.log('Display computado:', styles.display);
+    console.log('Z-index computado:', styles.zIndex);
+    console.log('Position computado:', styles.position);
+  }, 100);
+}
+
+function closeVerbasPwd(){
+  document.getElementById('verbas-pwd-modal').style.display = 'none';
+  document.getElementById('verbas-pwd-input').value = '';
+}
+
+function checkVerbasPwd(){
+  var val = document.getElementById('verbas-pwd-input').value;
+  sha256(val).then(function(hash){
+    if(hash === _verbasPwdHash){
+      _verbasUnlocked = true;
+      document.getElementById('verbas-pwd-modal').style.display = 'none';
+      document.getElementById('verbas-locked').style.display = 'none';
+      document.getElementById('sellin-verbas-wrap').style.display = 'grid';
+      if(typeof renderSellinVerbas === 'function') renderSellinVerbas();
+    } else {
+      var errEl = document.getElementById('verbas-pwd-error');
+      errEl.textContent = '❌ Senha incorreta';
+      document.getElementById('verbas-pwd-input').value = '';
+      document.getElementById('verbas-pwd-input').focus();
+      setTimeout(function(){ errEl.textContent=''; }, 2000);
+    }
+  });
+}
+
 </script>
 
 <!-- ═══ SELL IN PASSWORD MODAL ═══ -->
-<div id="sellin-pwd-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:9999;display:none;align-items:center;justify-content:center;">
+<div id="sellin-pwd-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:9999;align-items:center;justify-content:center;">
   <div style="background:#0d1422;border:1px solid rgba(52,211,153,0.3);border-radius:16px;padding:32px 40px;width:340px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.6);">
     <div style="font-size:28px;margin-bottom:12px;">🔒</div>
     <div style="font-size:16px;font-weight:700;color:#e2e8f0;margin-bottom:6px;">Sell In — Acesso Restrito</div>
@@ -8249,5 +8406,23 @@ function checkSellinPwd(){
     </div>
   </div>
 </div>
+
+<!-- ═══ VERBAS PASSWORD MODAL ═══ -->
+<div id="verbas-pwd-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:9999;align-items:center;justify-content:center;">
+  <div style="background:#0d1422;border:1px solid rgba(251,191,36,0.3);border-radius:16px;padding:32px 40px;width:340px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.6);">
+    <div style="font-size:28px;margin-bottom:12px;">🔒</div>
+    <div style="font-size:16px;font-weight:700;color:#fbbf24;margin-bottom:6px;">Verbas — Acesso Restrito</div>
+    <div style="font-size:12px;color:#5a6478;margin-bottom:24px;">Esta seção contém dados confidenciais de verbas.<br>Digite a senha para continuar.</div>
+    <input id="verbas-pwd-input" type="password" placeholder="Senha"
+      style="width:100%;padding:10px 14px;border-radius:8px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.05);color:#e2e8f0;font-size:14px;font-family:inherit;outline:none;box-sizing:border-box;margin-bottom:8px;"
+      onkeydown="if(event.key==='Enter') checkVerbasPwd()"/>
+    <div id="verbas-pwd-error" style="font-size:11px;color:#fb7185;margin-bottom:12px;min-height:16px;"></div>
+    <div style="display:flex;gap:10px;">
+      <button onclick="closeVerbasPwd()" style="flex:1;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.1);background:transparent;color:#5a6478;cursor:pointer;font-family:inherit;font-size:13px;">Cancelar</button>
+      <button onclick="checkVerbasPwd()" style="flex:1;padding:10px;border-radius:8px;border:none;background:#fbbf24;color:#0a1218;cursor:pointer;font-weight:700;font-family:inherit;font-size:13px;">Entrar</button>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
