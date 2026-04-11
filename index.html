@@ -584,6 +584,7 @@ body{font-family:'DM Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-seri
           <button class="tgl active blue" onclick="setSJCEstoqueView('barras',this)">Barras</button>
           <button class="tgl" onclick="setSJCEstoqueView('linha',this)">Linha</button>
           <button class="tgl" onclick="setEstoqueTend('sjc',this)">📈 Ruptura</button>
+          <button class="tgl" onclick="setSJCEstoqueView('cobertura',this)">🏪 Cobertura</button>
         </div>
       </div>
     </div>
@@ -620,6 +621,13 @@ body{font-family:'DM Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-seri
       <div style="position:relative;width:100%;height:300px;"><canvas id="sjc-tend-chart"></canvas></div>
       <div id="sjc-tend-insight"></div>
     </div>
+  <!-- COBERTURA LOJAS CAROLINE -->
+  <div id="sjc-estoque-cobertura" style="display:none;padding:6px 0;">
+    <div style="font-size:10px;color:#5a6478;margin-bottom:10px;">
+      🏪 <strong style="color:#38bdf8;">Cobertura por SKU</strong> — Lojas c/ estoque vs total São João (Mar/26)
+    </div>
+    <div id="sjc-cob-table"></div>
+  </div>
   </div>
   </div>
   <div id="sj-isadora-content">
@@ -748,7 +756,7 @@ body{font-family:'DM Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-seri
           </div>
           <div class="toggle-group">
             <button class="tgl active blue" onclick="setSJEstoqueView('barras',this)">Barras</button>
-            <button class="tgl" onclick="setSJEstoqueView('linha',this)">Linha</button><button class="tgl" onclick="setEstoqueTend('sj',this)">📈 Ruptura</button>
+            <button class="tgl" onclick="setSJEstoqueView('linha',this)">Linha</button><button class="tgl" onclick="setEstoqueTend('sj',this)">📈 Ruptura</button><button class="tgl" onclick="setSJEstoqueView('cobertura',this)">🏪 Cobertura</button>
           </div>
         </div>
       </div>
@@ -795,6 +803,14 @@ body{font-family:'DM Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-seri
       <div style="position:relative;width:100%;height:300px;"><canvas id="sj-tend-chart"></canvas></div>
       <div id="sj-tend-insight"></div>
     </div></div>
+
+  <!-- COBERTURA DE LOJAS -->
+  <div id="sj-estoque-cobertura" style="display:none;">
+    <div style="font-size:10px;color:#5a6478;margin-bottom:10px;padding:6px 0;">
+      🏪 <strong style="color:#38bdf8;">Cobertura por SKU</strong> — Qtd de lojas com estoque vs total lojas São João (Mar/26)
+    </div>
+    <div id="sj-cob-table"></div>
+  </div>
 
       <div class="dash-footer"><p>Fonte: São João · Sell-Out 2024–2026 · Repelentes &amp; Inseticidas</p><p>Abril 2026</p></div>
   </div>
@@ -862,6 +878,18 @@ body{font-family:'DM Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-seri
       <div class="donut-wrap"><div class="donut-svg-wrap"><svg id="ns-donut" width="200" height="200" viewBox="0 0 200 200" style="display:block;"></svg><div class="donut-center"><div class="donut-center-val" id="ns-donut-cv"></div><div class="donut-center-sub" id="ns-donut-cs"></div></div><div class="donut-tip" id="ns-donut-tip"><div class="donut-tip-name" id="ns-donut-tn"></div><div class="donut-tip-row">Vol: <span class="donut-tip-val" id="ns-donut-tv"></span></div><div class="donut-tip-row">Rec: <span class="donut-tip-val" id="ns-donut-tr"></span></div><div class="donut-tip-row">Share: <span class="donut-tip-val" id="ns-donut-ts"></span></div></div></div><div class="donut-legend-new" id="ns-donut-legend"></div></div>
     </div>
   </div>
+  <!-- RESUMO MENSAL NISSEI -->
+  <div class="card full" style="margin-bottom:14px;">
+    <div class="card-header">
+      <div><div class="card-title">Resumo Mensal — Nissei</div><div class="card-sub">2024 × 2025 × 2026</div></div>
+      <div class="toggle-group">
+        <button class="tgl active blue" onclick="setNSMetaMetric('rec',this)">Receita</button>
+        <button class="tgl" onclick="setNSMetaMetric('vol',this)">Unidades</button>
+      </div>
+    </div>
+    <div id="ns-meta-wrap" style="overflow-x:auto;"></div>
+  </div>
+
   <!-- GESTÃO DE ESTOQUE NISSEI -->
   <div class="card full" style="margin-bottom:14px;border-color:rgba(251,113,113,0.12);">
     <div class="card-header">
@@ -989,6 +1017,18 @@ body{font-family:'DM Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-seri
       </div>
       <div style="position:relative;height:260px;"><canvas id="cl-ano-chart"></canvas></div>
     </div>
+  <!-- RESUMO MENSAL CLAMED -->
+  <div class="card full" style="margin-bottom:14px;">
+    <div class="card-header">
+      <div><div class="card-title">Resumo Mensal — Clamed</div><div class="card-sub">2024 × 2025 × 2026</div></div>
+      <div class="toggle-group">
+        <button class="tgl active blue" onclick="setCLMetaMetric('rec',this)">Receita</button>
+        <button class="tgl" onclick="setCLMetaMetric('vol',this)">Unidades</button>
+      </div>
+    </div>
+    <div id="cl-meta-wrap" style="overflow-x:auto;"></div>
+  </div>
+
   <!-- GESTÃO DE ESTOQUE CLAMED -->
     <div class="card">
       <div class="card-header">
@@ -1155,7 +1195,7 @@ body{font-family:'DM Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-seri
         </div>
         <div class="toggle-group">
           <button class="tgl active blue" onclick="setPvEstoqueView('barras',this)">Barras</button>
-          <button class="tgl" onclick="setPvEstoqueView('linha',this)">Linha</button><button class="tgl" onclick="setEstoqueTend('pv',this)">📈 Ruptura</button>
+          <button class="tgl" onclick="setPvEstoqueView('linha',this)">Linha</button><button class="tgl" onclick="setEstoqueTend('pv',this)">📈 Ruptura</button><button class="tgl" onclick="setPvEstoqueView('cobertura',this)">🏪 Cobertura</button><button class="tgl" onclick="setPvEstoqueView('importancia',this)">📊 Importância</button>
         </div>
       </div>
     </div>
@@ -1178,11 +1218,40 @@ body{font-family:'DM Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-seri
       <div id="pv-tend-insight"></div>
       <div style="position:relative;width:100%;height:300px;"><canvas id="pv-tend-chart"></canvas></div>
       <div id="pv-tend-insight"></div>
-    </div></div>
+    </div>
+
+  <!-- COBERTURA FILIAIS PANVEL -->
+  <div id="pv-estoque-cobertura" style="display:none;padding:6px 0;">
+    <div style="font-size:10px;color:#5a6478;margin-bottom:10px;">
+      🏪 <strong style="color:#38bdf8;">Cobertura por SKU</strong> — Lojas c/ estoque vs 650 filiais | CD EDS · CD PRN · Dias s/ Venda (Abr/26)
+    </div>
+    <div id="pv-cob-table"></div>
+  </div>
+
+  <!-- IMPORTÂNCIA DAS LOJAS PANVEL -->
+  <div id="pv-estoque-importancia" style="display:none;padding:6px 0;">
+    <div style="font-size:10px;color:#5a6478;margin-bottom:10px;">
+      📊 <strong style="color:#a78bfa;">Importância das Lojas</strong> — Tipo de Público &amp; Equipamento · Fev-26 vs Mar-26
+    </div>
+    <div class="toggle-group" style="margin-bottom:12px;">
+      <button class="tgl active blue" onclick="setPvImpView('publico',this)">Tipo de Público</button>
+      <button class="tgl" onclick="setPvImpView('equipamento',this)">Equipamento</button>
+    </div>
+    <div id="pv-imp-publico"></div>
+    <div id="pv-imp-equipamento" style="display:none;"></div>
+  </div>
+
+</div>
 
   <div class="cards-row">
     <div class="card">
-      <div class="card-header"><div><div class="card-title">Top 10 Lojas — Panvel</div><div class="card-sub">Por receita acumulada</div></div></div>
+      <div class="card-header">
+        <div><div class="card-title">Top 10 Lojas — Panvel</div><div class="card-sub">Fev+Mar/2026 · Ticket médio R$39,84/un</div></div>
+        <div class="toggle-group">
+          <button class="tgl active blue" onclick="setPVLojaMode('rec',this)">R$</button>
+          <button class="tgl" onclick="setPVLojaMode('vol',this)">Un.</button>
+        </div>
+      </div>
       <div id="pv-loja-bars" class="bar-list"></div>
     </div>
     <div class="card">
@@ -2038,16 +2107,16 @@ const PV_RANK = {
 };
 
 const PV_LOJAS = [
-  { nome:'Porto Alegre 31/RS',    fev:9108,  mar:6637,  tot:15745 },
-  { nome:'Florianópolis 475/SC',  fev:5873,  mar:4794,  tot:10667 },
-  { nome:'Florianópolis 447/SC',  fev:5898,  mar:4677,  tot:10575 },
-  { nome:'Florianópolis 451/SC',  fev:5753,  mar:4562,  tot:10315 },
-  { nome:'São Paulo 802/SP',      fev:5012,  mar:4376,  tot:9388  },
-  { nome:'Florianópolis 402/SC',  fev:5130,  mar:4154,  tot:9284  },
-  { nome:'Florianópolis 935/SC',  fev:4912,  mar:4063,  tot:8975  },
-  { nome:'Curitiba 507/PR',       fev:4621,  mar:3783,  tot:8404  },
-  { nome:'Blumenau 494/SC',       fev:4598,  mar:3737,  tot:8335  },
-  { nome:'Londrina 563/PR',       fev:4567,  mar:3719,  tot:8286  },
+  { nome:'Porto Alegre 31/RS',    fev:9108,  mar:6637,  tot:15745, rec_fev:346456, rec_mar:281775, rec_tot:628231 },
+  { nome:'Florianópolis 475/SC',  fev:5873,  mar:4794,  tot:10667, rec_fev:223401, rec_mar:203530, rec_tot:426931 },
+  { nome:'Florianópolis 447/SC',  fev:5898,  mar:4677,  tot:10575, rec_fev:224352, rec_mar:198563, rec_tot:422915 },
+  { nome:'Florianópolis 451/SC',  fev:5753,  mar:4562,  tot:10315, rec_fev:218836, rec_mar:193680, rec_tot:412516 },
+  { nome:'São Paulo 802/SP',      fev:5012,  mar:4376,  tot:9388,  rec_fev:190649, rec_mar:185784, rec_tot:376433 },
+  { nome:'Florianópolis 402/SC',  fev:5130,  mar:4154,  tot:9284,  rec_fev:195138, rec_mar:176359, rec_tot:371497 },
+  { nome:'Florianópolis 935/SC',  fev:4912,  mar:4063,  tot:8975,  rec_fev:186846, rec_mar:172495, rec_tot:359341 },
+  { nome:'Curitiba 507/PR',       fev:4621,  mar:3783,  tot:8404,  rec_fev:175776, rec_mar:160608, rec_tot:336384 },
+  { nome:'Blumenau 494/SC',       fev:4598,  mar:3737,  tot:8335,  rec_fev:174901, rec_mar:158655, rec_tot:333556 },
+  { nome:'Londrina 563/PR',       fev:4567,  mar:3719,  tot:8286,  rec_fev:173722, rec_mar:157891, rec_tot:331613 },
 ];
 
 const CL_LABELS = ['Mar/24','Abr/24','Mai/24','Jun/24','Jul/24','Ago/24','Set/24','Out/24','Nov/24','Dez/24','Jan/25','Fev/25','Mar/25','Abr/25','Mai/25','Jun/25','Jul/25','Ago/25','Set/25','Out/25','Nov/25','Dez/25','Jan/26','Fev/26','Mar/26'];
@@ -3252,34 +3321,34 @@ function renderCLRank(){
 
 /* ═══════════ PANVEL ESTOQUE ═══════════ */
 const PV_ESTOQUE = [
-  {sku:'EXPOSIS Extreme Spray 40ML',           marca:'EXPOSIS', estoque:1,    cdRS:0,    cdPR:0,    lojas:1,    pend:0,   risco:'critico'},
-  {sku:'LYSOFORM Desinfetante Aerossol 250ML',  marca:'OUTROS',  estoque:0,    cdRS:0,    cdPR:0,    lojas:0,    pend:0,   risco:'critico'},
-  {sku:'OFF Sachet 12x7ML',                    marca:'OFF',     estoque:0,    cdRS:0,    cdPR:0,    lojas:0,    pend:0,   risco:'critico'},
-  {sku:'EXPOSIS Spray 150ML',                  marca:'EXPOSIS', estoque:620,  cdRS:41,   cdPR:82,   lojas:497,  pend:0,   risco:'atencao'},
-  {sku:'EXPOSIS Elet Refil 32,9ML',            marca:'EXPOSIS', estoque:1049, cdRS:58,   cdPR:28,   lojas:963,  pend:0,   risco:'ok'},
-  {sku:'RAID Refil Family 2un 32,9ML',         marca:'RAID',    estoque:1093, cdRS:0,    cdPR:216,  lojas:877,  pend:300, risco:'ok'},
-  {sku:'EXPOSIS Extreme Kit 100+52ML',         marca:'EXPOSIS', estoque:1127, cdRS:35,   cdPR:49,   lojas:1043, pend:0,   risco:'ok'},
-  {sku:'EXPOSIS Ultra Suave Spray 100ML',      marca:'EXPOSIS', estoque:1133, cdRS:247,  cdPR:6,    lojas:880,  pend:0,   risco:'ok'},
-  {sku:'EXPOSIS Kit 100ML + Bebê 117G',        marca:'EXPOSIS', estoque:1235, cdRS:82,   cdPR:88,   lojas:1065, pend:12,  risco:'ok'},
-  {sku:'EXPOSIS Elet AP + Refil 32,9ML',       marca:'EXPOSIS', estoque:1323, cdRS:73,   cdPR:51,   lojas:1199, pend:0,   risco:'ok'},
-  {sku:'EXPOSIS Infantil Kit 100+52ML',        marca:'EXPOSIS', estoque:1360, cdRS:145,  cdPR:64,   lojas:1151, pend:0,   risco:'ok'},
-  {sku:'EXPOSIS Gel Bebê 117ML',               marca:'EXPOSIS', estoque:1495, cdRS:191,  cdPR:317,  lojas:987,  pend:0,   risco:'ok'},
-  {sku:'OFF Active Lotion 100ML',              marca:'OFF',     estoque:1613, cdRS:676,  cdPR:77,   lojas:860,  pend:0,   risco:'ok'},
-  {sku:'RAID Family Aparelho Elétrico',        marca:'RAID',    estoque:1645, cdRS:6,    cdPR:372,  lojas:1267, pend:540, risco:'ok'},
-  {sku:'RAID Elétrico Refil 32,9ML',          marca:'RAID',    estoque:1787, cdRS:147,  cdPR:28,   lojas:1612, pend:60,  risco:'ok'},
-  {sku:'RAID Apar+Refil 32,9ML',              marca:'RAID',    estoque:2206, cdRS:156,  cdPR:248,  lojas:1802, pend:288, risco:'ok'},
-  {sku:'EXPOSIS Gel 100ML',                    marca:'EXPOSIS', estoque:2793, cdRS:138,  cdPR:294,  lojas:2361, pend:0,   risco:'ok'},
-  {sku:'OFF Toque Leve Spray 100ML',           marca:'OFF',     estoque:2842, cdRS:365,  cdPR:280,  lojas:2197, pend:0,   risco:'ok'},
-  {sku:'EXPOSIS Gel Infantil 100ML',           marca:'EXPOSIS', estoque:3530, cdRS:624,  cdPR:504,  lojas:2402, pend:0,   risco:'ok'},
-  {sku:'EXPOSIS Icaridina Aero 100ML',         marca:'EXPOSIS', estoque:3550, cdRS:457,  cdPR:433,  lojas:2660, pend:0,   risco:'ok'},
-  {sku:'OFF Baby Loção 117ML',                 marca:'OFF',     estoque:3624, cdRS:1170, cdPR:868,  lojas:1586, pend:0,   risco:'ok'},
-  {sku:'EXPOSIS Extreme Spray 100ML',          marca:'EXPOSIS', estoque:3919, cdRS:488,  cdPR:677,  lojas:2754, pend:0,   risco:'ok'},
-  {sku:'OFF Aerosol 165ML',                    marca:'OFF',     estoque:4681, cdRS:715,  cdPR:1148, lojas:2818, pend:0,   risco:'ok'},
-  {sku:'EXPOSIS Infantil Spray 100ML',         marca:'EXPOSIS', estoque:4933, cdRS:940,  cdPR:874,  lojas:3119, pend:0,   risco:'ok'},
-  {sku:'OFF Gel Toque Leve 100G',              marca:'OFF',     estoque:5551, cdRS:682,  cdPR:479,  lojas:4390, pend:0,   risco:'ok'},
-  {sku:'OFF Family Loção 200ML',               marca:'OFF',     estoque:6086, cdRS:1805, cdPR:981,  lojas:3300, pend:0,   risco:'ok'},
-  {sku:'OFF Spray 170ML Oferta Esp',           marca:'OFF',     estoque:8039, cdRS:3609, cdPR:130,  lojas:4300, pend:0,   risco:'ok'},
-  {sku:'OFF Kids Loção 200ML',                 marca:'OFF',     estoque:9021, cdRS:1341, cdPR:4022, lojas:3658, pend:0,   risco:'ok'},
+  {sku:'REP LC OFF ACTIVE LOTION 100ML',marca:'OFF',estoque:842,cdRS:666,cdPR:67,pend:0,lojas:233,totalLojas:650,dias:43,venda_abr:9,fev26:246,mar26:157,dem:9,cob:2807,risco:'ok'},
+  {sku:'REP OFF GEL TOQUE LEVE 100G',marca:'OFF',estoque:4370,cdRS:782,cdPR:462,pend:0,lojas:642,totalLojas:650,dias:51,venda_abr:18,fev26:507,mar26:334,dem:18,cob:7283,risco:'ok'},
+  {sku:'REFIL REP ELET RAID FAMILY 2UN 32,9ML',marca:'RAID',estoque:930,cdRS:300,cdPR:95,pend:0,lojas:441,totalLojas:650,dias:55,venda_abr:13,fev26:345,mar26:310,dem:13,cob:2146,risco:'ok'},
+  {sku:'REPELENTE OFF SPRAY OFERTA ESP 170 ML',marca:'OFF',estoque:3908,cdRS:3350,cdPR:28,pend:0,lojas:639,totalLojas:650,dias:10,venda_abr:50,fev26:5034,mar26:2486,dem:50,cob:2345,risco:'ok'},
+  {sku:'KIT REPELENTE EXPOSIS INF 100ML+52ML',marca:'EXPOSIS',estoque:1144,cdRS:132,cdPR:51,pend:0,lojas:406,totalLojas:650,dias:75,venda_abr:24,fev26:137,mar26:150,dem:24,cob:1430,risco:'ok'},
+  {sku:'KIT REP EXPOSIS 100ML+ BEBE 117G',marca:'EXPOSIS',estoque:1052,cdRS:91,cdPR:84,pend:0,lojas:0,totalLojas:650,dias:0,venda_abr:0,fev26:74,mar26:51,dem:51,cob:619,risco:'ok'},
+  {sku:'KIT REP EXPOSIS EXTREME 100ML + 52ML',marca:'EXPOSIS',estoque:1053,cdRS:31,cdPR:43,pend:0,lojas:401,totalLojas:650,dias:75,venda_abr:0,fev26:74,mar26:51,dem:51,cob:619,risco:'ok'},
+  {sku:'REP OFF TOQUE LEVE SPRAY 100ML',marca:'OFF',estoque:2153,cdRS:344,cdPR:266,pend:0,lojas:641,totalLojas:650,dias:55,venda_abr:0,fev26:385,mar26:274,dem:274,cob:236,risco:'ok'},
+  {sku:'REP EXPOSIS ULTRA SUAVE SPRAY 100ML',marca:'EXPOSIS',estoque:890,cdRS:235,cdPR:6,pend:0,lojas:361,totalLojas:650,dias:37,venda_abr:0,fev26:173,mar26:151,dem:151,cob:177,risco:'ok'},
+  {sku:'DESINFETANTE DE SUPERFICIE LYSOFORM ORIGINAL AEROS',marca:'LYSOFORM',estoque:0,cdRS:0,cdPR:0,pend:0,lojas:0,totalLojas:650,dias:0,venda_abr:0,fev26:0,mar26:0,dem:0,cob:999,risco:'ok'},
+  {sku:'REPEL EXPOS SPRAY 150ML',marca:'EXPOSIS',estoque:499,cdRS:71,cdPR:72,pend:0,lojas:112,totalLojas:650,dias:70,venda_abr:16,fev26:73,mar26:71,dem:16,cob:936,risco:'ok'},
+  {sku:'REPE ELET EXPOSIS REF 32,9ML',marca:'EXPOSIS',estoque:962,cdRS:41,cdPR:4,pend:0,lojas:322,totalLojas:650,dias:141,venda_abr:21,fev26:118,mar26:124,dem:21,cob:1374,risco:'ok'},
+  {sku:'REPEL ELETR EXPOSIS AP + REF 32,9ML',marca:'EXPOSIS',estoque:1210,cdRS:67,cdPR:31,pend:0,lojas:411,totalLojas:650,dias:114,venda_abr:25,fev26:197,mar26:177,dem:25,cob:1452,risco:'ok'},
+  {sku:'REP OFF FAMILY LOÇÃO 200ML OFERTA ESP',marca:'OFF',estoque:3155,cdRS:1556,cdPR:870,pend:0,lojas:630,totalLojas:650,dias:14,venda_abr:14,fev26:2036,mar26:1574,dem:14,cob:6761,risco:'ok'},
+  {sku:'REPELENTE ELETRI RAID APAR+RF 32,9ML',marca:'RAID',estoque:1791,cdRS:377,cdPR:189,pend:0,lojas:558,totalLojas:650,dias:50,venda_abr:12,fev26:496,mar26:494,dem:12,cob:4478,risco:'ok'},
+  {sku:'REPELENTE EXPOSIS EXTREME SPRAY 40ML',marca:'EXPOSIS',estoque:1,cdRS:0,cdPR:0,pend:0,lojas:1,totalLojas:650,dias:785,venda_abr:24,fev26:137,mar26:150,dem:24,cob:1,risco:'critico'},
+  {sku:'REPELENTE EXPOSIS ICARIDINA AERO 100ML',marca:'EXPOSIS',estoque:2647,cdRS:463,cdPR:398,pend:0,lojas:623,totalLojas:650,dias:85,venda_abr:24,fev26:137,mar26:150,dem:24,cob:3309,risco:'ok'},
+  {sku:'REPELENTE EXPOSIS GEL BEBÊ 117 ML',marca:'EXPOSIS',estoque:1002,cdRS:158,cdPR:274,pend:0,lojas:494,totalLojas:650,dias:59,venda_abr:24,fev26:137,mar26:150,dem:24,cob:1252,risco:'ok'},
+  {sku:'OFF SACHET 12X7ML',marca:'OFF',estoque:0,cdRS:0,cdPR:0,pend:0,lojas:0,totalLojas:650,dias:0,venda_abr:0,fev26:0,mar26:0,dem:0,cob:999,risco:'ok'},
+  {sku:'REPELENTE EXPOSIS EXTREME SPRAY 100ML',marca:'EXPOSIS',estoque:2681,cdRS:462,cdPR:645,pend:0,lojas:532,totalLojas:650,dias:60,venda_abr:24,fev26:137,mar26:150,dem:24,cob:3351,risco:'ok'},
+  {sku:'REPELENTE EXPOSIS INFANTIL SPRAY 100ML',marca:'EXPOSIS',estoque:3047,cdRS:872,cdPR:814,pend:0,lojas:630,totalLojas:650,dias:44,venda_abr:24,fev26:137,mar26:150,dem:24,cob:3809,risco:'ok'},
+  {sku:'REPELENTE EXPOSIS GEL 100ML',marca:'EXPOSIS',estoque:2344,cdRS:149,cdPR:284,pend:0,lojas:528,totalLojas:650,dias:116,venda_abr:24,fev26:137,mar26:150,dem:24,cob:2930,risco:'ok'},
+  {sku:'OFF KIDS LOCAO LV 200ML PG 117ML',marca:'OFF',estoque:3392,cdRS:1137,cdPR:3947,pend:0,lojas:0,totalLojas:650,dias:0,venda_abr:14,fev26:2619,mar26:1753,dem:14,cob:7269,risco:'ok'},
+  {sku:'REPELENTE ELETRI RAID FAMILY APARELHO ',marca:'RAID',estoque:1372,cdRS:546,cdPR:118,pend:0,lojas:0,totalLojas:650,dias:0,venda_abr:12,fev26:496,mar26:494,dem:12,cob:3430,risco:'ok'},
+  {sku:'REPELENTE ELETRICO RAID REFIL 32,9ML',marca:'RAID',estoque:1577,cdRS:176,cdPR:4,pend:0,lojas:544,totalLojas:650,dias:94,venda_abr:12,fev26:496,mar26:494,dem:12,cob:3942,risco:'ok'},
+  {sku:'REPELENTE EXPOSIS GEL INFANTIL 100 ML',marca:'EXPOSIS',estoque:2700,cdRS:598,cdPR:67,pend:0,lojas:643,totalLojas:650,dias:69,venda_abr:24,fev26:137,mar26:150,dem:24,cob:3375,risco:'ok'},
+  {sku:'REPELENTE OFF BABY LOÇÃO 117ML',marca:'OFF',estoque:1496,cdRS:1041,cdPR:770,pend:0,lojas:630,totalLojas:650,dias:23,venda_abr:3,fev26:1358,mar26:1047,dem:3,cob:14960,risco:'ok'},
+  {sku:'OFF AEROSOL 165ML',marca:'OFF',estoque:2715,cdRS:622,cdPR:1085,pend:0,lojas:592,totalLojas:650,dias:23,venda_abr:16,fev26:1248,mar26:1034,dem:16,cob:5091,risco:'ok'}
 ];
 
 var pvEstoqueView  = 'barras';
@@ -3386,11 +3455,35 @@ function renderPVLine(){
   ],'pv-line-legend', isVol);
 }
 
+var pvLojaMode = 'rec';
+function setPVLojaMode(m, btn){
+  pvLojaMode = m;
+  btn.closest('.toggle-group').querySelectorAll('.tgl').forEach(function(b){b.classList.remove('active','blue');});
+  btn.classList.add('active','blue');
+  renderPVLojas();
+}
 function renderPVLojas(){
-  var items=PV_LOJAS.map(function(l,i){
-    return{nome:l.nome,val:l.rec,color:LOJA_COLORS[i],extraFields:[{label:'Volume: ',val:fmtVol(l.vol)},{label:'UF: ',val:l.uf||'—'}]};
+  var isRec = pvLojaMode === 'rec';
+  var items = PV_LOJAS.map(function(l,i){
+    var val   = isRec ? l.rec_tot : l.tot;
+    var valFev = isRec ? l.rec_fev : l.fev;
+    var valMar = isRec ? l.rec_mar : l.mar;
+    var display = isRec
+      ? 'R$ ' + (val/1000).toFixed(1) + 'K'
+      : val.toLocaleString('pt-BR') + ' un';
+    return {
+      nome: l.nome,
+      val:  val,
+      color: LOJA_COLORS[i],
+      displayVal: display,
+      extraFields:[
+        {label:'Fev/26: ', val: isRec ? 'R$ '+(valFev/1000).toFixed(1)+'K' : valFev.toLocaleString('pt-BR')+' un'},
+        {label:'Mar/26: ', val: isRec ? 'R$ '+(valMar/1000).toFixed(1)+'K' : valMar.toLocaleString('pt-BR')+' un'},
+        {label:'Total: ',  val: display},
+      ]
+    };
   });
-  renderBars('pv-loja-bars',items,{hbar:true});
+  renderBars('pv-loja-bars', items, {hbar:true, isVol:!isRec});
 }
 
 function renderPVRank(){
@@ -5646,10 +5739,10 @@ function setEstoqueTend(panel, btn){
     if(!mm[m]) mm[m]={est:0,dem:0};
     mm[m].est+=(item.estoque||0);
     var d=0;
-    if(item.giro>0)          d=item.giro;
+    if(item.venda_abr>0)     d=item.venda_abr;  // Abr/25 — referência sazonalidade real
+    else if(item.giro>0)     d=item.giro;
     else if(item.cob>0&&item.cob<999) d=(item.estoque||0)/item.cob*30;
     else if(item.dem>0)      d=item.dem;
-    if(!d&&item.venda_abr>0) d=item.venda_abr;
     if(!d&&item.venda>0)     d=item.venda;
     if(!d&&item.vendaMar>0)  d=item.vendaMar;
     if(!d&&item.pend>0)      d=item.pend*0.5;
@@ -6742,36 +6835,64 @@ var sjcLineMode = 'vol';
 var sjcRankMode = 'vol';
 
 /* ═══════════ CAROLINE ESTOQUE ═══════════ */
+const SJC_COBERTURA = [
+  {sku:'BLOQUEADOR ODORES SANI PATO BLOCK 60ML LAVANDA',marca:'PATO',lojas:1100,total:1241,pct:88.6,estoque:5662},
+  {sku:'LENCOS UMED LYSOFORM DESINFETANTES 36UN',marca:'LYSOFORM',lojas:741,total:1241,pct:59.7,estoque:4102},
+  {sku:'DESINFETANTE LYSOFORM 1L CITRUS',marca:'LYSOFORM',lojas:1075,total:1241,pct:86.6,estoque:3764},
+  {sku:'DETERGENTE SANITARIO PATO 2UN BLOCO MARINE',marca:'PATO',lojas:885,total:1241,pct:71.3,estoque:3521},
+  {sku:'DIFUSOR GLADE 100ML LAVANDA',marca:'GLADE',lojas:840,total:1241,pct:67.7,estoque:3415},
+  {sku:'DESINFETANTE LYSOFORM 1L ORIGINAL',marca:'LYSOFORM',lojas:1063,total:1241,pct:85.7,estoque:3345},
+  {sku:'DETERGENTE SANITARIO GEL PATO 38G 6 DISC',marca:'PATO',lojas:816,total:1241,pct:65.8,estoque:2884},
+  {sku:'DESINFETANTE LYSOFORM 360ML AEROSSOL LAVANDA',marca:'LYSOFORM',lojas:868,total:1241,pct:69.9,estoque:2879},
+  {sku:'DESINFETANTE LYSOFORM 360ML AEROSSOL ORIGINAL',marca:'LYSOFORM',lojas:802,total:1241,pct:64.6,estoque:2853},
+  {sku:'DETERGENTE SANITARIO PATO 3UN PASTILHA A',marca:'PATO',lojas:883,total:1241,pct:71.2,estoque:2660},
+  {sku:'APAR ODORIZADOR GLADE 269ML LAVANDA E VA',marca:'GLADE',lojas:824,total:1241,pct:66.4,estoque:2460},
+  {sku:'DESINFETANTE PATO 750ML MARINE LIMPEZA P',marca:'PATO',lojas:783,total:1241,pct:63.1,estoque:2424},
+  {sku:'GLADE AERO 360ML LAVANDA OFERTA ESPECIAL',marca:'GLADE',lojas:830,total:1241,pct:66.9,estoque:2368},
+  {sku:'ODORIZADOR GLADE 269ML LAVANDA E VANILLA',marca:'GLADE',lojas:873,total:1241,pct:70.3,estoque:2207},
+  {sku:'DETERGENTE SANITARIO PATO GEL ADESIVO MA',marca:'PATO',lojas:864,total:1241,pct:69.6,estoque:2083},
+  {sku:'DESINFETANTE PATO 750ML LAVANDA LIMPEZA',marca:'PATO',lojas:829,total:1241,pct:66.8,estoque:1961},
+  {sku:'DESINFETANTE LYSOFORM 500ML ORIGINAL',marca:'LYSOFORM',lojas:122,total:1241,pct:9.8,estoque:191},
+  {sku:'DESINFETANTE LYSOFORM 500ML SPRAY ORIGINAL',marca:'LYSOFORM',lojas:77,total:1241,pct:6.2,estoque:115},
+  {sku:'DESINFETANTE LYSOFORM 1L LAVANDA',marca:'LYSOFORM',lojas:69,total:1241,pct:5.6,estoque:85},
+  {sku:'DESINFETANTE LYSOFORM 250ML SPRAY SUPERF',marca:'LYSOFORM',lojas:60,total:1241,pct:4.8,estoque:81},
+  {sku:'DESINFETANTE LYSOFORM 360ML AEROSSOL LEMBRANCA DA ',marca:'LYSOFORM',lojas:2,total:1241,pct:0.2,estoque:7},
+  {sku:'GLADE AERO 360ML LEMBRANCAS DE INFANCIA OFERTA ESP',marca:'GLADE',lojas:2,total:1241,pct:0.2,estoque:2},
+  {sku:'ALCOOL GEL LYSOFORM 100ML LAVANDA',marca:'LYSOFORM',lojas:1,total:1241,pct:0.1,estoque:1},
+  {sku:'DESINFETANTE LYSOFORM 55ML AEROSSOL ORIGINAL',marca:'LYSOFORM',lojas:1,total:1241,pct:0.1,estoque:1},
+  {sku:'DIFUSOR GLADE 100ML FRESCOR DE AGUAS FLORAIS',marca:'GLADE',lojas:1,total:1241,pct:0.1,estoque:1}
+];
+
 const SJC_ESTOQUE = [
-  {sku:'BLOQUEADOR ODORES SANI PATO BLOCK 60ML LAVANDA',marca:'PATO',estoque:5662,giro:306,cob:555,risco:'ok'},
-  {sku:'LENCOS UMED LYSOFORM DESINFETANTES 36UN',marca:'LYSOFORM',estoque:4102,giro:480,cob:256,risco:'ok'},
-  {sku:'DESINFETANTE LYSOFORM 1L CITRUS',marca:'LYSOFORM',estoque:3764,giro:662,cob:170,risco:'ok'},
-  {sku:'DETERGENTE SANITARIO PATO 2UN BLOCO MARINE',marca:'PATO',estoque:3521,giro:197,cob:536,risco:'ok'},
-  {sku:'DIFUSOR GLADE 100ML LAVANDA',marca:'GLADE',estoque:3415,giro:112,cob:914,risco:'ok'},
-  {sku:'DESINFETANTE LYSOFORM 1L ORIGINAL',marca:'LYSOFORM',estoque:3345,giro:958,cob:104,risco:'ok'},
-  {sku:'DETERGENTE SANITARIO GEL PATO 38G 6 DISC',marca:'PATO',estoque:2884,giro:170,cob:508,risco:'ok'},
-  {sku:'DESINFETANTE LYSOFORM 360ML AEROSSOL LAVANDA',marca:'LYSOFORM',estoque:2879,giro:653,cob:132,risco:'ok'},
-  {sku:'DESINFETANTE LYSOFORM 360ML AEROSSOL ORIGINAL',marca:'LYSOFORM',estoque:2853,giro:688,cob:124,risco:'ok'},
-  {sku:'DETERGENTE SANITARIO PATO 3UN PASTILHA A',marca:'PATO',estoque:2660,giro:725,cob:110,risco:'ok'},
-  {sku:'APAR ODORIZADOR GLADE 269ML LAVANDA E VA',marca:'GLADE',estoque:2460,giro:285,cob:258,risco:'ok'},
-  {sku:'DESINFETANTE PATO 750ML MARINE LIMPEZA P',marca:'PATO',estoque:2424,giro:519,cob:140,risco:'ok'},
-  {sku:'GLADE AERO 360ML LAVANDA OFERTA ESPECIAL',marca:'GLADE',estoque:2368,giro:278,cob:255,risco:'ok'},
-  {sku:'ODORIZADOR GLADE 269ML LAVANDA E VANILLA',marca:'GLADE',estoque:2207,giro:310,cob:213,risco:'ok'},
-  {sku:'DETERGENTE SANITARIO PATO GEL ADESIVO MA',marca:'PATO',estoque:2083,giro:531,cob:117,risco:'ok'},
-  {sku:'DESINFETANTE PATO 750ML LAVANDA LIMPEZA',marca:'PATO',estoque:1961,giro:652,cob:90,risco:'ok'},
-  {sku:'DESINFETANTE LYSOFORM 500ML ORIGINAL',marca:'LYSOFORM',estoque:191,giro:37,cob:154,risco:'ok'},
-  {sku:'DESINFETANTE LYSOFORM 500ML SPRAY ORIGINAL',marca:'LYSOFORM',estoque:115,giro:12,cob:287,risco:'ok'},
-  {sku:'DESINFETANTE LYSOFORM 1L LAVANDA',marca:'LYSOFORM',estoque:85,giro:26,cob:98,risco:'ok'},
-  {sku:'DESINFETANTE LYSOFORM 250ML SPRAY SUPERF',marca:'LYSOFORM',estoque:81,giro:9,cob:270,risco:'ok'},
-  {sku:'DESINFETANTE LYSOFORM 360ML AEROSSOL LEMBRANCA DA ',marca:'LYSOFORM',estoque:7,giro:0,cob:999,risco:'ok'},
-  {sku:'GLADE AERO 360ML LEMBRANCAS DE INFANCIA OFERTA ESP',marca:'GLADE',estoque:2,giro:0,cob:999,risco:'ok'},
-  {sku:'ALCOOL GEL LYSOFORM 100ML LAVANDA',marca:'LYSOFORM',estoque:1,giro:0,cob:999,risco:'ok'},
-  {sku:'DESINFETANTE LYSOFORM 55ML AEROSSOL ORIGINAL',marca:'LYSOFORM',estoque:1,giro:0,cob:999,risco:'ok'},
-  {sku:'DIFUSOR GLADE 100ML FRESCOR DE AGUAS FLORAIS',marca:'GLADE',estoque:1,giro:0,cob:999,risco:'ok'}
+  {sku:'BLOQUEADOR ODORES SANI PATO BLOCK 60ML LAVANDA',marca:'PATO',estoque:5662,giro:306,cob:555,risco:'ok',venda_abr:0},
+  {sku:'LENCOS UMED LYSOFORM DESINFETANTES 36UN',marca:'LYSOFORM',estoque:4102,giro:480,cob:256,risco:'ok',venda_abr:366},
+  {sku:'DESINFETANTE LYSOFORM 1L CITRUS',marca:'LYSOFORM',estoque:3764,giro:662,cob:171,risco:'ok',venda_abr:222},
+  {sku:'DETERGENTE SANITARIO PATO 2UN BLOCO MARINE',marca:'PATO',estoque:3521,giro:197,cob:536,risco:'ok',venda_abr:141},
+  {sku:'DIFUSOR GLADE 100ML LAVANDA',marca:'GLADE',estoque:3415,giro:112,cob:915,risco:'ok',venda_abr:198},
+  {sku:'DESINFETANTE LYSOFORM 1L ORIGINAL',marca:'LYSOFORM',estoque:3345,giro:958,cob:105,risco:'ok',venda_abr:241},
+  {sku:'DETERGENTE SANITARIO GEL PATO 38G 6 DISC',marca:'PATO',estoque:2884,giro:170,cob:509,risco:'ok',venda_abr:301},
+  {sku:'DESINFETANTE LYSOFORM 360ML AEROSSOL LAVANDA',marca:'LYSOFORM',estoque:2879,giro:653,cob:132,risco:'ok',venda_abr:384},
+  {sku:'DESINFETANTE LYSOFORM 360ML AEROSSOL ORIGINAL',marca:'LYSOFORM',estoque:2853,giro:688,cob:124,risco:'ok',venda_abr:325},
+  {sku:'DETERGENTE SANITARIO PATO 3UN PASTILHA A',marca:'PATO',estoque:2660,giro:725,cob:110,risco:'ok',venda_abr:431},
+  {sku:'APAR ODORIZADOR GLADE 269ML LAVANDA E VA',marca:'GLADE',estoque:2460,giro:285,cob:259,risco:'ok',venda_abr:189},
+  {sku:'DESINFETANTE PATO 750ML MARINE LIMPEZA P',marca:'PATO',estoque:2424,giro:519,cob:140,risco:'ok',venda_abr:166},
+  {sku:'GLADE AERO 360ML LAVANDA OFERTA ESPECIAL',marca:'GLADE',estoque:2368,giro:278,cob:256,risco:'ok',venda_abr:354},
+  {sku:'ODORIZADOR GLADE 269ML LAVANDA E VANILLA',marca:'GLADE',estoque:2207,giro:310,cob:214,risco:'ok',venda_abr:438},
+  {sku:'DETERGENTE SANITARIO PATO GEL ADESIVO MA',marca:'PATO',estoque:2083,giro:531,cob:118,risco:'ok',venda_abr:135},
+  {sku:'DESINFETANTE PATO 750ML LAVANDA LIMPEZA',marca:'PATO',estoque:1961,giro:652,cob:90,risco:'ok',venda_abr:165},
+  {sku:'DESINFETANTE LYSOFORM 500ML ORIGINAL',marca:'LYSOFORM',estoque:191,giro:37,cob:155,risco:'ok',venda_abr:227},
+  {sku:'DESINFETANTE LYSOFORM 500ML SPRAY ORIGINAL',marca:'LYSOFORM',estoque:115,giro:12,cob:288,risco:'ok',venda_abr:93},
+  {sku:'DESINFETANTE LYSOFORM 1L LAVANDA',marca:'LYSOFORM',estoque:85,giro:26,cob:98,risco:'ok',venda_abr:156},
+  {sku:'DESINFETANTE LYSOFORM 250ML SPRAY SUPERF',marca:'LYSOFORM',estoque:81,giro:9,cob:270,risco:'ok',venda_abr:201},
+  {sku:'DESINFETANTE LYSOFORM 360ML AEROSSOL LEMBRANCA DA ',marca:'LYSOFORM',estoque:7,giro:0,cob:999,risco:'ok',venda_abr:0},
+  {sku:'GLADE AERO 360ML LEMBRANCAS DE INFANCIA OFERTA ESP',marca:'GLADE',estoque:2,giro:0,cob:999,risco:'ok',venda_abr:0},
+  {sku:'ALCOOL GEL LYSOFORM 100ML LAVANDA',marca:'LYSOFORM',estoque:1,giro:0,cob:999,risco:'ok',venda_abr:0},
+  {sku:'DESINFETANTE LYSOFORM 55ML AEROSSOL ORIGINAL',marca:'LYSOFORM',estoque:1,giro:0,cob:999,risco:'ok',venda_abr:0},
+  {sku:'DIFUSOR GLADE 100ML FRESCOR DE AGUAS FLORAIS',marca:'GLADE',estoque:1,giro:0,cob:999,risco:'ok',venda_abr:9}
 ];
 
 function setSJCEstoqueView(v, btn){
-  ['barras','linha','tend'].forEach(function(id){
+  ['barras','linha','tend','cobertura'].forEach(function(id){
     var el = document.getElementById('sjc-estoque-'+id);
     if(el) el.style.display = 'none';
   });
@@ -6783,6 +6904,7 @@ function setSJCEstoqueView(v, btn){
   }
   if(v==='barras') renderSJCEstoqueBarras();
   if(v==='linha')  renderSJCEstoqueLinha();
+  if(v==='cobertura') renderSJCCobertura();
 }
 
 function renderSJCEstoqueBarras(){
@@ -6843,6 +6965,40 @@ function renderSJCEstoqueLinha(){
   });
 }
 
+function renderSJCCobertura(){
+  var el = document.getElementById('sjc-cob-table');
+  if(!el) return;
+  var data = typeof SJC_COBERTURA !== 'undefined' ? SJC_COBERTURA : [];
+  if(!data.length){ el.innerHTML='<p style="color:#5a6478;font-size:11px;">Dados não disponíveis.</p>'; return; }
+  var html = '<table style="width:100%;border-collapse:collapse;font-size:11px;">';
+  html += '<thead><tr style="color:#5a6478;border-bottom:1px solid #2a3347;">'
+    + '<th style="text-align:left;padding:5px 4px;">SKU</th>'
+    + '<th style="text-align:center;padding:5px 4px;white-space:nowrap;">Lojas c/ Estoque</th>'
+    + '<th style="text-align:center;padding:5px 4px;">Cobertura</th>'
+    + '<th style="text-align:right;padding:5px 4px;">Estoque</th>'
+    + '</tr></thead><tbody>';
+  data.forEach(function(d, i){
+    var pctColor = d.pct >= 80 ? '#34d399' : d.pct >= 50 ? '#fbbf24' : '#f87171';
+    var marcaColor = d.marca==='LYSOFORM'?'#60a5fa':d.marca==='PATO'?'#a78bfa':'#34d399';
+    var rowBg = i%2===0 ? 'rgba(255,255,255,0.02)' : 'transparent';
+    html += '<tr style="background:'+rowBg+';border-bottom:1px solid rgba(255,255,255,0.04);">'
+      + '<td style="padding:5px 4px;color:#c9d1e0;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="'+d.sku+'">'
+      +   '<span style="font-size:9px;color:'+marcaColor+';margin-right:4px;font-weight:600;">'+d.marca+'</span>'+d.sku+'</td>'
+      + '<td style="text-align:center;padding:5px 4px;color:#e2e8f0;">'+d.lojas+' / '+d.total+'</td>'
+      + '<td style="padding:5px 8px;min-width:120px;">'
+      +   '<div style="display:flex;align-items:center;gap:6px;">'
+      +   '<div style="flex:1;background:rgba(255,255,255,0.07);border-radius:3px;height:7px;">'
+      +   '<div style="width:'+d.pct+'%;background:'+pctColor+';border-radius:3px;height:7px;"></div></div>'
+      +   '<span style="color:'+pctColor+';font-weight:600;min-width:36px;text-align:right;">'+d.pct+'%</span>'
+      +   '</div>'
+      + '</td>'
+      + '<td style="text-align:right;padding:5px 4px;color:#94a3b8;">'+d.estoque.toLocaleString("pt-BR")+'</td>'
+      + '</tr>';
+  });
+  html += '</tbody></table>';
+  el.innerHTML = html;
+}
+
 function initCaroline(){
   // Compute aggregates from SJC constants
   var totalVol24 = SJC_VOL_24.reduce(function(s,v){return s+(v||0);},0);
@@ -6897,28 +7053,33 @@ function setSJCRankMode(m,btn){
 }
 
 
-const SJ_ESTOQUE = [
-  {sku:'OFF 200ML Loção Oferta',      estoque:1878, venda:2845, cob:20,  risco:'atencao', intoc:'locao200'},
-  {sku:'OFF 170ML Spray Fam OF ESP',  estoque:1534, venda:2182, cob:21,  risco:'atencao', intoc:'spray170'},
-  {sku:'OFF 117G Baby Gel',            estoque:633,  venda:705,  cob:27,  risco:'atencao', intoc:null},
-  {sku:'OFF Kids LV200ML PG117ML',    estoque:1722, venda:1883, cob:27,  risco:'atencao', intoc:'kids200'},
-  {sku:'RAID Aero 420ML Água',         estoque:282,  venda:238,  cob:36,  risco:'ok',      intoc:null},
-  {sku:'RAID Elet LIQ 45N + Refil',   estoque:164,  venda:113,  cob:44,  risco:'ok',      intoc:null},
-  {sku:'OFF 165/170ML Aero',           estoque:4379, venda:2807, cob:47,  risco:'ok',      intoc:'spray170'},
-  {sku:'RAID Refil 32,9ML 50%',        estoque:403,  venda:254,  cob:48,  risco:'ok',      intoc:null},
-  {sku:'OFF 170ML Spray Active',       estoque:1247, venda:746,  cob:50,  risco:'ok',      intoc:null},
-  {sku:'RAID Aero 420ML Aqua Econ.',   estoque:549,  venda:302,  cob:55,  risco:'ok',      intoc:null},
-  {sku:'RAID Inset LIQ 45N Fam',      estoque:645,  venda:334,  cob:58,  risco:'ok',      intoc:null},
-  {sku:'KIT EXPOSIS Casa 32,9ML',      estoque:365,  venda:155,  cob:71,  risco:'ok',      intoc:null},
-  {sku:'OFF 100ML Loção Longa Dur.',   estoque:673,  venda:282,  cob:72,  risco:'ok',      intoc:null},
-  {sku:'EXPOSIS 32,9ML Elétrico',      estoque:1176, venda:334,  cob:106, risco:'ok',      intoc:null},
-  {sku:'OFF 100G Gel Toque Leve',      estoque:2202, venda:587,  cob:113, risco:'ok',      intoc:null},
-  {sku:'EXPOSIS 100ML Inf Spray',      estoque:2593, venda:547,  cob:142, risco:'ok',      intoc:null},
-  {sku:'EXPOSIS 117ML Bebê Gel',       estoque:2388, venda:485,  cob:148, risco:'ok',      intoc:null},
-  {sku:'OFF Aero 100ML Toque Leve',    estoque:4350, venda:619,  cob:211, risco:'ok',      intoc:null},
-  {sku:'EXPOSIS 100ML Inf Gel',        estoque:4873, venda:522,  cob:280, risco:'ok',      intoc:null},
-  {sku:'EXPOSIS 100ML Extreme',        estoque:1591, venda:166,  cob:288, risco:'ok',      intoc:null},
-];
+const SJ_COBERTURA = [{sku:"EXPOSIS 100ML INF GEL",lojas:1153,total:1241,pct:92.9,estoque:4873},
+    {sku:"OFF 165/170ML AERO",lojas:1090,total:1241,pct:87.8,estoque:4379},
+    {sku:"OFF 100ML TOQUE LEVE S/PERFUME SPRAY",lojas:1200,total:1241,pct:96.7,estoque:4350},
+    {sku:"EXPOSIS 100ML ULTRA SUAVE S/PERFUME",lojas:1136,total:1241,pct:91.5,estoque:3561},
+    {sku:"EXPOSIS 100ML GEL",lojas:1185,total:1241,pct:95.5,estoque:3047},
+    {sku:"EXPOSIS 100ML INF SPRAY",lojas:1140,total:1241,pct:91.9,estoque:2593},
+    {sku:"EXPOSIS 117ML BEBE GEL",lojas:1133,total:1241,pct:91.3,estoque:2388},
+    {sku:"OFF 100G GEL TOQUE LEVE",lojas:1059,total:1241,pct:85.3,estoque:2202},
+    {sku:"EXPOSIS 100ML AERO EXTREME",lojas:1106,total:1241,pct:89.1,estoque:2083},
+    {sku:"OFF 200ML FAMILY LOCAO OFERTA",lojas:396,total:1241,pct:31.9,estoque:1878},
+    {sku:"OFF KIDS LV200ML PG117ML",lojas:409,total:1241,pct:33.0,estoque:1722},
+    {sku:"EXPOSIS 100ML EXTREME",lojas:902,total:1241,pct:72.7,estoque:1591},
+    {sku:"EXPOSIS 150ML SPRAY",lojas:929,total:1241,pct:74.9,estoque:1575},
+    {sku:"OFF 170ML SPRAY FAMILY OFERTA ESPECIAL",lojas:514,total:1241,pct:41.4,estoque:1534},
+    {sku:"OFF 170ML SPRAY ACTIVE",lojas:713,total:1241,pct:57.5,estoque:1247},
+    {sku:"EXPOSIS 32,9ML ELETRICO CASA R",lojas:658,total:1241,pct:53.0,estoque:1176},
+    {sku:"GEL EXPOSIS 100ML+GEL BEBE 117G S/PERFUME",lojas:411,total:1241,pct:33.1,estoque:991},
+    {sku:"LIQ EXPOSIS 100ML+EXTREME 52ML S/PERFUME",lojas:401,total:1241,pct:32.3,estoque:869},
+    {sku:"GEL EXPOSIS 100ML+INF 52ML S/PERFUME",lojas:394,total:1241,pct:31.7,estoque:834},
+    {sku:"OFF 100ML LOCAO LONGA DURACAO",lojas:394,total:1241,pct:31.7,estoque:673},
+    {sku:"INSET LIQ 32,9ML RFL 45 NOITES FAMILY 50%DESC",lojas:325,total:1241,pct:26.2,estoque:645},
+    {sku:"OFF 117G BABY GEL",lojas:281,total:1241,pct:22.6,estoque:633},
+    {sku:"MULTI AERO 420ML AQUA PROTECTION ECONOMICA",lojas:259,total:1241,pct:20.9,estoque:549},
+    {sku:"INSET LIQ REFIL 32,9ML 50%DESC 2°UN",lojas:226,total:1241,pct:18.2,estoque:403},
+    {sku:"LIQ EXPOSIS CASA 32,9ML E",lojas:241,total:1241,pct:19.4,estoque:365}];
+
+const SJ_ESTOQUE = [{sku:'OFF 200ML Loção Oferta',      estoque: 1878, venda: 1452, cob:20,  risco:'atencao', intoc:'locao200'},{sku:'OFF 170ML Spray Fam OF ESP',  estoque: 1534, venda: 414, cob:21,  risco:'atencao', intoc:'spray170'},{sku:'OFF 117G Baby Gel',            estoque: 633,  venda: 804,  cob:27,  risco:'atencao', intoc:null},{sku:'OFF Kids LV200ML PG117ML',    estoque: 1722, venda: 1743, cob:27,  risco:'atencao', intoc:'kids200'},{sku:'RAID Aero 420ML Água',         estoque: 282,  venda: 168,  cob:36,  risco:'ok',      intoc:null},{sku:'RAID Elet LIQ 45N + Refil',   estoque: 164,  venda: 61,  cob:44,  risco:'ok',      intoc:null},{sku:'OFF 165/170ML Aero',           estoque: 4379, venda: 1644, cob:47,  risco:'ok',      intoc:'spray170'},{sku:'RAID Refil 32,9ML 50%',        estoque: 403,  venda: 893,  cob:48,  risco:'ok',      intoc:null},{sku:'OFF 170ML Spray Active',       estoque: 1247, venda: 353,  cob:50,  risco:'ok',      intoc:null},{sku:'RAID Aero 420ML Aqua Econ.',   estoque: 549,  venda: 59,  cob:55,  risco:'ok',      intoc:null},{sku:'RAID Inset LIQ 45N Fam',      estoque: 645,  venda: 801,  cob:58,  risco:'ok',      intoc:null},{sku:'KIT EXPOSIS Casa 32,9ML',      estoque: 365,  venda: 204,  cob:71,  risco:'ok',      intoc:null},{sku:'OFF 100ML Loção Longa Dur.',   estoque: 673,  venda: 228,  cob:72,  risco:'ok',      intoc:null},{sku:'EXPOSIS 32,9ML Elétrico',      estoque: 1176, venda: 129,  cob:106, risco:'ok',      intoc:null},{sku:'OFF 100G Gel Toque Leve',      estoque: 2202, venda: 552,  cob:113, risco:'ok',      intoc:null},{sku:'EXPOSIS 100ML Inf Spray',      estoque: 2593, venda: 430,  cob:142, risco:'ok',      intoc:null},{sku:'EXPOSIS 117ML Bebê Gel',       estoque: 2388, venda: 161,  cob:148, risco:'ok',      intoc:null},{sku:'OFF Aero 100ML Toque Leve',    estoque: 4350, venda: 0,  cob:211, risco:'ok',      intoc:null},{sku:'EXPOSIS 100ML Inf Gel',        estoque: 4873, venda: 456,  cob:280, risco:'ok',      intoc:null},{sku:'EXPOSIS 100ML Extreme',        estoque: 1591, venda: 331,  cob:288, risco:'ok',      intoc:null}];
 
 var sjEstoqueView = 'barras';
 var sjEstoqueChart = null;
@@ -7044,6 +7205,38 @@ function renderSJEstoqueLinha(){
   });
 }
 
+function renderSJCobertura(){
+  var el = document.getElementById('sj-cob-table');
+  if(!el) return;
+  var data = typeof SJ_COBERTURA !== 'undefined' ? SJ_COBERTURA : [];
+  if(!data.length){ el.innerHTML='<p style="color:#5a6478;font-size:11px;">Dados não disponíveis.</p>'; return; }
+  var html = '<table style="width:100%;border-collapse:collapse;font-size:11px;">';
+  html += '<thead><tr style="color:#5a6478;border-bottom:1px solid #2a3347;">'
+    + '<th style="text-align:left;padding:5px 4px;">SKU</th>'
+    + '<th style="text-align:center;padding:5px 4px;white-space:nowrap;">Lojas c/ Estoque</th>'
+    + '<th style="text-align:center;padding:5px 4px;">Cobertura</th>'
+    + '<th style="text-align:right;padding:5px 4px;">Estoque</th>'
+    + '</tr></thead><tbody>';
+  data.forEach(function(d, i){
+    var pctColor = d.pct >= 80 ? '#34d399' : d.pct >= 50 ? '#fbbf24' : '#f87171';
+    var rowBg = i%2===0 ? 'rgba(255,255,255,0.02)' : 'transparent';
+    html += '<tr style="background:'+rowBg+';border-bottom:1px solid rgba(255,255,255,0.04);">'
+      + '<td style="padding:5px 4px;color:#c9d1e0;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="'+d.sku+'">'+d.sku+'</td>'
+      + '<td style="text-align:center;padding:5px 4px;color:#e2e8f0;">'+d.lojas+' / '+d.total+'</td>'
+      + '<td style="padding:5px 8px;min-width:120px;">'
+      +   '<div style="display:flex;align-items:center;gap:6px;">'
+      +   '<div style="flex:1;background:rgba(255,255,255,0.07);border-radius:3px;height:7px;">'
+      +   '<div style="width:'+d.pct+'%;background:'+pctColor+';border-radius:3px;height:7px;"></div></div>'
+      +   '<span style="color:'+pctColor+';font-weight:600;min-width:36px;text-align:right;">'+d.pct+'%</span>'
+      +   '</div>'
+      + '</td>'
+      + '<td style="text-align:right;padding:5px 4px;color:#94a3b8;">'+d.estoque.toLocaleString('pt-BR')+'</td>'
+      + '</tr>';
+  });
+  html += '</tbody></table>';
+  el.innerHTML = html;
+}
+
 function setSJEstoqueView(view, btn){
   sjEstoqueView = view;
   btn.closest('.toggle-group').querySelectorAll('.tgl').forEach(function(b){b.classList.remove('active','blue');});
@@ -7052,7 +7245,10 @@ function setSJEstoqueView(view, btn){
   document.getElementById('sj-estoque-linha').style.display  = view==='linha'?'block':'none';
   var tendEl_sj = document.getElementById('sj-estoque-tend');
   if(tendEl_sj) tendEl_sj.style.display = view==='tend'?'block':'none';
+  var cobEl = document.getElementById('sj-estoque-cobertura');
+  if(cobEl) cobEl.style.display = view==='cobertura'?'block':'none';
   if(view==='linha') renderSJEstoqueLinha();
+  if(view==='cobertura') renderSJCobertura();
 }
 
 
@@ -7487,11 +7683,133 @@ function setPvEstoqueView(view, btn){
   btn.closest('.toggle-group').querySelectorAll('.tgl').forEach(function(b){b.classList.remove('active','blue');});
   btn.classList.add('active','blue');
   pvEstoqueView = view;
-  document.getElementById('pv-estoque-barras').style.display = view==='barras'?'block':'none';
-  document.getElementById('pv-estoque-linha').style.display  = view==='linha'?'block':'none';
+  document.getElementById('pv-estoque-barras').style.display     = view==='barras'?'block':'none';
+  document.getElementById('pv-estoque-linha').style.display      = view==='linha'?'block':'none';
   var tendEl_pv = document.getElementById('pv-estoque-tend');
   if(tendEl_pv) tendEl_pv.style.display = view==='tend'?'block':'none';
-  if(view==='linha') renderPVEstoqueLinha(); else renderPVEstoqueBarras();
+  var cobEl = document.getElementById('pv-estoque-cobertura');
+  if(cobEl) cobEl.style.display = view==='cobertura'?'block':'none';
+  var impEl = document.getElementById('pv-estoque-importancia');
+  if(impEl) impEl.style.display = view==='importancia'?'block':'none';
+  if(view==='linha') renderPVEstoqueLinha();
+  else if(view==='barras') renderPVEstoqueBarras();
+  else if(view==='cobertura') renderPVCobertura();
+  else if(view==='importancia'){ renderPVImpPublico(); renderPVImpEquip(); }
+}
+
+function renderPVCobertura(){
+  var el = document.getElementById('pv-cob-table');
+  if(!el) return;
+  var data = typeof PV_ESTOQUE !== 'undefined' ? PV_ESTOQUE : [];
+  if(!data.length){ el.innerHTML='<p style="color:#5a6478;font-size:11px;">Sem dados.</p>'; return; }
+  var h = '<table style="width:100%;border-collapse:collapse;font-size:11px;">';
+  h += '<thead><tr style="color:#5a6478;border-bottom:1px solid #2a3347;">'
+    + '<th style="text-align:left;padding:5px 4px;">SKU</th>'
+    + '<th style="text-align:center;padding:5px 4px;">Lojas c/ Est.</th>'
+    + '<th style="text-align:center;padding:5px 4px;">Cobertura</th>'
+    + '<th style="text-align:right;padding:5px 4px;">Est.Loja</th>'
+    + '<th style="text-align:right;padding:5px 4px;">CD EDS</th>'
+    + '<th style="text-align:right;padding:5px 4px;">CD PRN</th>'
+    + '<th style="text-align:right;padding:5px 4px;">Dias s/V</th>'
+    + '</tr></thead><tbody>';
+  data.forEach(function(d,i){
+    var pct = d.totalLojas>0 ? Math.round(d.lojas/d.totalLojas*100) : 0;
+    var pctColor = pct>=80?'#34d399':pct>=50?'#fbbf24':'#f87171';
+    var marcaColor = d.marca==='OFF'?'#3b82f6':d.marca==='EXPOSIS'?'#34d399':d.marca==='RAID'?'#f97316':'#a78bfa';
+    var rowBg = i%2===0?'rgba(255,255,255,0.02)':'transparent';
+    h += '<tr style="background:'+rowBg+';border-bottom:1px solid rgba(255,255,255,0.04);">'
+      + '<td style="padding:5px 4px;color:#c9d1e0;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="'+d.sku+'">'
+      +   '<span style="font-size:9px;color:'+marcaColor+';font-weight:700;margin-right:4px;">'+d.marca+'</span>'+d.sku+'</td>'
+      + '<td style="text-align:center;padding:5px 4px;color:#e2e8f0;">'+d.lojas+'/'+d.totalLojas+'</td>'
+      + '<td style="padding:5px 8px;min-width:100px;">'
+      +   '<div style="display:flex;align-items:center;gap:5px;">'
+      +   '<div style="flex:1;background:rgba(255,255,255,0.07);border-radius:3px;height:6px;">'
+      +   '<div style="width:'+pct+'%;background:'+pctColor+';border-radius:3px;height:6px;"></div></div>'
+      +   '<span style="color:'+pctColor+';font-weight:600;min-width:30px;text-align:right;font-size:10px;">'+pct+'%</span></div>'
+      + '</td>'
+      + '<td style="text-align:right;padding:5px 4px;color:#94a3b8;">'+(d.estoque||0).toLocaleString('pt-BR')+'</td>'
+      + '<td style="text-align:right;padding:5px 4px;color:#60a5fa;">'+(d.cdRS||0).toLocaleString('pt-BR')+'</td>'
+      + '<td style="text-align:right;padding:5px 4px;color:#a78bfa;">'+(d.cdPR||0).toLocaleString('pt-BR')+'</td>'
+      + '<td style="text-align:right;padding:5px 4px;color:'+(d.dias>60?'#f87171':d.dias>30?'#fbbf24':'#34d399')+';font-weight:600;">'+(d.dias||0)+'d</td>'
+      + '</tr>';
+  });
+  h += '</tbody></table>';
+  el.innerHTML = h;
+}
+
+var PV_TIPO_PUBLICO = [
+  {tipo:'MISTO TOP', fat_fev:438303.33, fat_mar:343537.10, vol_fev:11301, vol_mar:8002, lojas:366, var_pct:-21.6},
+  {tipo:'SELETIVO',  fat_fev:166178.88, fat_mar:129058.82, vol_fev:3697,  vol_mar:2561, lojas:77,  var_pct:-22.3},
+  {tipo:'MISTO',     fat_fev:120204.29, fat_mar:88419.86,  vol_fev:3820,  vol_mar:2486, lojas:182, var_pct:-26.4},
+  {tipo:'POPULAR',   fat_fev:12929.19,  fat_mar:9750.38,   vol_fev:455,   vol_mar:293,  lojas:25,  var_pct:-24.6}
+];
+var PV_EQUIPAMENTO = [
+  {faixa:'PP (Mini)',   fat_fev:2160.93,   fat_mar:1817.45,   vol_fev:57,   vol_mar:45,   lojas:6,   var_pct:-15.9},
+  {faixa:'P (Peq.)',   fat_fev:8421.89,   fat_mar:5207.59,   vol_fev:236,  vol_mar:132,  lojas:14,  var_pct:-38.2},
+  {faixa:'M (Méd.)',   fat_fev:4836.02,   fat_mar:3035.31,   vol_fev:138,  vol_mar:80,   lojas:9,   var_pct:-37.2},
+  {faixa:'G (Grande)', fat_fev:44420.87,  fat_mar:33842.22,  vol_fev:1221, vol_mar:803,  lojas:48,  var_pct:-23.8},
+  {faixa:'2G',         fat_fev:129535.76, fat_mar:101671.13, vol_fev:3463, vol_mar:2439, lojas:136, var_pct:-21.5},
+  {faixa:'3G',         fat_fev:166816.80, fat_mar:130159.18, vol_fev:4256, vol_mar:2973, lojas:116, var_pct:-21.9},
+  {faixa:'4G',         fat_fev:208551.39, fat_mar:163157.94, vol_fev:5596, vol_mar:3906, lojas:199, var_pct:-21.8},
+  {faixa:'5G',         fat_fev:114018.68, fat_mar:87415.41,  vol_fev:2890, vol_mar:1987, lojas:89,  var_pct:-23.3},
+  {faixa:'6G (Super)', fat_fev:24187.25,  fat_mar:19114.66,  vol_fev:672,  vol_mar:464,  lojas:15,  var_pct:-21.0},
+  {faixa:'N/A',        fat_fev:34666.10,  fat_mar:25345.27,  vol_fev:744,  vol_mar:513,  lojas:18,  var_pct:-26.9}
+];
+
+function setPvImpView(view, btn){
+  btn.closest('.toggle-group').querySelectorAll('.tgl').forEach(function(b){b.classList.remove('active','blue');});
+  btn.classList.add('active','blue');
+  document.getElementById('pv-imp-publico').style.display    = view==='publico'?'block':'none';
+  document.getElementById('pv-imp-equipamento').style.display= view==='equipamento'?'block':'none';
+}
+
+function _pvImpTable(data, labelKey){
+  var maxFat = Math.max.apply(null, data.map(function(d){return d.fat_fev;}));
+  var h = '<table style="width:100%;border-collapse:collapse;font-size:11px;">';
+  h += '<thead><tr style="color:#5a6478;border-bottom:1px solid #2a3347;">'
+    + '<th style="text-align:left;padding:5px 4px;">'+(labelKey==='tipo'?'Tipo Público':'Equipamento')+'</th>'
+    + '<th style="text-align:right;padding:5px 4px;">Fat. Fev-26</th>'
+    + '<th style="text-align:right;padding:5px 4px;">Fat. Mar-26</th>'
+    + '<th style="text-align:center;padding:5px 4px;">Var.</th>'
+    + '<th style="text-align:right;padding:5px 4px;">Vol. Fev</th>'
+    + '<th style="text-align:right;padding:5px 4px;">Vol. Mar</th>'
+    + '<th style="text-align:center;padding:5px 4px;">Lojas</th>'
+    + '<th style="text-align:center;padding:5px 4px;">% Fat</th>'
+    + '</tr></thead><tbody>';
+  var totFatFev = data.reduce(function(s,d){return s+d.fat_fev;},0);
+  data.forEach(function(d,i){
+    var lbl = d[labelKey];
+    var varColor = d.var_pct < -25 ? '#f87171' : d.var_pct < -15 ? '#fbbf24' : '#34d399';
+    var pctFat = Math.round(d.fat_fev/totFatFev*100);
+    var barW = Math.round(d.fat_fev/maxFat*100);
+    var rowBg = i%2===0?'rgba(255,255,255,0.02)':'transparent';
+    h += '<tr style="background:'+rowBg+';border-bottom:1px solid rgba(255,255,255,0.04);">'
+      + '<td style="padding:5px 4px;color:#e2e8f0;font-weight:600;white-space:nowrap;">'+lbl+'</td>'
+      + '<td style="text-align:right;padding:5px 4px;color:#c9d1e0;">R$'+Math.round(d.fat_fev/1000)+'k</td>'
+      + '<td style="text-align:right;padding:5px 4px;color:#94a3b8;">R$'+Math.round(d.fat_mar/1000)+'k</td>'
+      + '<td style="text-align:center;padding:5px 4px;color:'+varColor+';font-weight:700;">'+d.var_pct+'%</td>'
+      + '<td style="text-align:right;padding:5px 4px;color:#c9d1e0;">'+d.vol_fev.toLocaleString('pt-BR')+'</td>'
+      + '<td style="text-align:right;padding:5px 4px;color:#94a3b8;">'+d.vol_mar.toLocaleString('pt-BR')+'</td>'
+      + '<td style="text-align:center;padding:5px 4px;color:#60a5fa;">'+d.lojas+'</td>'
+      + '<td style="padding:5px 8px;min-width:80px;">'
+      +   '<div style="display:flex;align-items:center;gap:4px;">'
+      +   '<div style="flex:1;background:rgba(255,255,255,0.07);border-radius:3px;height:6px;">'
+      +   '<div style="width:'+barW+'%;background:#a78bfa;border-radius:3px;height:6px;"></div></div>'
+      +   '<span style="color:#a78bfa;font-size:10px;font-weight:600;min-width:28px;">'+pctFat+'%</span></div>'
+      + '</td>'
+      + '</tr>';
+  });
+  h += '</tbody></table>';
+  return h;
+}
+
+function renderPVImpPublico(){
+  var el = document.getElementById('pv-imp-publico');
+  if(el) el.innerHTML = _pvImpTable(PV_TIPO_PUBLICO, 'tipo');
+}
+function renderPVImpEquip(){
+  var el = document.getElementById('pv-imp-equipamento');
+  if(el) el.innerHTML = _pvImpTable(PV_EQUIPAMENTO, 'faixa');
 }
 
 function setGamEstoqueView(view, btn){
