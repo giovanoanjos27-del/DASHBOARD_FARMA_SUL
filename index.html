@@ -1640,44 +1640,48 @@ table tbody tr:hover {
 
   <!-- COBERTURA POR FILIAL (dentro do card único) -->
   <div id="ns-estoque-cobertura" style="display:none;padding:6px 0;">
-    <div style="font-size:10px;color:#5a6478;margin-bottom:12px;">
-      🏪 <strong style="color:#60a5fa;">Cobertura de SKUs por Filial</strong> — Estoque Fev/2026 · HB e Conveniência · 471 lojas
+    <div id="ns-cob-table"></div>
+    <!-- Detalhamento por filial — acessível via botão abaixo da visão de SKU -->
+    <div id="ns-filial-section" style="display:none;margin-top:18px;">
+      <div style="font-size:10px;color:#5a6478;margin-bottom:12px;">
+        🏪 <strong style="color:#60a5fa;">Cobertura de SKUs por Filial</strong> — Estoque Fev/2026 · HB e Conveniência · 471 lojas
+      </div>
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:14px;">
+        <input id="ns-filial-search" type="text" placeholder="🔍 Buscar filial ou cidade…"
+          style="font-size:11px;padding:5px 10px;border-radius:7px;border:0.5px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.04);color:#c8ccda;width:200px;outline:none;"
+          oninput="renderNsFilialTable()">
+        <div class="toggle-group">
+          <button class="tgl active blue" onclick="setNsFilialFilter('todos',this)">Todos</button>
+          <button class="tgl" onclick="setNsFilialFilter('G',this)">Grande</button>
+          <button class="tgl" onclick="setNsFilialFilter('M',this)">Médio</button>
+          <button class="tgl" onclick="setNsFilialFilter('P',this)">Pequeno</button>
+          <button class="tgl" onclick="setNsFilialFilter('EG',this)">Extra G</button>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(255,255,255,0.04);border-radius:10px;overflow:hidden;margin-bottom:14px;">
+        <div style="background:#0d1422;padding:12px 16px;">
+          <div style="font-size:9px;font-weight:700;letter-spacing:0.1em;color:#5a6478;margin-bottom:6px;">FILIAIS NISSEI</div>
+          <div style="font-size:22px;font-weight:800;color:#60a5fa;line-height:1;">471</div>
+          <div style="font-size:10px;color:#3d4451;margin-top:4px;">Lojas com dado de estoque</div>
+        </div>
+        <div style="background:#0d1422;padding:12px 16px;">
+          <div style="font-size:9px;font-weight:700;letter-spacing:0.1em;color:#5a6478;margin-bottom:6px;">SKUs HB DISPONÍVEIS</div>
+          <div style="font-size:22px;font-weight:800;color:#34d399;line-height:1;" id="ns-fil-kpi-hb">—</div>
+          <div style="font-size:10px;color:#3d4451;margin-top:4px;">Média de SKUs/loja com estoque</div>
+        </div>
+        <div style="background:#0d1422;padding:12px 16px;">
+          <div style="font-size:9px;font-weight:700;letter-spacing:0.1em;color:#5a6478;margin-bottom:6px;">SKUs CONV. DISPONÍVEIS</div>
+          <div style="font-size:22px;font-weight:800;color:#a78bfa;line-height:1;" id="ns-fil-kpi-ed">—</div>
+          <div style="font-size:10px;color:#3d4451;margin-top:4px;">Média de SKUs/loja com estoque</div>
+        </div>
+        <div style="background:#0d1422;padding:12px 16px;">
+          <div style="font-size:9px;font-weight:700;letter-spacing:0.1em;color:#5a6478;margin-bottom:6px;">COBERTURA TOTAL</div>
+          <div style="font-size:22px;font-weight:800;color:#fbbf24;line-height:1;" id="ns-fil-kpi-cob">—</div>
+          <div style="font-size:10px;color:#3d4451;margin-top:4px;">% lojas com ≥15 SKUs HB</div>
+        </div>
+      </div>
+      <div id="ns-filial-table-wrap" style="max-height:420px;overflow-y:auto;"></div>
     </div>
-    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:14px;">
-      <input id="ns-filial-search" type="text" placeholder="🔍 Buscar filial ou cidade…"
-        style="font-size:11px;padding:5px 10px;border-radius:7px;border:0.5px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.04);color:#c8ccda;width:200px;outline:none;"
-        oninput="renderNsFilialTable()">
-      <div class="toggle-group">
-        <button class="tgl active blue" onclick="setNsFilialFilter('todos',this)">Todos</button>
-        <button class="tgl" onclick="setNsFilialFilter('G',this)">Grande</button>
-        <button class="tgl" onclick="setNsFilialFilter('M',this)">Médio</button>
-        <button class="tgl" onclick="setNsFilialFilter('P',this)">Pequeno</button>
-        <button class="tgl" onclick="setNsFilialFilter('EG',this)">Extra G</button>
-      </div>
-    </div>
-    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(255,255,255,0.04);border-radius:10px;overflow:hidden;margin-bottom:14px;">
-      <div style="background:#0d1422;padding:12px 16px;">
-        <div style="font-size:9px;font-weight:700;letter-spacing:0.1em;color:#5a6478;margin-bottom:6px;">FILIAIS NISSEI</div>
-        <div style="font-size:22px;font-weight:800;color:#60a5fa;line-height:1;">471</div>
-        <div style="font-size:10px;color:#3d4451;margin-top:4px;">Lojas com dado de estoque</div>
-      </div>
-      <div style="background:#0d1422;padding:12px 16px;">
-        <div style="font-size:9px;font-weight:700;letter-spacing:0.1em;color:#5a6478;margin-bottom:6px;">SKUs HB DISPONÍVEIS</div>
-        <div style="font-size:22px;font-weight:800;color:#34d399;line-height:1;" id="ns-fil-kpi-hb">—</div>
-        <div style="font-size:10px;color:#3d4451;margin-top:4px;">Média de SKUs/loja com estoque</div>
-      </div>
-      <div style="background:#0d1422;padding:12px 16px;">
-        <div style="font-size:9px;font-weight:700;letter-spacing:0.1em;color:#5a6478;margin-bottom:6px;">SKUs CONV. DISPONÍVEIS</div>
-        <div style="font-size:22px;font-weight:800;color:#a78bfa;line-height:1;" id="ns-fil-kpi-ed">—</div>
-        <div style="font-size:10px;color:#3d4451;margin-top:4px;">Média de SKUs/loja com estoque</div>
-      </div>
-      <div style="background:#0d1422;padding:12px 16px;">
-        <div style="font-size:9px;font-weight:700;letter-spacing:0.1em;color:#5a6478;margin-bottom:6px;">COBERTURA TOTAL</div>
-        <div style="font-size:22px;font-weight:800;color:#fbbf24;line-height:1;" id="ns-fil-kpi-cob">—</div>
-        <div style="font-size:10px;color:#3d4451;margin-top:4px;">% lojas com ≥15 SKUs HB</div>
-      </div>
-    </div>
-    <div id="ns-filial-table-wrap" style="max-height:420px;overflow-y:auto;"></div>
   </div>
 
   <!-- IMPORTÂNCIA POR CLUSTER E TAMANHO (dentro do card único) -->
@@ -3383,37 +3387,6 @@ var sjBarMode='vol', sjLojaMetric='rec', sjLojaAno='todos';
 var sjRankYear='2024', sjRankMetric='rec', sjMetaYear='2024', sjMetaMetric='rec';
 var sjDonutYear='2024';
 
-function renderMetaTable(containerId, meses, rec24, rec25, rec26, isVol){
-  var el = document.getElementById(containerId);
-  if(!el) return;
-  var r24=rec24||[], r25=rec25||[], r26=rec26||[];
-  var fmt = isVol
-    ? function(v){ return v!=null ? v.toLocaleString('pt-BR') : '-'; }
-    : function(v){ if(v==null) return '-'; if(v>=1e6) return 'R$'+(v/1e6).toFixed(2)+'M'; if(v>=1e3) return 'R$'+Math.round(v/1e3)+'K'; return 'R$'+v; };
-  var allVals=r24.concat(r25).concat(r26).filter(function(v){return v!=null&&v>0;});
-  var maxVal=allVals.length?Math.max.apply(null,allVals):1;
-  var tot24=r24.reduce(function(s,v){return s+(v||0);},0);
-  var tot25=r25.reduce(function(s,v){return s+(v||0);},0);
-  var tot26=r26.filter(Boolean).reduce(function(s,v){return s+v;},0);
-  var tot_var=(tot25>0&&tot26>0)?((tot26-tot25)/tot25*100):null;
-  var MA=['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
-  var rows=meses.map(function(m,i){
-    var v24=r24[i]||null,v25=r25[i]||null,v26=r26[i]||null;
-    var vp26=(v25&&v25>0&&v26!=null)?((v26-v25)/v25*100):null;
-    var w24=v24?Math.max(2,Math.round(v24/maxVal*100)):0;
-    var w25=v25?Math.max(2,Math.round(v25/maxVal*100)):0;
-    var w26=v26?Math.max(2,Math.round(v26/maxVal*100)):0;
-    var c26=vp26===null?'#3d4451':(vp26>=0?'#34d399':'#fb7185');
-    var ic=vp26===null?'':(vp26>=10?'&#9650;':vp26>0?'&#8593;':vp26<=-10?'&#9660;':'&#8595;');
-    var nd=v26==null;
-    return '<tr style="border-bottom:0.5px solid rgba(255,255,255,0.04);">'      +'<td style="padding:8px 10px;font-size:11px;font-weight:600;color:#8b95a8;">'+(MA[i]||m)+'</td>'      +'<td style="padding:7px 8px;min-width:80px;"><div style="font-size:11px;color:#4a5568;text-align:right;margin-bottom:3px;">'+fmt(v24)+'</div><div style="height:3px;background:rgba(255,255,255,0.05);border-radius:2px;overflow:hidden;"><div style="height:100%;width:'+w24+'%;background:rgba(59,130,246,0.4);border-radius:2px;"></div></div></td>'      +'<td style="padding:7px 8px;min-width:80px;"><div style="font-size:11px;color:#8b95a8;text-align:right;margin-bottom:3px;">'+fmt(v25)+'</div><div style="height:3px;background:rgba(255,255,255,0.05);border-radius:2px;overflow:hidden;"><div style="height:100%;width:'+w25+'%;background:rgba(167,139,250,0.55);border-radius:2px;"></div></div></td>'      +'<td style="padding:7px 8px;min-width:80px;">'      +(nd?'<div style="font-size:10px;color:#2d3748;text-align:right;">-</div><div style="height:3px;"></div>'        :'<div style="font-size:12px;font-weight:700;color:#34d399;text-align:right;margin-bottom:3px;">'+fmt(v26)+'</div><div style="height:3px;background:rgba(255,255,255,0.05);border-radius:2px;overflow:hidden;"><div style="height:100%;width:'+w26+'%;background:rgba(52,211,153,0.75);border-radius:2px;"></div></div>')      +'</td>'      +'<td style="padding:7px 10px;text-align:right;min-width:72px;">'      +(vp26===null?'<span style="color:#2d3748;font-size:10px;">-</span>'        :'<span style="display:inline-flex;align-items:center;gap:2px;font-size:11px;font-weight:700;padding:2px 7px;border-radius:5px;border:1px solid '+c26+'30;background:'+c26+'15;color:'+c26+';">'+ic+' '+Math.abs(vp26).toFixed(1)+'%</span>')      +'</td></tr>';
-  });
-  var tc=tot_var===null?'#8b95a8':(tot_var>=0?'#34d399':'#fb7185');
-  var ti=tot_var===null?'':(tot_var>=0?'&#9650;':'&#9660;');
-  var totRow='<tr style="border-top:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.02);">'    +'<td style="padding:9px 10px;font-size:11px;font-weight:700;color:#e2e8f0;">TOTAL</td>'    +'<td style="padding:9px 8px;font-size:11px;font-weight:600;color:#4a5568;text-align:right;">'+fmt(tot24)+'</td>'    +'<td style="padding:9px 8px;font-size:11px;font-weight:600;color:#8b95a8;text-align:right;">'+fmt(tot25)+'</td>'    +'<td style="padding:9px 8px;font-size:12px;font-weight:800;color:#34d399;text-align:right;">'+fmt(tot26)+'</td>'    +'<td style="padding:9px 10px;text-align:right;">'+(tot_var!==null?'<span style="font-size:12px;font-weight:800;color:'+tc+';">'+ti+' '+Math.abs(tot_var).toFixed(1)+'%</span>':'-')+'</td></tr>';
-  el.innerHTML='<div style="overflow-x:auto;"><table style="width:100%;border-collapse:collapse;">'    +'<thead><tr style="border-bottom:1px solid rgba(255,255,255,0.08);">'    +'<th style="padding:7px 10px;text-align:left;font-size:9px;font-weight:700;letter-spacing:0.1em;color:#3d4451;">MES</th>'    +'<th style="padding:7px 8px;text-align:right;font-size:9px;font-weight:700;letter-spacing:0.1em;color:#3b82f6;">2024</th>'    +'<th style="padding:7px 8px;text-align:right;font-size:9px;font-weight:700;letter-spacing:0.1em;color:#a78bfa;">2025</th>'    +'<th style="padding:7px 8px;text-align:right;font-size:9px;font-weight:700;letter-spacing:0.1em;color:#34d399;">2026</th>'    +'<th style="padding:7px 10px;text-align:right;font-size:9px;font-weight:700;letter-spacing:0.1em;color:#5a6478;">VAR 25-26</th>'    +'</tr></thead><tbody>'+rows.join('')+totRow+'</tbody></table></div>';
-}
-
 function initSJ(){
   renderKPIs('sj-kpis',[
     {label:'Volume 2024',val:'284.382',sub:'Total anual',color:'#3b82f6'},
@@ -3733,6 +3706,114 @@ function cobLabel(cob) {
   return cob + 'd';
 }
 
+
+/* ═══════════════════════════════════════════════════════════════
+   DATA NORMALIZATION LAYER
+   Garante datasets completos antes de renderizar qualquer gráfico.
+   normalizeDataset(data, baseKeys) — retorna array com todos os
+   campos esperados preenchidos com valor default (null ou 0).
+   ═══════════════════════════════════════════════════════════════ */
+function normalizeDataset(data, baseKeys){
+  if(!Array.isArray(data)) return [];
+  return data.map(function(row){
+    var out = {};
+    baseKeys.forEach(function(k){
+      out[k] = (row[k] !== undefined && row[k] !== null) ? row[k] : null;
+    });
+    return out;
+  });
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   FUNÇÃO UNIFICADA: renderCoberturaSKUBarsUnified
+   Utilizada por TODOS os clientes na view "Cobertura por SKU".
+   Parâmetros:
+     containerId  — id do elemento alvo
+     data         — array [{sku, lojas, total, pct, estoque, risco?}]
+     clientLabel  — texto descritivo ex: "São João (Mar/26)"
+   ═══════════════════════════════════════════════════════════════ */
+function renderCoberturaSKUBarsUnified(containerId, data, clientLabel){
+  var el = document.getElementById(containerId);
+  if(!el) return;
+  /* Normalização defensiva */
+  var safeData = normalizeDataset(data, ['sku','lojas','total','pct','estoque','risco','marca'])
+    .filter(function(d){ return d.sku; });
+  if(!safeData.length){
+    el.innerHTML='<p style="color:#5a6478;font-size:11px;padding:16px;">Dados de cobertura não disponíveis.</p>';
+    return;
+  }
+  /* Ordenar por pct desc */
+  safeData = safeData.slice().sort(function(a,b){ return (b.pct||0)-(a.pct||0); });
+
+  /* Totais para KPIs */
+  var totalLojas = safeData[0] ? (safeData[0].total || 0) : 0;
+  var skusOk     = safeData.filter(function(d){ return (d.pct||0) >= 80; }).length;
+  var skusAtenc  = safeData.filter(function(d){ return (d.pct||0) >= 50 && (d.pct||0) < 80; }).length;
+  var skusCrit   = safeData.filter(function(d){ return (d.pct||0) < 50; }).length;
+  var estoqueTotal = safeData.reduce(function(s,d){ return s+(d.estoque||0); },0);
+
+  var html = '';
+
+  /* Mini KPIs */
+  html += '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(255,255,255,0.04);border-radius:10px;overflow:hidden;margin-bottom:16px;">';
+  html += _cobKpi('TOTAL LOJAS', totalLojas.toLocaleString('pt-BR'), 'base', '#60a5fa');
+  html += _cobKpi('SKUs OK (≥80%)', skusOk, '', '#34d399');
+  html += _cobKpi('SKUs ATENÇÃO (50-79%)', skusAtenc, '', '#fbbf24');
+  html += _cobKpi('SKUs CRÍTICO (<50%)', skusCrit, '', '#fb7185');
+  html += '</div>';
+
+  /* Label */
+  if(clientLabel){
+    html += '<div style="font-size:10px;font-weight:700;letter-spacing:0.1em;color:#5a6478;margin-bottom:10px;text-transform:uppercase;">';
+    html += '🏪 Cobertura por SKU — '+clientLabel+'</div>';
+  }
+
+  /* Tabela de barras */
+  html += '<table style="width:100%;border-collapse:collapse;font-size:11px;">';
+  html += '<thead><tr style="border-bottom:1px solid rgba(255,255,255,0.08);">'
+    + '<th style="text-align:left;padding:6px 8px;font-size:9px;font-weight:700;letter-spacing:0.1em;color:#3d4451;">SKU</th>'
+    + '<th style="text-align:center;padding:6px 8px;font-size:9px;font-weight:700;letter-spacing:0.1em;color:#3d4451;white-space:nowrap;">Lojas c/ Estoque</th>'
+    + '<th style="padding:6px 8px;font-size:9px;font-weight:700;letter-spacing:0.1em;color:#3d4451;">Cobertura</th>'
+    + '<th style="text-align:right;padding:6px 8px;font-size:9px;font-weight:700;letter-spacing:0.1em;color:#3d4451;">Estoque</th>'
+    + '</tr></thead><tbody>';
+
+  safeData.forEach(function(d, i){
+    var pct      = d.pct || 0;
+    var pctColor = pct >= 80 ? '#34d399' : pct >= 50 ? '#fbbf24' : '#f87171';
+    var rowBg    = i % 2 === 0 ? 'rgba(255,255,255,0.02)' : 'transparent';
+    var marcaBadge = d.marca
+      ? '<span style="font-size:8px;color:'+(d.marca==='OFF'?'#3b82f6':d.marca==='EXPOSIS'?'#34d399':d.marca==='RAID'?'#f97316':'#a78bfa')+';font-weight:700;margin-right:5px;">'+d.marca+'</span>'
+      : '';
+    var riscoBadge = (d.risco==='critico'||d.risco==='atencao')
+      ? '<span style="font-size:8px;font-weight:700;margin-left:5px;padding:1px 4px;border-radius:3px;background:'+(d.risco==='critico'?'rgba(251,113,113,0.15)':'rgba(251,191,36,0.15)')+';color:'+(d.risco==='critico'?'#fb7185':'#fbbf24')+';">'+(d.risco==='critico'?'⚡ CRÍTICO':'⚠ ATENÇÃO')+'</span>'
+      : '';
+    html += '<tr style="background:'+rowBg+';border-bottom:1px solid rgba(255,255,255,0.04);transition:background 0.12s;">'
+      + '<td style="padding:6px 8px;color:#c9d1e0;max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="'+d.sku+'">'
+      +   marcaBadge + d.sku + riscoBadge + '</td>'
+      + '<td style="text-align:center;padding:6px 8px;color:#e2e8f0;font-weight:600;font-variant-numeric:tabular-nums;">'
+      +   (d.lojas||0) + ' / ' + (d.total||0) + '</td>'
+      + '<td style="padding:6px 12px;min-width:140px;">'
+      +   '<div style="display:flex;align-items:center;gap:8px;">'
+      +   '<div style="flex:1;background:rgba(255,255,255,0.07);border-radius:4px;height:8px;">'
+      +   '<div style="width:'+Math.min(100,pct)+'%;background:'+pctColor+';border-radius:4px;height:8px;transition:width 0.6s cubic-bezier(.4,0,.2,1);"></div></div>'
+      +   '<span style="color:'+pctColor+';font-weight:700;min-width:38px;text-align:right;font-size:11px;">'+pct+'%</span>'
+      +   '</div>'
+      + '</td>'
+      + '<td style="text-align:right;padding:6px 8px;color:#94a3b8;font-variant-numeric:tabular-nums;">'+(d.estoque||0).toLocaleString('pt-BR')+'</td>'
+      + '</tr>';
+  });
+  html += '</tbody></table>';
+  el.innerHTML = html;
+}
+
+function _cobKpi(label, val, sub, color){
+  return '<div style="background:#0d1422;padding:12px 14px;">'
+    + '<div style="font-size:9px;font-weight:700;letter-spacing:0.1em;color:#5a6478;margin-bottom:6px;">'+label+'</div>'
+    + '<div style="font-size:20px;font-weight:800;color:'+color+';line-height:1;">'+val+'</div>'
+    + (sub?'<div style="font-size:10px;color:#3d4451;margin-top:4px;">'+sub+'</div>':'')
+    + '</div>';
+}
 /* ═══════════ CLAMED ═══════════ */
 var clRankKey='2026';
 var clLineMode = 'vol';
@@ -3797,14 +3878,6 @@ function initClamed(){
   renderClEstoqueBarras();
   renderEDShare('Clamed','clamed');
   setTimeout(function(){ var el=document.getElementById('ed-clamed-wrap'); if(el&&!el.innerHTML.trim()) renderEDShare('Clamed','clamed'); }, 500);
-}
-
-function renderCLMesBars(){
-  var items=CL_LABELS.map(function(m,i){
-    var color = m.includes('26')?'#34d399':m.includes('25')?'#a78bfa':'#3b82f6';
-    return{nome:m,val:CL_VOL_MES[i]||0,color:color};
-  });
-  renderBars('cl-mes-bars',items,{isVol:true});
 }
 
 function renderCLDonut(){
@@ -4526,108 +4599,103 @@ function initRiomed(){
 
 /* ═══════ POSITIVAÇÃO MENSAL — GAÚCHA ═══════ */
 const GCH_POSITIV_MES = {
-  // 2024 — interpolado entre pontos de referência (total base ~840 PDVs)
+  // 2024 — estimado (~85% dos valores 2025; padrão sazonal repelente)
   "2024": [
-    {mes:"2024-01",positivas:660,total:840,pct:78.6},
-    {mes:"2024-02",positivas:667,total:840,pct:79.4},
-    {mes:"2024-03",positivas:674,total:840,pct:80.2},
-    {mes:"2024-04",positivas:681,total:845,pct:80.6},
-    {mes:"2024-05",positivas:688,total:845,pct:81.4},
-    {mes:"2024-06",positivas:695,total:845,pct:82.2},
-    {mes:"2024-07",positivas:698,total:848,pct:82.3},
-    {mes:"2024-08",positivas:702,total:848,pct:82.8},
-    {mes:"2024-09",positivas:705,total:850,pct:82.9},
-    {mes:"2024-10",positivas:708,total:850,pct:83.3},
-    {mes:"2024-11",positivas:712,total:850,pct:83.8},
-    {mes:"2024-12",positivas:715,total:850,pct:84.1},
+    {mes:"2024-01",positivas:1175,total:1700,pct:69.1},
+    {mes:"2024-02",positivas:1250,total:1700,pct:73.5},
+    {mes:"2024-03",positivas:1250,total:1700,pct:73.5},
+    {mes:"2024-04",positivas:1100,total:1680,pct:65.5},
+    {mes:"2024-05",positivas:1000,total:1650,pct:60.6},
+    {mes:"2024-06",positivas:840,total:1600,pct:52.5},
+    {mes:"2024-07",positivas:760,total:1600,pct:47.5},
+    {mes:"2024-08",positivas:810,total:1600,pct:50.6},
+    {mes:"2024-09",positivas:930,total:1620,pct:57.4},
+    {mes:"2024-10",positivas:1070,total:1650,pct:64.8},
+    {mes:"2024-11",positivas:1200,total:1680,pct:71.4},
+    {mes:"2024-12",positivas:1300,total:1700,pct:76.5},
   ],
-  // 2025 — interpolado (Jan=720, Jun=765, Dez=820)
+  // 2025 — Jan/Mar reais (AA dos dados UF); Abr-Dez estimado sazonal
   "2025": [
-    {mes:"2025-01",positivas:720,total:850,pct:84.7},
-    {mes:"2025-02",positivas:729,total:852,pct:85.6},
-    {mes:"2025-03",positivas:738,total:852,pct:86.6},
-    {mes:"2025-04",positivas:747,total:855,pct:87.4},
-    {mes:"2025-05",positivas:756,total:855,pct:88.4},
-    {mes:"2025-06",positivas:765,total:855,pct:89.5},
-    {mes:"2025-07",positivas:774,total:858,pct:90.2},
-    {mes:"2025-08",positivas:783,total:860,pct:91.0},
-    {mes:"2025-09",positivas:792,total:862,pct:91.9},
-    {mes:"2025-10",positivas:802,total:864,pct:92.8},
-    {mes:"2025-11",positivas:811,total:866,pct:93.6},
-    {mes:"2025-12",positivas:820,total:870,pct:94.3},
+    {mes:"2025-01",positivas:1383,total:1800,pct:76.8},
+    {mes:"2025-02",positivas:1471,total:1800,pct:81.7},
+    {mes:"2025-03",positivas:1470,total:1800,pct:81.7},
+    {mes:"2025-04",positivas:1300,total:1780,pct:73.0},
+    {mes:"2025-05",positivas:1180,total:1760,pct:67.0},
+    {mes:"2025-06",positivas:980,total:1740,pct:56.3},
+    {mes:"2025-07",positivas:890,total:1740,pct:51.1},
+    {mes:"2025-08",positivas:945,total:1740,pct:54.3},
+    {mes:"2025-09",positivas:1080,total:1760,pct:61.4},
+    {mes:"2025-10",positivas:1250,total:1780,pct:70.2},
+    {mes:"2025-11",positivas:1400,total:1800,pct:77.8},
+    {mes:"2025-12",positivas:1500,total:1800,pct:83.3},
   ],
-  // 2026 — dados reais disponíveis Jan–Mar
+  // 2026 — dados reais calculados da soma de todos os estados (GCH_POSITIV_UF)
   "2026": [
-    {mes:"2026-01",positivas:838,total:870,pct:96.3},
-    {mes:"2026-02",positivas:850,total:870,pct:97.7},
-    {mes:"2026-03",positivas:860,total:870,pct:98.9},
+    {mes:"2026-01",positivas:1514,total:1850,pct:81.8},
+    {mes:"2026-02",positivas:1440,total:1850,pct:77.8},
+    {mes:"2026-03",positivas:1523,total:1850,pct:82.3},
   ],
 };
 
 /* ═══════ POSITIVAÇÃO MENSAL — GAM ═══════ */
 const GAM_POSITIV_MES = {
-  // 2024 — interpolado (Jan=820, Jun=890, Dez=920, total base ~1050)
+  // 2024 — estimado (base ~80% dos valores 2025; padrão sazonal: pico jan/fev, vale jun-ago)
   "2024": [
-    {mes:"2024-01",positivas:820,total:1050,pct:78.1},
-    {mes:"2024-02",positivas:834,total:1050,pct:79.4},
-    {mes:"2024-03",positivas:848,total:1050,pct:80.8},
-    {mes:"2024-04",positivas:862,total:1050,pct:82.1},
-    {mes:"2024-05",positivas:876,total:1050,pct:83.4},
-    {mes:"2024-06",positivas:890,total:1050,pct:84.8},
-    {mes:"2024-07",positivas:895,total:1055,pct:84.8},
-    {mes:"2024-08",positivas:900,total:1055,pct:85.3},
-    {mes:"2024-09",positivas:905,total:1060,pct:85.4},
-    {mes:"2024-10",positivas:910,total:1060,pct:85.8},
-    {mes:"2024-11",positivas:915,total:1060,pct:86.3},
-    {mes:"2024-12",positivas:920,total:1060,pct:86.8},
+    {mes:"2024-01",positivas:2900,total:6200,pct:46.8},
+    {mes:"2024-02",positivas:3350,total:6200,pct:54.0},
+    {mes:"2024-03",positivas:2450,total:6000,pct:40.8},
+    {mes:"2024-04",positivas:2000,total:5800,pct:34.5},
+    {mes:"2024-05",positivas:1650,total:5600,pct:29.5},
+    {mes:"2024-06",positivas:1300,total:5500,pct:23.6},
+    {mes:"2024-07",positivas:1200,total:5500,pct:21.8},
+    {mes:"2024-08",positivas:1300,total:5500,pct:23.6},
+    {mes:"2024-09",positivas:1600,total:5600,pct:28.6},
+    {mes:"2024-10",positivas:1950,total:5700,pct:34.2},
+    {mes:"2024-11",positivas:2400,total:5900,pct:40.7},
+    {mes:"2024-12",positivas:2850,total:6100,pct:46.7},
   ],
-  // 2025 — interpolado (Jan=945, Jun=980, Dez=1040)
+  // 2025 — Jan/Mar reais (AA dos dados UF); Abr-Dez estimado sazonal
   "2025": [
-    {mes:"2025-01",positivas:945,total:1080,pct:87.5},
-    {mes:"2025-02",positivas:952,total:1080,pct:88.1},
-    {mes:"2025-03",positivas:959,total:1082,pct:88.6},
-    {mes:"2025-04",positivas:966,total:1082,pct:89.3},
-    {mes:"2025-05",positivas:973,total:1085,pct:89.7},
-    {mes:"2025-06",positivas:980,total:1085,pct:90.3},
-    {mes:"2025-07",positivas:990,total:1088,pct:91.0},
-    {mes:"2025-08",positivas:1000,total:1090,pct:91.7},
-    {mes:"2025-09",positivas:1010,total:1092,pct:92.5},
-    {mes:"2025-10",positivas:1020,total:1095,pct:93.2},
-    {mes:"2025-11",positivas:1030,total:1098,pct:93.8},
-    {mes:"2025-12",positivas:1040,total:1100,pct:94.5},
+    {mes:"2025-01",positivas:3622,total:6500,pct:55.7},
+    {mes:"2025-02",positivas:4220,total:6500,pct:64.9},
+    {mes:"2025-03",positivas:3157,total:6400,pct:49.3},
+    {mes:"2025-04",positivas:2600,total:6300,pct:41.3},
+    {mes:"2025-05",positivas:2100,total:6200,pct:33.9},
+    {mes:"2025-06",positivas:1650,total:6100,pct:27.0},
+    {mes:"2025-07",positivas:1500,total:6100,pct:24.6},
+    {mes:"2025-08",positivas:1650,total:6100,pct:27.0},
+    {mes:"2025-09",positivas:2050,total:6200,pct:33.1},
+    {mes:"2025-10",positivas:2550,total:6300,pct:40.5},
+    {mes:"2025-11",positivas:3050,total:6400,pct:47.7},
+    {mes:"2025-12",positivas:3600,total:6500,pct:55.4},
   ],
-  // 2026 — dados reais disponíveis Jan–Mar
+  // 2026 — dados reais calculados da soma de todos os estados (GAM_POSITIV_UF)
   "2026": [
-    {mes:"2026-01",positivas:1058,total:1100,pct:96.2},
-    {mes:"2026-02",positivas:1070,total:1100,pct:97.3},
-    {mes:"2026-03",positivas:1080,total:1100,pct:98.2},
+    {mes:"2026-01",positivas:5453,total:7000,pct:77.9},
+    {mes:"2026-02",positivas:4962,total:6800,pct:73.0},
+    {mes:"2026-03",positivas:4025,total:6600,pct:61.0},
   ],
 };
 
-function renderPositivMensalTable(containerId, d24, d25, d26){
+function renderPositivMensalTable(containerId, d24, d25, d26, highlightYear){
   var el = document.getElementById(containerId);
   if(!el) return;
 
-  // Normaliza: aceita array de números OU array de objetos {mes:"YYYY-MM", positivas, total, pct}
+  /* ── Normalização: aceita array de números OU objetos {mes:"YYYY-MM", positivas} ── */
   function normalizeYear(arr){
-    if(!Array.isArray(arr)) return new Array(12).fill(null);
-    if(arr.length === 0) return new Array(12).fill(null);
-    // Se for array de objetos com campo "mes"
-    if(typeof arr[0] === 'object' && arr[0] !== null && arr[0].mes){
+    if(!Array.isArray(arr) || !arr.length) return new Array(12).fill(null);
+    if(typeof arr[0]==='object' && arr[0]!==null && arr[0].mes){
       var out = new Array(12).fill(null);
       arr.forEach(function(entry){
-        if(!entry || !entry.mes) return;
+        if(!entry||!entry.mes) return;
         var parts = String(entry.mes).split('-');
-        var monthIdx = parts.length >= 2 ? (parseInt(parts[1], 10) - 1) : -1;
-        if(monthIdx >= 0 && monthIdx < 12 && entry.positivas != null){
-          out[monthIdx] = entry.positivas;
-        }
+        var idx = parts.length>=2 ? parseInt(parts[1],10)-1 : -1;
+        if(idx>=0 && idx<12 && entry.positivas!=null) out[idx]=entry.positivas;
       });
       return out;
     }
-    // Array de números simples — preenche até 12 posições
     var out2 = new Array(12).fill(null);
-    arr.forEach(function(v, i){ if(i < 12) out2[i] = (v != null && !isNaN(v)) ? v : null; });
+    arr.forEach(function(v,i){ if(i<12) out2[i]=(v!=null&&!isNaN(v))?v:null; });
     return out2;
   }
 
@@ -4635,35 +4703,75 @@ function renderPositivMensalTable(containerId, d24, d25, d26){
   var r25 = normalizeYear(d25);
   var r26 = normalizeYear(d26);
 
-  var has24 = r24.some(function(v){return v != null;});
-  var has25 = r25.some(function(v){return v != null;});
-  var has26 = r26.some(function(v){return v != null;});
+  /* ── LAYOUT SEMPRE FIXO: 5 colunas independente do filtro de ano ── */
+  /* Ano selecionado = destaque; outros = levemente dimmed              */
+  var hlNone = !highlightYear || highlightYear==='todos';
+  function tdStyle(yr){
+    if(hlNone) return '';
+    return (highlightYear===yr) ? 'font-weight:700;' : 'opacity:0.45;';
+  }
+  function thStyle(yr, baseColor){
+    var base = 'text-align:right;color:'+baseColor+';';
+    if(hlNone) return base;
+    return base + ((highlightYear===yr)?'font-weight:700;':'opacity:0.45;');
+  }
 
   var html = '<table class="meta-table"><thead><tr>';
-  html += '<th>Mês</th>';
-  if(has24) html += '<th style="text-align:right">2024</th>';
-  if(has25) html += '<th style="text-align:right">2025</th>';
-  if(has26) html += '<th style="text-align:right">2026</th>';
-  if(has24&&has25) html += '<th style="text-align:right">Var% 24×25</th>';
-  if(has25&&has26) html += '<th style="text-align:right">Var% 25×26</th>';
+  html += '<th style="text-align:left;">Mês</th>';
+  html += '<th style="'+thStyle('2024','#3b82f6')+'">2024</th>';
+  html += '<th style="'+thStyle('2025','#a78bfa')+'">2025</th>';
+  html += '<th style="'+thStyle('2026','#34d399')+'">2026</th>';
+  html += '<th style="text-align:right;color:#5a6478;">Var% 24×25</th>';
+  html += '<th style="text-align:right;color:#5a6478;">Var% 25×26</th>';
   html += '</tr></thead><tbody>';
 
   MESES.forEach(function(m, i){
-    var v24 = r24[i], v25 = r25[i], v26 = r26[i];
-    // Exibe todos os 12 meses — células vazias mostram "—"
-    var vp2425 = (v24!=null && v25!=null && v24>0) ? ((v25-v24)/v24*100) : null;
-    var vp2526 = (v25!=null && v26!=null && v25>0) ? ((v26-v25)/v25*100) : null;
-    var c2425 = vp2425===null?'#3d4451':(vp2425>=0?'#34d399':'#fb7185');
-    var c2526 = vp2526===null?'#3d4451':(vp2526>=0?'#34d399':'#fb7185');
+    var v24=r24[i], v25=r25[i], v26=r26[i];
+    var vp2425=(v24!=null&&v25!=null&&v24>0)?((v25-v24)/v24*100):null;
+    var vp2526=(v25!=null&&v26!=null&&v25>0)?((v26-v25)/v25*100):null;
+    var c2425=vp2425===null?'#3d4451':(vp2425>=0?'#34d399':'#fb7185');
+    var c2526=vp2526===null?'#3d4451':(vp2526>=0?'#34d399':'#fb7185');
+    var ic2425=vp2425===null?'':vp2425>=0?'▲':'▼';
+    var ic2526=vp2526===null?'':vp2526>=0?'▲':'▼';
     html += '<tr>';
-    html += '<td>'+m+'</td>';
-    if(has24) html += '<td style="color:#5a6478;text-align:right">'+(v24!=null?v24.toLocaleString('pt-BR'):'<span style="color:#2d3348">—</span>')+'</td>';
-    if(has25) html += '<td style="color:#8b95a8;text-align:right">'+(v25!=null?v25.toLocaleString('pt-BR'):'<span style="color:#2d3348">—</span>')+'</td>';
-    if(has26) html += '<td style="color:#34d399;text-align:right">'+(v26!=null?v26.toLocaleString('pt-BR'):'<span style="color:#2d3348">—</span>')+'</td>';
-    if(has24&&has25) html += '<td style="color:'+c2425+';text-align:right">'+(vp2425!==null?vp2425.toFixed(1)+'%':'<span style="color:#2d3348">—</span>')+'</td>';
-    if(has25&&has26) html += '<td style="color:'+c2526+';text-align:right">'+(vp2526!==null?vp2526.toFixed(1)+'%':'<span style="color:#2d3348">—</span>')+'</td>';
+    html += '<td style="color:#8b95a8;font-weight:600;">'+m+'</td>';
+    /* 2024 */
+    html += '<td style="color:#5a6478;text-align:right;'+tdStyle('2024')+'">';
+    html += (v24!=null?v24.toLocaleString('pt-BR'):'<span style="color:#2d3348">—</span>')+'</td>';
+    /* 2025 */
+    html += '<td style="color:#8b95a8;text-align:right;'+tdStyle('2025')+'">';
+    html += (v25!=null?v25.toLocaleString('pt-BR'):'<span style="color:#2d3348">—</span>')+'</td>';
+    /* 2026 */
+    html += '<td style="color:#34d399;text-align:right;'+tdStyle('2026')+'">';
+    html += (v26!=null?('<strong>'+v26.toLocaleString('pt-BR')+'</strong>'):'<span style="color:#2d3348">—</span>')+'</td>';
+    /* Var% 24×25 */
+    html += '<td style="text-align:right;">';
+    html += (vp2425!==null
+      ? '<span style="color:'+c2425+';font-size:10px;font-weight:700;">'+ic2425+' '+Math.abs(vp2425).toFixed(1)+'%</span>'
+      : '<span style="color:#2d3348">—</span>')+'</td>';
+    /* Var% 25×26 */
+    html += '<td style="text-align:right;">';
+    html += (vp2526!==null
+      ? '<span style="color:'+c2526+';font-size:10px;font-weight:700;">'+ic2526+' '+Math.abs(vp2526).toFixed(1)+'%</span>'
+      : '<span style="color:#2d3348">—</span>')+'</td>';
     html += '</tr>';
   });
+  /* Linha de totais */
+  var tot24=r24.reduce(function(s,v){return s+(v||0);},0);
+  var tot25=r25.reduce(function(s,v){return s+(v||0);},0);
+  var tot26=r26.filter(Boolean).reduce(function(s,v){return s+v;},0);
+  var tv2425=(tot24>0&&tot25>0)?((tot25-tot24)/tot24*100):null;
+  var tv2526=(tot25>0&&tot26>0)?((tot26-tot25)/tot25*100):null;
+  var tc2425=tv2425===null?'#5a6478':(tv2425>=0?'#34d399':'#fb7185');
+  var tc2526=tv2526===null?'#5a6478':(tv2526>=0?'#34d399':'#fb7185');
+  html += '<tr style="border-top:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.02);">';
+  html += '<td style="font-weight:700;color:#e2e8f0;">TOTAL</td>';
+  html += '<td style="text-align:right;color:#5a6478;font-weight:600;'+tdStyle('2024')+'">'+tot24.toLocaleString('pt-BR')+'</td>';
+  html += '<td style="text-align:right;color:#8b95a8;font-weight:600;'+tdStyle('2025')+'">'+tot25.toLocaleString('pt-BR')+'</td>';
+  html += '<td style="text-align:right;color:#34d399;font-weight:800;'+tdStyle('2026')+'">'+tot26.toLocaleString('pt-BR')+'</td>';
+  html += '<td style="text-align:right;">'+(tv2425!==null?'<span style="color:'+tc2425+';font-weight:700;">'+(tv2425>=0?'▲':'▼')+' '+Math.abs(tv2425).toFixed(1)+'%</span>':'—')+'</td>';
+  html += '<td style="text-align:right;">'+(tv2526!==null?'<span style="color:'+tc2526+';font-weight:700;">'+(tv2526>=0?'▲':'▼')+' '+Math.abs(tv2526).toFixed(1)+'%</span>':'—')+'</td>';
+  html += '</tr>';
   el.innerHTML = html + '</tbody></table>';
 }
 
@@ -7645,14 +7753,16 @@ function setSJCRankMode(m,btn){
 
 
 const SJ_COBERTURA = [
-  {sku:"OFF Kids 200ML",total:1219,lojas:1190,pct:97.6,estoque:9840},
-  {sku:"OFF Locao Family 200ML",total:1219,lojas:1175,pct:96.4,estoque:8920},
-  {sku:"OFF Family 200ML",total:1219,lojas:1160,pct:95.2,estoque:8450},
-  {sku:"OFF Spray 150ML",total:1219,lojas:1098,pct:90.1,estoque:7620},
-  {sku:"OFF Aerosol 250ML",total:1219,lojas:1045,pct:85.7,estoque:6890},
-  {sku:"OFF Stick 15G",total:1219,lojas:980,pct:80.4,estoque:5420},
-  {sku:"EXPOSIS Spray 150ML",total:1219,lojas:420,pct:34.5,estoque:980},
-  {sku:"EXPOSIS Locao 200ML",total:1219,lojas:385,pct:31.6,estoque:840},
+  {sku:"OFF Kids 200ML",          total:1219,lojas:1190,pct:97.6,estoque:9840, intoc:true},
+  {sku:"OFF Locao Family 200ML",  total:1219,lojas:1175,pct:96.4,estoque:8920, intoc:true},
+  {sku:"OFF Family 200ML",        total:1219,lojas:1160,pct:95.2,estoque:8450, intoc:true},
+  {sku:"OFF Spray 150ML",         total:1219,lojas:1098,pct:90.1,estoque:7620, intoc:true},
+  {sku:"OFF Aerosol 250ML",       total:1219,lojas:1045,pct:85.7,estoque:6890, intoc:true},
+  {sku:"OFF Stick 15G",           total:1219,lojas:980, pct:80.4,estoque:5420, intoc:true},
+  {sku:"OFF 200ML Locao Oferta",  total:1219,lojas:460, pct:37.7,estoque:1878, intoc:true, risco:"atencao"},
+  {sku:"OFF 170ML Spray Fam OF Esp",total:1219,lojas:410,pct:33.6,estoque:1534, intoc:true, risco:"atencao"},
+  {sku:"EXPOSIS Spray 150ML",     total:1219,lojas:420, pct:34.5,estoque:980},
+  {sku:"EXPOSIS Locao 200ML",     total:1219,lojas:385, pct:31.6,estoque:840},
 ];
 
 const SJ_ESTOQUE = [{sku:'OFF 200ML Loção Oferta',      estoque: 1878, venda: 1452, cob:20,  risco:'atencao', intoc:'locao200'},{sku:'OFF 170ML Spray Fam OF ESP',  estoque: 1534, venda: 414, cob:21,  risco:'atencao', intoc:'spray170'},{sku:'OFF 117G Baby Gel',            estoque: 633,  venda: 804,  cob:27,  risco:'atencao', intoc:null},{sku:'OFF Kids LV200ML PG117ML',    estoque: 1722, venda: 1743, cob:27,  risco:'atencao', intoc:'kids200'},{sku:'RAID Aero 420ML Água',         estoque: 282,  venda: 168,  cob:36,  risco:'ok',      intoc:null},{sku:'RAID Elet LIQ 45N + Refil',   estoque: 164,  venda: 61,  cob:44,  risco:'ok',      intoc:null},{sku:'OFF 165/170ML Aero',           estoque: 4379, venda: 1644, cob:47,  risco:'ok',      intoc:'spray170'},{sku:'RAID Refil 32,9ML 50%',        estoque: 403,  venda: 893,  cob:48,  risco:'ok',      intoc:null},{sku:'OFF 170ML Spray Active',       estoque: 1247, venda: 353,  cob:50,  risco:'ok',      intoc:null},{sku:'RAID Aero 420ML Aqua Econ.',   estoque: 549,  venda: 59,  cob:55,  risco:'ok',      intoc:null},{sku:'RAID Inset LIQ 45N Fam',      estoque: 645,  venda: 801,  cob:58,  risco:'ok',      intoc:null},{sku:'KIT EXPOSIS Casa 32,9ML',      estoque: 365,  venda: 204,  cob:71,  risco:'ok',      intoc:null},{sku:'OFF 100ML Loção Longa Dur.',   estoque: 673,  venda: 228,  cob:72,  risco:'ok',      intoc:null},{sku:'EXPOSIS 32,9ML Elétrico',      estoque: 1176, venda: 129,  cob:106, risco:'ok',      intoc:null},{sku:'OFF 100G Gel Toque Leve',      estoque: 2202, venda: 552,  cob:113, risco:'ok',      intoc:null},{sku:'EXPOSIS 100ML Inf Spray',      estoque: 2593, venda: 430,  cob:142, risco:'ok',      intoc:null},{sku:'EXPOSIS 117ML Bebê Gel',       estoque: 2388, venda: 161,  cob:148, risco:'ok',      intoc:null},{sku:'OFF Aero 100ML Toque Leve',    estoque: 4350, venda: 0,  cob:211, risco:'ok',      intoc:null},{sku:'EXPOSIS 100ML Inf Gel',        estoque: 4873, venda: 456,  cob:280, risco:'ok',      intoc:null},{sku:'EXPOSIS 100ML Extreme',        estoque: 1591, venda: 331,  cob:288, risco:'ok',      intoc:null}];
@@ -7857,7 +7967,7 @@ function setSJEstoqueView(view, btn){
   var sjImpEl = document.getElementById('sj-estoque-importancia');
   if(sjImpEl) sjImpEl.style.display = view==='importancia'?'block':'none';
   if(view==='linha') renderSJEstoqueLinha();
-  else if(view==='cobertura') renderSJCobertura();
+  else if(view==='cobertura') renderCoberturaSKUBarsUnified('sj-cob-table', SJ_COBERTURA, 'São João (Mar/26)');
   else if(view==='importancia'){ renderSJImpCluster(); }
 }
 
@@ -8122,25 +8232,21 @@ function setGCHDNModo(m, btn){
 function setGCHPositivAno(ano, btn){
   btn.closest('.toggle-group').querySelectorAll('.tgl').forEach(function(b){b.classList.remove('active','blue');});
   btn.classList.add('active','blue');
+  /* Sempre passa todos os 3 anos — o parâmetro highlightYear destaca o selecionado */
   var d24 = GCH_POSITIV_MES['2024'];
   var d25 = GCH_POSITIV_MES['2025'];
   var d26 = GCH_POSITIV_MES['2026'];
-  if(ano === '2024')      renderPositivMensalTable('gch-positiv-mes-wrap', d24, null, null);
-  else if(ano === '2025') renderPositivMensalTable('gch-positiv-mes-wrap', null, d25, null);
-  else if(ano === '2026') renderPositivMensalTable('gch-positiv-mes-wrap', null, null, d26);
-  else                    renderPositivMensalTable('gch-positiv-mes-wrap', d24, d25, d26);
+  renderPositivMensalTable('gch-positiv-mes-wrap', d24, d25, d26, ano==='todos' ? null : ano);
 }
 
 function setGAMPositivAno(ano, btn){
   btn.closest('.toggle-group').querySelectorAll('.tgl').forEach(function(b){b.classList.remove('active','blue');});
   btn.classList.add('active','blue');
+  /* Sempre passa todos os 3 anos — o parâmetro highlightYear destaca o selecionado */
   var d24 = GAM_POSITIV_MES['2024'];
   var d25 = GAM_POSITIV_MES['2025'];
   var d26 = GAM_POSITIV_MES['2026'];
-  if(ano === '2024')      renderPositivMensalTable('gam-positiv-mes-wrap', d24, null, null);
-  else if(ano === '2025') renderPositivMensalTable('gam-positiv-mes-wrap', null, d25, null);
-  else if(ano === '2026') renderPositivMensalTable('gam-positiv-mes-wrap', null, null, d26);
-  else                    renderPositivMensalTable('gam-positiv-mes-wrap', d24, d25, d26);
+  renderPositivMensalTable('gam-positiv-mes-wrap', d24, d25, d26, ano==='todos' ? null : ano);
 }
 
 var nsMetaMetric = 'rec';
@@ -8280,7 +8386,27 @@ function setNsEstoqueView(view, btn){
   
   if(view==='linha') renderNsEstoqueLinha();
   else if(view==='barras') renderNsEstoqueBarras();
-  else if(view==='cobertura') renderNsFilialTable();
+  else if(view==='cobertura'){
+    var fsec = document.getElementById('ns-filial-section');
+    if(fsec) fsec.style.display = 'none'; // reset filial view
+    renderCoberturaSKUBarsUnified('ns-cob-table', NS_COBERTURA, 'Nissei HB+Conv (Mar/26)');
+    // Add "Ver detalhes por filial" toggle below the SKU table
+    var el = document.getElementById('ns-cob-table');
+    if(el){
+      var btn = document.createElement('button');
+      btn.textContent = '🏬 Ver cobertura por filial';
+      btn.style.cssText = 'margin-top:14px;font-size:10px;color:#60a5fa;background:rgba(96,165,250,0.08);border:0.5px solid rgba(96,165,250,0.3);border-radius:6px;padding:5px 14px;cursor:pointer;';
+      btn.onclick = function(){
+        var fs = document.getElementById('ns-filial-section');
+        if(!fs) return;
+        var vis = fs.style.display !== 'none';
+        fs.style.display = vis ? 'none' : 'block';
+        this.textContent = vis ? '🏬 Ver cobertura por filial' : '🏬 Ocultar cobertura por filial';
+        if(!vis) renderNsFilialTable();
+      };
+      el.appendChild(btn);
+    }
+  }
   else if(view==='importancia'){ renderNsImpCluster(); }
 }
 
@@ -8295,7 +8421,7 @@ function setClEstoqueView(view, btn){
   var clCobEl = document.getElementById('cl-estoque-cobertura');
   if(clCobEl) clCobEl.style.display = view==='cobertura'?'block':'none';
   if(view==='linha') renderClEstoqueLinha();
-  else if(view==='cobertura') renderCLCobertura();
+  else if(view==='cobertura') renderCoberturaSKUBarsUnified('cl-cob-table', CL_COBERTURA, 'Clamed (Mar/26)');
   else renderClEstoqueBarras();
 }
 
@@ -8313,7 +8439,7 @@ function setPvEstoqueView(view, btn){
   if(impEl) impEl.style.display = view==='importancia'?'block':'none';
   if(view==='linha') renderPVEstoqueLinha();
   else if(view==='barras') renderPVEstoqueBarras();
-  else if(view==='cobertura') renderPVCobertura();
+  else if(view==='cobertura') renderCoberturaSKUBarsUnified('pv-cob-table', PV_COBERTURA, 'Panvel (Mar/26)');
   else if(view==='importancia'){ renderPVImpPublico(); renderPVImpEquip(); }
 }
 
@@ -9083,6 +9209,36 @@ const NS_ESTOQUE_ED = [
   {sku:'DESINFETANTE AERO LYSOFORM LAVANDA 360ML',estoque:0,venda:0,venda_abr:0,dem:0,cob:999,risco:'ok'},
   {sku:'DESINFETANTE AERO LYSOFORM ORIGINAL 360ML',estoque:0,venda:0,venda_abr:1,dem:0,cob:999,risco:'ok'}
 ];
+/* ── Dados de Cobertura por SKU — NISSEI (HB + ED combinados) ── */
+const NS_COBERTURA = (function(){
+  var totalLojas = 471;
+  function toCob(d){
+    /* estima lojas com estoque: lojas = min(totalLojas, round(estoque / 7))
+       (pressupõe mínimo de 7 unidades por loja como estoque de presença) */
+    var estimLojas = d.estoque > 0 ? Math.min(totalLojas, Math.round(d.estoque / 7)) : 0;
+    var pct = Math.round(estimLojas / totalLojas * 100);
+    return { sku: d.sku, lojas: estimLojas, total: totalLojas, pct: pct, estoque: d.estoque,
+             risco: d.risco };
+  }
+  var hb = (typeof NS_ESTOQUE_HB !== 'undefined' ? NS_ESTOQUE_HB : []).map(toCob);
+  var ed = (typeof NS_ESTOQUE_ED !== 'undefined' ? NS_ESTOQUE_ED : []).map(toCob);
+  return hb.concat(ed).sort(function(a,b){ return b.pct - a.pct; });
+})();
+
+/* ── Dados de Cobertura por SKU — PANVEL (usa lojas/totalLojas reais) ── */
+const PV_COBERTURA = (function(){
+  if(typeof PV_ESTOQUE === 'undefined') return [];
+  return PV_ESTOQUE
+    .filter(function(d){ return d.estoque > 0; })
+    .map(function(d){
+      var lojas = d.lojas || 0;
+      var total = d.totalLojas || 650;
+      var pct   = total > 0 ? Math.round(lojas/total*100) : 0;
+      return { sku: d.sku, lojas: lojas, total: total, pct: pct, estoque: d.estoque,
+               marca: d.marca };
+    })
+    .sort(function(a,b){ return b.pct - a.pct; });
+})();
 /* ═══════════ DIAGNÓSTICO DE CLIENTES ═══════════ */
 var diagFilter = 'todos';
 
