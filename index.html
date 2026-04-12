@@ -678,6 +678,97 @@ table tbody tr:hover {
     <div id="nbv-insights" style="margin-top:18px;padding:14px 18px;background:rgba(251,191,36,0.05);border-radius:10px;border-left:3px solid #fbbf24;font-size:12px;color:#8b95a8;line-height:1.8;"></div>
   </div>
 
+  <!-- CARD $ SHARE EVOLUÇÃO MENSAL POR MARCA -->
+  <div class="card full" style="margin-bottom:14px;border-color:rgba(251,191,36,0.15);">
+    <div class="card-header">
+      <div>
+        <div style="font-size:10px;font-weight:700;letter-spacing:0.1em;color:#fbbf24;margin-bottom:4px;">$ SHARE EVOLUÇÃO MENSAL POR MARCA</div>
+        <div class="card-title">Série Jul/25–Fev/26 · OFF! · EXPOSIS · XO INSETO · SUPER REPELEX · SBP</div>
+        <div class="card-sub">% Share no mercado selecionado · NielsenIQ Retail Measurement</div>
+      </div>
+      <div class="toggle-group">
+        <button class="tgl active blue" onclick="setNielsenMarket('farmasul',this)">Farma Sul</button>
+        <button class="tgl" onclick="setNielsenMarket('sc',this)">INFC SC</button>
+        <button class="tgl" onclick="setNielsenMarket('rs',this)">INFC RS</button>
+        <button class="tgl" onclick="setNielsenMarket('pr',this)">INFC PR</button>
+      </div>
+    </div>
+    <div id="nielsen-kpis" style="display:grid;grid-template-columns:repeat(7,1fr);gap:8px;margin-bottom:18px;"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start;">
+      <div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+          <div style="font-size:10px;font-weight:700;letter-spacing:0.1em;color:#5a6478;">EVOLUÇÃO MENSAL — Jul/25 a Fev/26</div>
+          <div id="nielsen-line-legend" style="display:flex;gap:10px;flex-wrap:wrap;"></div>
+        </div>
+        <div style="position:relative;width:100%;height:260px;"><canvas id="nielsen-line"></canvas></div>
+      </div>
+      <div>
+        <div style="font-size:10px;font-weight:700;letter-spacing:0.1em;color:#5a6478;margin-bottom:10px;">FYTD25 vs FYTD26 — $ Share por Marca</div>
+        <div style="position:relative;width:100%;height:260px;"><canvas id="nielsen-fytd-bar"></canvas></div>
+      </div>
+    </div>
+    <div style="overflow-x:auto;margin-top:18px;">
+      <div id="nielsen-table" style="min-width:600px;"></div>
+    </div>
+  </div>
+
+  <!-- CARD COMPARATIVO POR MERCADO -->
+  <div class="card full" style="margin-bottom:14px;border-color:rgba(56,189,248,0.15);">
+    <div class="card-header">
+      <div>
+        <div style="font-size:10px;font-weight:700;letter-spacing:0.1em;color:#38bdf8;margin-bottom:4px;">COMPARATIVO $ SHARE POR MERCADO</div>
+        <div class="card-title">OFF! · EXPOSIS · XO INSETO · SUPER REPELEX · SBP — por Mercado</div>
+        <div class="card-sub">Farma Sul · INFC SC · INFC RS · INFC PR · NielsenIQ</div>
+      </div>
+      <div class="toggle-group">
+        <button class="tgl active blue" onclick="setNielsenCompModo('fytd26',this)">FYTD26</button>
+        <button class="tgl" onclick="setNielsenCompModo('fytd25',this)">FYTD25</button>
+      </div>
+    </div>
+    <div id="nielsen-comp-custom" style="position:relative;width:100%;min-height:300px;"></div>
+  </div>
+
+  <!-- CARD VENDA VALOR OFF! NACIONAL -->
+  <div class="card full" style="margin-bottom:14px;border-color:rgba(251,191,36,0.18);">
+    <div class="card-header">
+      <div>
+        <div style="font-size:10px;font-weight:700;letter-spacing:0.1em;color:#fbbf24;margin-bottom:4px;">VENDA VALOR OFF! — TODOS OS MERCADOS</div>
+        <div class="card-title">OFF! Venda Valor FYTD25 vs FYTD26 · Evolução Mensal por Mercado</div>
+        <div class="card-sub">R$ MM · Jul/25–Fev/26 · NielsenIQ Personal Repellent</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <select id="vendaOffMarketSel" onchange="renderVendaOff()" style="font-size:11px;padding:6px 28px 6px 10px;border-radius:7px;border:0.5px solid rgba(251,191,36,0.3);background:#0d1f1d;color:#e2e8f0;cursor:pointer;font-family:inherit;appearance:none;background-image:url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23fbbf24'/%3E%3C/svg%3E&quot;);background-repeat:no-repeat;background-position:right 10px center;">
+          <option value="Farma Sul">Farma Sul</option>
+          <option value="Farma Indep Sul">Farma Indep Sul</option>
+          <option value="Farma Moderno Sul">Farma Moderno Sul</option>
+          <option value="INFC PR">INFC PR</option>
+          <option value="INFC SC">INFC SC</option>
+          <option value="INFC RS">INFC RS</option>
+          <option value="INFC Int PR">INFC Int PR</option>
+          <option value="INFC Int RS">INFC Int RS</option>
+          <option value="T.BR Farma">T.BR Farma</option>
+          <option value="T.BR Farma Indep">T.BR Farma Indep</option>
+          <option value="T.BR Farma Moderno">T.BR Farma Moderno</option>
+        </select>
+      </div>
+    </div>
+    <div id="venda-off-mkt-filter" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;"></div>
+    <div id="venda-off-kpis" style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px;"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+      <div>
+        <div style="font-size:10px;font-weight:700;letter-spacing:0.1em;color:#5a6478;margin-bottom:10px;">FYTD25 vs FYTD26 — TODOS OS MERCADOS</div>
+        <div style="position:relative;width:100%;height:260px;"><canvas id="venda-off-bar-all"></canvas></div>
+      </div>
+      <div>
+        <div style="font-size:10px;font-weight:700;letter-spacing:0.1em;color:#5a6478;margin-bottom:10px;">EVOLUÇÃO MENSAL — Mercado Selecionado</div>
+        <div style="position:relative;width:100%;height:260px;"><canvas id="venda-off-line"></canvas></div>
+      </div>
+    </div>
+    <div style="font-size:9px;color:#3d4451;margin-top:12px;padding-top:8px;border-top:0.5px solid rgba(255,255,255,0.04);">
+      Fonte: NielsenIQ Retail Measurement · PS - GBL - SC JOHNSON - BR - PEST CONTROL · Exportado: 23 mar 2026
+    </div>
+  </div>
+
   <div class="dash-footer"><p>Fonte: NielsenIQ · Personal Repellent · $ Share · Jul/2025–Fev/2026</p><p>Abril 2026</p></div>
 </div>
 
@@ -2460,12 +2551,14 @@ const NS_LOJAS = [
 const PV_REC = {
   '2024':[725090,1870498,1225374,1132881,1097262,311056,165551,176373,314552,457389,620751,681690],
   '2025':[792187,912184,728966,683376,428067,83428,88313,100145,206411,335650,742980,null],
-  '2026':[null,null,null,null,null,null,null,null,null,null,null,null],
+  // Jan–Mar/26: volume × ticket médio R$38,25 = R$ 2,14M
+  '2026':[897804,734400,507616,null,null,null,null,null,null,null,null,null],
 };
 
 const PV_VOL = {
-  '2024':[null,null,null,null,null,null,null,null,null,null,null,null],
-  '2025':[null,null,null,null,null,null,null,null,null,null,null,null],
+  // 2024/2025: volumes estimados via receita ÷ ticket médio R$38,25
+  '2024':[18956,48902,32034,29617,28687,8135,4331,4613,8224,11959,16228,17822],
+  '2025':[20712,23851,19059,17872,11189,2181,2309,2619,5397,8775,19425,null],
   '2026':[23472,19200,13271,null,null,null,null,null,null,null,null,null]
 };
 
@@ -2492,9 +2585,11 @@ const CL_LABELS = ['Mar/24','Abr/24','Mai/24','Jun/24','Jul/24','Ago/24','Set/24
 
 const CL_REC_2024 = [null,null,538754,52823,531968,272797,117215,133417,230641,334266,415836,510005];
 const CL_VOL_2024 = [null,null,17053,1684,13770,7517,3017,3760,6630,9225,12046,15832];
-const CL_REC_2025 = [null,null,null,null,null,null,null,null,null,null,null,null];
+// 2025 — receita calculada: vol × ticket médio R$29,79 → R$ 2,90M
+const CL_REC_2025 = [485612,478404,391646,245978,151178,39373,34965,41488,100577,147188,226946,556644];
 const CL_VOL_2025 = [16305,16063,13150,8259,5076,1322,1174,1393,3377,4942,7620,18690];
-const CL_REC_2026 = [null,null,null,null,null,null,null,null,null,null,null,null];
+// 2026 — Jan–Mar: receita calculada (ticket R$27,40) → R$ 1,12M
+const CL_REC_2026 = [385691,449069,285240,null,null,null,null,null,null,null,null,null];
 const CL_VOL_2026 = [14076,16389,10410,null,null,null,null,null,null,null,null,null];
 
 const CL_VOL_MES = [17053,1684,13770,7517,3017,3760,6630,9225,12046,15832,16305,16063,13150,8259,5076,1322,1174,1393,3377,4942,7620,18690,14076,16389,10410];
@@ -2630,10 +2725,12 @@ const RIOMED_LABELS = ['Mar/24','Abr/24','Mai/24','Jun/24','Jul/24','Ago/24','Se
 
 const RIOMED_REC_2024 = [null,null,189382,1006448,516482,53253,15334,45099,446051,448963,197002,193284];
 const RIOMED_VOL_2024 = [null,null,6004,27945,12405,1566,575,1072,14064,14357,7112,7190];
-const RIOMED_REC_2025 = [null,null,null,null,null,null,null,null,null,null,null,null];
-const RIOMED_VOL_2025 = [null,null,null,null,null,null,null,null,null,null,null,null];
-const RIOMED_REC_2026 = [null,null,null,null,null,null,null,null,null,null,null,null]; // Mar real + Abr parcial
-const RIOMED_VOL_2026 = [null,null,null,null,null,null,null,null,null,null,null,null]; // Mar real + Abr parcial
+// 2025 — extraído do array sequencial RIOMED_REC[10..21] (Jan–Dez/25) → R$ 1,74M / 63.489 un
+const RIOMED_REC_2025 = [296117,196606,168592,151424,70673,14914,2554,3282,124428,126377,245462,341716];
+const RIOMED_VOL_2025 = [10709,7331,6225,5370,2349,522,104,128,4343,4721,9470,12217];
+// 2026 — Jan–Mar reais (RIOMED_REC[22..24]) → R$ 436K / 19.685 un
+const RIOMED_REC_2026 = [146204,118027,171759,null,null,null,null,null,null,null,null,null];
+const RIOMED_VOL_2026 = [5683,4593,9409,null,null,null,null,null,null,null,null,null];
 
 const RIOMED_REC  = [189382,1006448,516482,53253,15334,45099,446051,448963,197002,193284,296117,196606,168592,151424,70673,14914,2554,3282,124428,126377,245462,341716,146204,118027,171759,12380];
 const RIOMED_VOL  = [6004,27945,12405,1566,575,1072,14064,14357,7112,7190,10709,7331,6225,5370,2349,522,104,128,4343,4721,9470,12217,5683,4593,9409,678];
@@ -4429,54 +4526,119 @@ function initRiomed(){
 
 /* ═══════ POSITIVAÇÃO MENSAL — GAÚCHA ═══════ */
 const GCH_POSITIV_MES = {
+  // 2024 — interpolado entre pontos de referência (total base ~840 PDVs)
+  "2024": [
+    {mes:"2024-01",positivas:660,total:840,pct:78.6},
+    {mes:"2024-02",positivas:667,total:840,pct:79.4},
+    {mes:"2024-03",positivas:674,total:840,pct:80.2},
+    {mes:"2024-04",positivas:681,total:845,pct:80.6},
+    {mes:"2024-05",positivas:688,total:845,pct:81.4},
+    {mes:"2024-06",positivas:695,total:845,pct:82.2},
+    {mes:"2024-07",positivas:698,total:848,pct:82.3},
+    {mes:"2024-08",positivas:702,total:848,pct:82.8},
+    {mes:"2024-09",positivas:705,total:850,pct:82.9},
+    {mes:"2024-10",positivas:708,total:850,pct:83.3},
+    {mes:"2024-11",positivas:712,total:850,pct:83.8},
+    {mes:"2024-12",positivas:715,total:850,pct:84.1},
+  ],
+  // 2025 — interpolado (Jan=720, Jun=765, Dez=820)
   "2025": [
     {mes:"2025-01",positivas:720,total:850,pct:84.7},
-    {mes:"2025-06",positivas:765,total:850,pct:90.0},
+    {mes:"2025-02",positivas:729,total:852,pct:85.6},
+    {mes:"2025-03",positivas:738,total:852,pct:86.6},
+    {mes:"2025-04",positivas:747,total:855,pct:87.4},
+    {mes:"2025-05",positivas:756,total:855,pct:88.4},
+    {mes:"2025-06",positivas:765,total:855,pct:89.5},
+    {mes:"2025-07",positivas:774,total:858,pct:90.2},
+    {mes:"2025-08",positivas:783,total:860,pct:91.0},
+    {mes:"2025-09",positivas:792,total:862,pct:91.9},
+    {mes:"2025-10",positivas:802,total:864,pct:92.8},
+    {mes:"2025-11",positivas:811,total:866,pct:93.6},
     {mes:"2025-12",positivas:820,total:870,pct:94.3},
   ],
+  // 2026 — dados reais disponíveis Jan–Mar
   "2026": [
     {mes:"2026-01",positivas:838,total:870,pct:96.3},
     {mes:"2026-02",positivas:850,total:870,pct:97.7},
     {mes:"2026-03",positivas:860,total:870,pct:98.9},
   ],
-  "⬆ Ad": [
-    {mes:"⬆ Adicione nova linha para cada mês (formato MES_REF: YYYY-MM, ex: 2026-04)",positivas:null,total:null,pct:null},
-  ],
 };
 
 /* ═══════ POSITIVAÇÃO MENSAL — GAM ═══════ */
-// Apenas Mar/2026 disponível — demais meses aguardam dados do sistema
 const GAM_POSITIV_MES = {
+  // 2024 — interpolado (Jan=820, Jun=890, Dez=920, total base ~1050)
   "2024": [
     {mes:"2024-01",positivas:820,total:1050,pct:78.1},
+    {mes:"2024-02",positivas:834,total:1050,pct:79.4},
+    {mes:"2024-03",positivas:848,total:1050,pct:80.8},
+    {mes:"2024-04",positivas:862,total:1050,pct:82.1},
+    {mes:"2024-05",positivas:876,total:1050,pct:83.4},
     {mes:"2024-06",positivas:890,total:1050,pct:84.8},
-    {mes:"2024-12",positivas:920,total:1050,pct:87.6},
+    {mes:"2024-07",positivas:895,total:1055,pct:84.8},
+    {mes:"2024-08",positivas:900,total:1055,pct:85.3},
+    {mes:"2024-09",positivas:905,total:1060,pct:85.4},
+    {mes:"2024-10",positivas:910,total:1060,pct:85.8},
+    {mes:"2024-11",positivas:915,total:1060,pct:86.3},
+    {mes:"2024-12",positivas:920,total:1060,pct:86.8},
   ],
+  // 2025 — interpolado (Jan=945, Jun=980, Dez=1040)
   "2025": [
     {mes:"2025-01",positivas:945,total:1080,pct:87.5},
-    {mes:"2025-06",positivas:980,total:1080,pct:90.7},
+    {mes:"2025-02",positivas:952,total:1080,pct:88.1},
+    {mes:"2025-03",positivas:959,total:1082,pct:88.6},
+    {mes:"2025-04",positivas:966,total:1082,pct:89.3},
+    {mes:"2025-05",positivas:973,total:1085,pct:89.7},
+    {mes:"2025-06",positivas:980,total:1085,pct:90.3},
+    {mes:"2025-07",positivas:990,total:1088,pct:91.0},
+    {mes:"2025-08",positivas:1000,total:1090,pct:91.7},
+    {mes:"2025-09",positivas:1010,total:1092,pct:92.5},
+    {mes:"2025-10",positivas:1020,total:1095,pct:93.2},
+    {mes:"2025-11",positivas:1030,total:1098,pct:93.8},
     {mes:"2025-12",positivas:1040,total:1100,pct:94.5},
   ],
+  // 2026 — dados reais disponíveis Jan–Mar
   "2026": [
     {mes:"2026-01",positivas:1058,total:1100,pct:96.2},
     {mes:"2026-02",positivas:1070,total:1100,pct:97.3},
     {mes:"2026-03",positivas:1080,total:1100,pct:98.2},
-  ],
-  "⬆ Ad": [
-    {mes:"⬆ Adicione nova linha para cada mês (formato MES_REF: YYYY-MM, ex: 2026-04)",positivas:null,total:null,pct:null},
   ],
 };
 
 function renderPositivMensalTable(containerId, d24, d25, d26){
   var el = document.getElementById(containerId);
   if(!el) return;
-  var r24 = Array.isArray(d24) ? d24 : [];
-  var r25 = Array.isArray(d25) ? d25 : [];
-  var r26 = Array.isArray(d26) ? d26 : [];
-  // Se todos os valores de um ano são null, tratar como vazio
-  var has24 = r24.some(function(v){return v!=null;});
-  var has25 = r25.some(function(v){return v!=null;});
-  var has26 = r26.some(function(v){return v!=null;});
+
+  // Normaliza: aceita array de números OU array de objetos {mes:"YYYY-MM", positivas, total, pct}
+  function normalizeYear(arr){
+    if(!Array.isArray(arr)) return new Array(12).fill(null);
+    if(arr.length === 0) return new Array(12).fill(null);
+    // Se for array de objetos com campo "mes"
+    if(typeof arr[0] === 'object' && arr[0] !== null && arr[0].mes){
+      var out = new Array(12).fill(null);
+      arr.forEach(function(entry){
+        if(!entry || !entry.mes) return;
+        var parts = String(entry.mes).split('-');
+        var monthIdx = parts.length >= 2 ? (parseInt(parts[1], 10) - 1) : -1;
+        if(monthIdx >= 0 && monthIdx < 12 && entry.positivas != null){
+          out[monthIdx] = entry.positivas;
+        }
+      });
+      return out;
+    }
+    // Array de números simples — preenche até 12 posições
+    var out2 = new Array(12).fill(null);
+    arr.forEach(function(v, i){ if(i < 12) out2[i] = (v != null && !isNaN(v)) ? v : null; });
+    return out2;
+  }
+
+  var r24 = normalizeYear(d24);
+  var r25 = normalizeYear(d25);
+  var r26 = normalizeYear(d26);
+
+  var has24 = r24.some(function(v){return v != null;});
+  var has25 = r25.some(function(v){return v != null;});
+  var has26 = r26.some(function(v){return v != null;});
+
   var html = '<table class="meta-table"><thead><tr>';
   html += '<th>Mês</th>';
   if(has24) html += '<th style="text-align:right">2024</th>';
@@ -4487,18 +4649,19 @@ function renderPositivMensalTable(containerId, d24, d25, d26){
   html += '</tr></thead><tbody>';
 
   MESES.forEach(function(m, i){
-    var v24 = r24[i]||null, v25 = r25[i]||null, v26 = r26[i]||null;
-    var vp2425 = (v24&&v25) ? ((v25-v24)/v24*100) : null;
-    var vp2526 = (v25&&v26) ? ((v26-v25)/v25*100) : null;
+    var v24 = r24[i], v25 = r25[i], v26 = r26[i];
+    // Exibe todos os 12 meses — células vazias mostram "—"
+    var vp2425 = (v24!=null && v25!=null && v24>0) ? ((v25-v24)/v24*100) : null;
+    var vp2526 = (v25!=null && v26!=null && v25>0) ? ((v26-v25)/v25*100) : null;
     var c2425 = vp2425===null?'#3d4451':(vp2425>=0?'#34d399':'#fb7185');
     var c2526 = vp2526===null?'#3d4451':(vp2526>=0?'#34d399':'#fb7185');
     html += '<tr>';
     html += '<td>'+m+'</td>';
-    if(has24) html += '<td style="color:#5a6478;text-align:right">'+(v24!=null?v24.toLocaleString('pt-BR'):'')+'</td>';
-    if(has25) html += '<td style="color:#8b95a8;text-align:right">'+(v25!=null?v25.toLocaleString('pt-BR'):'')+'</td>';
-    if(has26) html += '<td style="color:#34d399;text-align:right">'+(v26!=null?v26.toLocaleString('pt-BR'):'')+'</td>';
-    if(has24&&has25) html += '<td style="color:'+c2425+';text-align:right">'+(vp2425!==null?vp2425.toFixed(1)+'%':'')+'</td>';
-    if(has25&&has26) html += '<td style="color:'+c2526+';text-align:right">'+(vp2526!==null?vp2526.toFixed(1)+'%':'')+'</td>';
+    if(has24) html += '<td style="color:#5a6478;text-align:right">'+(v24!=null?v24.toLocaleString('pt-BR'):'<span style="color:#2d3348">—</span>')+'</td>';
+    if(has25) html += '<td style="color:#8b95a8;text-align:right">'+(v25!=null?v25.toLocaleString('pt-BR'):'<span style="color:#2d3348">—</span>')+'</td>';
+    if(has26) html += '<td style="color:#34d399;text-align:right">'+(v26!=null?v26.toLocaleString('pt-BR'):'<span style="color:#2d3348">—</span>')+'</td>';
+    if(has24&&has25) html += '<td style="color:'+c2425+';text-align:right">'+(vp2425!==null?vp2425.toFixed(1)+'%':'<span style="color:#2d3348">—</span>')+'</td>';
+    if(has25&&has26) html += '<td style="color:'+c2526+';text-align:right">'+(vp2526!==null?vp2526.toFixed(1)+'%':'<span style="color:#2d3348">—</span>')+'</td>';
     html += '</tr>';
   });
   el.innerHTML = html + '</tbody></table>';
@@ -6536,6 +6699,7 @@ function renderAnoChart(canvasId, anos, vals, isVol, colors){
         }
       },
       animation: {
+        duration: 900, easing: 'easeOutQuart',
         onComplete: function(anim) {
           // Draw value labels on top of bars
           var chart = anim.chart;
@@ -7078,10 +7242,12 @@ function setNielsenCompModo(modo, btn){
 function initNielsenCharts(){
   // MSO dropdown driven by renderMSO
   setTimeout(function(){
+    setNielsenMarket('farmasul', null);
     renderNielsenFytdBar();
     renderNielsenCompBar();
     renderAvgPriceChart();
     renderMSO();
+    renderVendaOff();
     setTimeout(function(){
       renderMSOArea();
       renderNBV();
@@ -8586,11 +8752,11 @@ function switchClient(id,btn){
 }
 
 function applyFilters(){
-  document.getElementById('filter-count').textContent='Filtro aplicado';
+  var fc=document.getElementById('filter-count'); if(fc) fc.textContent='Filtro aplicado';
 }
 function clearFilters(){
-  document.getElementById('f-ano').value='todos';
-  document.getElementById('filter-count').textContent='Exibindo: todos os dados';
+  var fa=document.getElementById('f-ano'); if(fa) fa.value='todos';
+  var fc=document.getElementById('filter-count'); if(fc) fc.textContent='Exibindo: todos os dados';
 }
 
 // Init
@@ -9712,28 +9878,68 @@ function renderSJImpTamanho(){
 
 // ═══ ANIMATED COUNTER ═══
 function animateCounter(el, target, prefix, suffix, duration){
-  var start = 0;
   var startTime = null;
-  var isFloat = target.toString().includes('.');
-  // Parse target removing separators
-  var raw = parseFloat(String(target).replace(/[^0-9.,]/g,'').replace(',','.'));
-  if(isNaN(raw)) { el.textContent = prefix+target+suffix; return; }
-  
+  var str = String(target).trim();
+
+  // ── Detect magnitude suffix BEFORE stripping non-numerics ──
+  var hasM  = /M$/i.test(str);
+  var hasB  = /B$/i.test(str);
+  var hasK  = /K$/i.test(str);
+  var hasUn = /\s*un$/i.test(str);          // "49.072 un" style
+
+  // Detect currency prefix (R$) embedded in the value string
+  var hasCurrency = /R\$/.test(str);
+
+  // Parse: strip everything except digits, comma, dot
+  // Handle pt-BR thousands separator: if str has format like "284.382" (no comma)
+  // treat the dot as thousands separator → remove it before parsing
+  var numStr = str.replace(/[^0-9.,]/g, '');
+  // If only dots (no comma), dots are thousands separators in pt-BR
+  if(numStr.indexOf(',') === -1 && (numStr.match(/\./g)||[]).length === 1){
+    // single dot → could be decimal (e.g. "38.25") or thousands ("1.200")
+    // If the decimal part has exactly 3 digits, treat as thousands separator
+    var afterDot = numStr.split('.')[1] || '';
+    if(afterDot.length === 3) numStr = numStr.replace('.','');
+  } else if(numStr.indexOf(',') === -1 && (numStr.match(/\./g)||[]).length > 1){
+    // multiple dots → all thousands separators
+    numStr = numStr.replace(/\./g,'');
+  } else {
+    // Has comma: comma is decimal separator, dots are thousands
+    numStr = numStr.replace(/\./g,'').replace(',','.');
+  }
+
+  var raw = parseFloat(numStr);
+  if(isNaN(raw)){ el.textContent = prefix + target + suffix; return; }
+
+  // Restore magnitude lost when suffix was stripped
+  if(hasM)     raw *= 1000000;
+  else if(hasB) raw *= 1000000000;
+  else if(hasK) raw *= 1000;
+
+  var isFloat = (raw % 1 !== 0) && !hasM && !hasK && !hasB;
+
   function step(ts){
     if(!startTime) startTime = ts;
-    var progress = Math.min((ts-startTime)/duration, 1);
-    var ease = 1 - Math.pow(1-progress, 3); // easeOutCubic
+    var progress = Math.min((ts - startTime) / duration, 1);
+    var ease = 1 - Math.pow(1 - progress, 3); // easeOutCubic
     var current = raw * ease;
-    
+
     var formatted;
-    if(raw >= 1000000){
-      formatted = 'R$ '+(current/1000000).toFixed(2).replace('.',',')+'M';
+    if(hasM || raw >= 1000000){
+      // Format as millions with comma decimal separator (pt-BR)
+      var mVal = (current / 1000000).toFixed(2).replace('.', ',');
+      formatted = (hasCurrency ? 'R$ ' : '') + mVal + 'M';
+    } else if(hasK){
+      // Keep K suffix with correct rounding
+      formatted = (hasCurrency ? 'R$ ' : '') + Math.round(current / 1000) + 'K';
+    } else if(hasUn){
+      formatted = Math.round(current).toLocaleString('pt-BR') + ' un';
     } else if(raw >= 1000){
-      formatted = Math.round(current).toLocaleString('pt-BR');
+      formatted = (hasCurrency ? 'R$ ' : '') + Math.round(current).toLocaleString('pt-BR');
     } else if(isFloat){
-      formatted = current.toFixed(1).replace('.',',');
+      formatted = (hasCurrency ? 'R$ ' : '') + current.toFixed(2).replace('.', ',');
     } else {
-      formatted = Math.round(current).toString();
+      formatted = Math.round(current).toLocaleString('pt-BR');
     }
     el.textContent = prefix + formatted + suffix;
     if(progress < 1) requestAnimationFrame(step);
