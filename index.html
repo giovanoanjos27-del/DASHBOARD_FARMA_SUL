@@ -546,12 +546,12 @@ canvas{max-width:100% !important;}
     <div style="display:flex;gap:8px;flex-wrap:wrap;" id="sellin-filter-btns">
       <button class="tgl active" style="background:rgba(52,211,153,0.15);color:#34d399;border-color:rgba(52,211,153,0.4);" onclick="setSellinFilter('todos',this)">Todos</button>
       <button class="tgl" onclick="setSellinFilter('São João',this)">São João</button>
-      <button class="tgl" onclick="setSellinFilter('Gaucha Farma',this)">DD-Gaúcha</button>
-      <button class="tgl" onclick="setSellinFilter('Dimed/Panvel',this)">Panvel</button>
-      <button class="tgl" onclick="setSellinFilter('GAM',this)">DD-GAM</button>
+      <button class="tgl" onclick="setSellinFilter('DD-Gaúcha',this)">DD-Gaúcha</button>
+      <button class="tgl" onclick="setSellinFilter('Panvel',this)">Panvel</button>
+      <button class="tgl" onclick="setSellinFilter('DD-GAM',this)">DD-GAM</button>
       <button class="tgl" onclick="setSellinFilter('Nissei',this)">Nissei</button>
-      <button class="tgl" onclick="setSellinFilter('Riomed',this)">DD-Riomed</button>
-      <button class="tgl" onclick="setSellinFilter('CLAMED',this)">Clamed</button>
+      <button class="tgl" onclick="setSellinFilter('DD-Riomed',this)">DD-Riomed</button>
+      <button class="tgl" onclick="setSellinFilter('Clamed',this)">Clamed</button>
     </div>
   </div>
 
@@ -561,7 +561,7 @@ canvas{max-width:100% !important;}
   <!-- GRÁFICO GERAL -->
   <div class="card full" style="margin-bottom:14px;">
     <div class="card-header">
-      <div><div class="card-title">Meta BI × Real Acumulado — por Cliente</div><div class="card-sub">Caixas · FY26 acumulado até Fev/26</div></div>
+      <div><div class="card-title">Meta BI × Real Acumulado — por Cliente</div><div class="card-sub">Caixas · FY26 acumulado Jul–Abr</div></div>
       <div class="toggle-group">
         <button class="tgl active blue" onclick="setSellinChartMode('abs',this)">Caixas</button>
         <button class="tgl" onclick="setSellinChartMode('pct',this)">% vs Meta</button>
@@ -570,6 +570,37 @@ canvas{max-width:100% !important;}
       </div>
     </div>
     <div style="position:relative;height:280px;"><canvas id="sellin-bar-geral"></canvas></div>
+  </div>
+
+
+  <!-- ═══ EVOLUÇÃO MENSAL + RESUMO POR CLIENTE ═══ -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;" id="sellin-bottom-cards">
+    <!-- Evolução mensal -->
+    <div class="card full" style="margin-bottom:0;">
+      <div class="card-header">
+        <div>
+          <div class="card-title">Evolução mensal — Real × Meta (Caixas)</div>
+          <div class="card-sub">JUL/25 → JUN/26 · todos os clientes</div>
+        </div>
+        <div class="toggle-group" id="sellin-mensal-toggles">
+          <button class="tgl active blue" onclick="toggleSellinMensalSerie('real',this)"    style="font-size:9px;padding:3px 9px;border-left:3px solid #34d399;">Real</button>
+          <button class="tgl active blue" onclick="toggleSellinMensalSerie('meta',this)"    style="font-size:9px;padding:3px 9px;border-left:3px solid #fbbf24;">Meta BI</button>
+          <button class="tgl"             onclick="toggleSellinMensalSerie('plan',this)"    style="font-size:9px;padding:3px 9px;border-left:3px solid #38bdf8;">Planejado</button>
+          <button class="tgl"             onclick="toggleSellinMensalSerie('hist',this)"    style="font-size:9px;padding:3px 9px;border-left:3px solid rgba(255,255,255,0.3);">Histórico</button>
+        </div>
+      </div>
+      <div style="position:relative;height:240px;"><canvas id="sellin-mensal-chart"></canvas></div>
+    </div>
+    <!-- Resumo por cliente -->
+    <div class="card full" style="margin-bottom:0;">
+      <div class="card-header">
+        <div>
+          <div class="card-title">Resumo por cliente</div>
+        </div>
+        <span style="font-size:10px;color:#5a6478;">Acumulado FY26 vs Meta BI</span>
+      </div>
+      <div id="sellin-resumo-table" style="overflow-x:auto;"></div>
+    </div>
   </div>
 
   <!-- CARDS POR CLIENTE -->
@@ -1893,9 +1924,23 @@ canvas{max-width:100% !important;}
         <div class="toggle-group">
           <button class="tgl active blue" onclick="setCrossView('gam',this)">DD-GAM</button>
           <button class="tgl" onclick="setCrossView('gaucha',this)">DD-Gaúcha</button>
+          <button class="tgl" onclick="setCrossView('consolidated',this)" style="background:rgba(167,139,250,0.12);border-color:rgba(167,139,250,0.35);color:#a78bfa;">&#x2295; Consolidado</button>
         </div>
       </div>
       <div id="cons-cross-body"></div>
+    </div>
+
+
+    <!-- ⑧ ESTUDO ED NACIONAL — UNIVERSE IQVIA × SCJ BRASIL -->
+    <div class="card full" style="margin-bottom:14px;border-color:rgba(251,113,133,0.2);">
+      <div class="card-header">
+        <div>
+          <div style="font-size:10px;font-weight:700;letter-spacing:0.1em;color:#fb7185;margin-bottom:4px;">🌎 ESTUDO ED NACIONAL · UNIVERSE IQVIA × SCJ BRASIL</div>
+          <div class="card-title">CNPJs por UF — Quem tem Concorrente e ainda não compra SCJ?</div>
+          <div class="card-sub">Universe = 90.095 PDVs únicos nacionais · FY25 = Jul/24–Dez/24 · FY26 = Jul/25–Dez/25 · Fonte: IQVIA NielsenIQ</div>
+        </div>
+      </div>
+      <div id="iqvia-nac-body"></div>
     </div>
 
     <div class="dash-footer"><p>Fonte: DD-GAM + DD-Gaúcha · Sell-Out 2024–2026 · IQVIA Estudo ED Jul/24–Dez/25</p><p>Abril 2026</p></div>
@@ -3365,7 +3410,7 @@ const PV_LOJAS = [
   { nome:'Londrina 563/PR',       fev:4567,  mar:3719,  tot:8286,  rec_fev:173722, rec_mar:157891, rec_tot:331613 },
 ];
 
-const CL_LABELS = ['Mar/24','Abr/24','Mai/24','Jun/24','Jul/24','Ago/24','Set/24','Out/24','Nov/24','Dez/24','Jan/25','Fev/25','Mar/25','Abr/25','Mai/25','Jun/25','Jul/25','Ago/25','Set/25','Out/25','Nov/25','Dez/25','Jan/26','Fev/26','Mar/26'];
+const CL_LABELS = ['Mar/24','Abr/24','Mai/24','Jun/24','Jul/24','Ago/24','Set/24','Out/24','Nov/24','Dez/24','Jan/25','Fev/25','Mar/25','Abr/25','Mai/25','Jun/25','Jul/25','Ago/25','Set/25','Out/25','Nov/25','Dez/25','Jan/26','Fev/26','Mar/26','Abr/26'];
 
 const CL_REC_2024 = [null,null,538754,52823,531968,272797,117215,133417,230641,334266,415836,510005];
 const CL_VOL_2024 = [null,null,17053,1684,13770,7517,3017,3760,6630,9225,12046,15832];
@@ -3373,10 +3418,10 @@ const CL_VOL_2024 = [null,null,17053,1684,13770,7517,3017,3760,6630,9225,12046,1
 const CL_REC_2025 = [510439,498501,399891,251823,158624,41123,36059,41701,93547,144470,205482,515969];
 const CL_VOL_2025 = [16305,16063,13150,8259,5076,1322,1174,1393,3377,4942,7620,18690];
 // 2026 — Jan–Mar: receita calculada (ticket R$27,40) → R$ 1,12M
-const CL_REC_2026 = [388518,437812,292544,null,null,null,null,null,null,null,null,null];
-const CL_VOL_2026 = [14076,16389,10410,null,null,null,null,null,null,null,null,null];
+const CL_REC_2026 = [388518,437812,292544,181488,null,null,null,null,null,null,null,null];
+const CL_VOL_2026 = [14076,16389,10410,5092,null,null,null,null,null,null,null,null];
 
-const CL_VOL_MES = [17053,1684,13770,7517,3017,3760,6630,9225,12046,15832,16305,16063,13150,8259,5076,1322,1174,1393,3377,4942,7620,18690,14076,16389,10410];
+const CL_VOL_MES = [17053,1684,13770,7517,3017,3760,6630,9225,12046,15832,16305,16063,13150,8259,5076,1322,1174,1393,3377,4942,7620,18690,14076,16389,10410,5092];
 
 const CL_RANK = {
   total:[['OFF 200ML Locao',21360,'#3b82f6'],['OFF 170ML Spray',18253,'#60a5fa'],['OFF Kids 200ML',11776,'#818cf8'],['OFF 165ML Aero',4784,'#a78bfa'],['OFF Baby 117ML',3850,'#c084fc'],['EXPOSIS Gel Infantil',2096,'#34d399'],['EXPOSIS Spray Extreme',1584,'#2dd4bf'],['EXPOSIS Spray Infantil',1276,'#fb923c'],['EXPOSIS Elet AP+Refil',835,'#f472b6'],['OFF Toque Leve 100G',820,'#facc15']],
@@ -7130,6 +7175,19 @@ const CROSS_DATA = {
       'RS': {scj:4020,  cimed:3481,  rb:3714,  opp_c:1126, opp_r:1254, opp_val:341},
       'SC': {scj:3301,  cimed:2963,  rb:2694,  opp_c:1066, opp_r:970,  opp_val:194},
     }
+  },
+  consolidated: {
+    scj:24344, cimed:23403, rb:23518,
+    opp_cimed:9359, opp_rb:9368, opp_total:12550,
+    opp_val_bench:3.83, opp_val_padrao:0.26,
+    by_uf: {
+      'GO': {scj:2902,  cimed:2346,  rb:3126,  opp_c:1026, opp_r:1402, opp_val:297},
+      'MS': {scj:637,   cimed:883,   rb:763,   opp_c:536,  opp_r:428,  opp_val:174},
+      'PR': {scj:3683,  cimed:4042,  rb:3438,  opp_c:1860, opp_r:1559, opp_val:799},
+      'RS': {scj:4020,  cimed:3481,  rb:3714,  opp_c:1126, opp_r:1254, opp_val:341},
+      'SC': {scj:3301,  cimed:2963,  rb:2694,  opp_c:1066, opp_r:970,  opp_val:194},
+      'SP': {scj:9801,  cimed:9688,  rb:9783,  opp_c:3745, opp_r:3755, opp_val:2028},
+    }
   }
 };
 
@@ -7390,78 +7448,43 @@ function renderWSGAM(){
 
 /* ═══════════ SELL IN FARMA SUL ═══════════ */
 const SELLIN_DATA = [
-  {
-    nome:'São João', canal:'Rede',
-    label:'São João', cor:'#60a5fa', icon:'🏪',
-    hist:29814, plan:32064, meta:22007, real:21310, verba:662905,
-    hist_per:28502, cx_falt_hist:-7192,
+  { nome:'São João', label:'São João', cor:'#60a5fa', canal:'Rede', hist:29814, plan:32064, meta:22007, real:22009, hist_per:29814, verba:662905,
     hist_m:[1281,5598,1015,9960,5409,3435,497,915,317,75,533,779],
-    plan_m:[8500,0,0,10707,5814.675,3692.625,534.275,983.625,340.775,80.625,572.975,837.425],
+    plan_m:[8500,0,0,10707,5814,3692,534,983,340,80,572,837],
     meta_m:[1158,3483,1867,4226,3428,3967,1540,1253,1085,644,0,0],
-    real_m:[0,8132,3549,1659,1550,4571,1330,0,519,699,0,0]
-  },
-  {
-    nome:'DD-Gaúcha', canal:'Indireto',
-    label:'DD-Gaúcha', cor:'#f97316', icon:'🚛',
-    hist:24177, plan:25433, meta:12709, real:15244, verba:285636,
-    hist_per:23804, cx_falt_hist:-8560,
+    real_m:[0,8132,3549,1659,1550,4571,1330,0,519,699,0,0] },
+  { nome:'DD-Gaúcha', label:'DD-Gaúcha', cor:'#f97316', canal:'Indireto', hist:24177, plan:25433, meta:12709, real:15553, hist_per:24177, verba:285636,
     hist_m:[1441,11854,1041,765,2026,2293,1990,490,944,960,193,180],
-    plan_m:[15100,0,0,803.25,2127.3,2407.65,1576.3,2292.4,3700.4,182.6,1067,203.5],
+    plan_m:[15100,0,0,803,2127,2407,1576,2292,3700,182,1067,203],
     meta_m:[1707,2251,2213,1286,1096,1226,1023,1177,730,731,0,0],
-    real_m:[5094,2523,335,436,252,1102,1752,3585,165,0,0,0]
-  },
-  {
-    nome:'Panvel', canal:'Rede',
-    label:'Panvel', cor:'#38bdf8', icon:'💊',
-    hist:11158, plan:13177, meta:7865, real:10827, verba:690168,
-    hist_per:10003, cx_falt_hist:824,
+    real_m:[5094,2523,335,436,252,1102,1752,3585,165,309,0,0] },
+  { nome:'Panvel', label:'Panvel', cor:'#a78bfa', canal:'Rede', hist:11158, plan:13177, meta:7865, real:10827, hist_per:11158, verba:690168,
     hist_m:[997,0,0,826,482,651,1433,2084,3364,166,970,185],
-    plan_m:[500,500,1000,909,530,716,4576.95,1786.05,5865.3,976.5,106.05,990.15],
+    plan_m:[500,500,1000,909,530,716,4576,1786,5865,976,106,990],
     meta_m:[173,268,838,643,452,579,1769,2062,1081,731,0,0],
-    real_m:[0,0,1573,213,465,1744,3869,2265,698,0,0,0]
-  },
-  {
-    nome:'DD-GAM', canal:'Indireto',
-    label:'DD-GAM', cor:'#34d399', icon:'📦',
-    hist:36721, plan:38657, meta:23218, real:48615, verba:493402,
-    hist_per:35677, cx_falt_hist:12938,
+    real_m:[0,0,1573,213,465,1744,3869,2265,698,0,0,0] },
+  { nome:'DD-GAM', label:'DD-GAM', cor:'#34d399', canal:'Indireto', hist:36721, plan:38657, meta:23218, real:48615, hist_per:36721, verba:493402,
     hist_m:[0,10211,170,3536,5744,3440,4359,1701,5586,930,101,943],
-    plan_m:[0,11000,0,3713,6031.2,3612,0,929.875,791.2,531.05,851.4,247.25],
+    plan_m:[0,11000,0,3713,6031,3612,0,929,791,531,851,247],
     meta_m:[1539,1803,2293,3122,2495,2954,3125,3690,2197,1449,0,0],
-    real_m:[0,5256,7808,7258,5620,3096,11589,5598,2390,0,0,0]
-  },
-  {
-    nome:'Nissei', canal:'Rede',
-    label:'Nissei', cor:'#a78bfa', icon:'🏬',
-    hist:9805, plan:10540, meta:4931, real:10723, verba:414000,
-    hist_per:8783, cx_falt_hist:1940,
+    real_m:[0,5256,7808,7258,5620,3096,11589,5598,2390,0,0,0] },
+  { nome:'Nissei', label:'Nissei', cor:'#a78bfa', canal:'Rede', hist:9805, plan:10540, meta:4931, real:10723, hist_per:9805, verba:414000,
     hist_m:[0,0,3831,593,1133,1131,0,865,736,494,792,230],
-    plan_m:[0,4118,0,637,1218,1216,24.15,12.6,0,202.65,396.9,0],
+    plan_m:[0,4118,0,637,1218,1216,24,12,0,202,396,0],
     meta_m:[523,699,699,653,572,644,412,472,257,698,0,0],
-    real_m:[0,3490,2145,1476,1170,90,2242,54,56,0,0,0]
-  },
-  {
-    nome:'DD-Riomed', canal:'Indireto',
-    label:'DD-Riomed', cor:'#fb7185', icon:'🏭',
-    hist:7100, plan:7482, meta:3518, real:6332, verba:200479,
-    hist_per:6722, cx_falt_hist:-390,
+    real_m:[0,3490,2145,1476,1170,90,2242,54,56,0,0,0] },
+  { nome:'DD-Riomed', label:'DD-Riomed', cor:'#fb7185', canal:'Indireto', hist:7100, plan:7482, meta:3518, real:6332, hist_per:7100, verba:200479,
     hist_m:[0,1852,2884,1758,0,0,23,12,0,193,378,0],
-    plan_m:[0,5000,0,1845.9,0,0,0,313.95,0,0,0,0],
+    plan_m:[0,5000,0,1845,0,0,0,313,0,0,0,0],
     meta_m:[713,899,724,357,309,347,43,71,55,333,0,0],
-    real_m:[0,3743,296,0,1650,238,0,0,405,0,0,0]
-  },
-  {
-    nome:'Clamed', canal:'Rede',
-    label:'Clamed', cor:'#fbbf24', icon:'⭐',
-    hist:7646, plan:8411, meta:3535, real:5135, verba:125250,
-    hist_per:7945, cx_falt_hist:-2810,
+    real_m:[0,3743,296,0,1650,238,0,0,405,0,0,0] },
+  { nome:'Clamed', label:'Clamed', cor:'#fbbf24', canal:'Rede', hist:7646, plan:8411, meta:3535, real:5135, hist_per:7646, verba:125250,
     hist_m:[0,0,7456,190,0,0,0,299,0,0,0,0],
     plan_m:[0,0,8202,209,0,0,0,0,0,0,0,0],
     meta_m:[995,1261,906,54,44,51,7,85,132,104,0,0],
-    real_m:[0,0,4731,80,0,24,300,0,0,0,0,0]
-  }
+    real_m:[0,0,4731,80,0,24,300,0,0,0,0,0] }
 ];const SELLIN_MONTHS = ['JUL','AGO','SET','OUT','NOV','DEZ','JAN','FEV','MAR','ABR','MAI','JUN'];
-const SELLIN_TOTAL = {hist:128648, plan:138172, meta:78945, real:118426, hist_per:120546, cres_hist:-1.8, cres_meta:50.0, cx_falt:-2120};
+const SELLIN_TOTAL = {hist:126421, plan:135764, meta:77783, real:119194, hist_per:126421, cres_hist:-5.7, cres_meta:53.2, cx_falt:-41411};
 var VERBAS_TOTAL = 2871840;
 
 var sellinFilter  = 'todos';
@@ -7469,11 +7492,98 @@ var sellinMode    = 'abs';
 var sellinCharts  = {};
 var sellinInit    = false;
 
+
+var _sellinMensalSeries = {real:true, meta:true, plan:false, hist:false};
+
+function toggleSellinMensalSerie(key, btn){
+  _sellinMensalSeries[key] = !_sellinMensalSeries[key];
+  btn.classList.toggle('active');
+  btn.classList.toggle('blue');
+  renderSellinMensalChart();
+}
+
+function renderSellinMensalChart(){
+  var GC='rgba(255,255,255,0.05)', TC='#4a6b65';
+  var CO={backgroundColor:'#0a1a18',titleColor:'#e2e8f0',bodyColor:'#8b95a8',borderColor:'rgba(255,255,255,0.08)',borderWidth:1,padding:10};
+  var months = SELLIN_MONTHS;
+  var totalReal = months.map(function(_,i){ return SELLIN_DATA.reduce(function(s,d){ return s+(d.real_m[i]||0); },0); });
+  var totalMeta = months.map(function(_,i){ return SELLIN_DATA.reduce(function(s,d){ return s+(d.meta_m[i]||0); },0); });
+  var totalPlan = months.map(function(_,i){ return SELLIN_DATA.reduce(function(s,d){ return s+(d.plan_m[i]||0); },0); });
+  var totalHist = months.map(function(_,i){ return SELLIN_DATA.reduce(function(s,d){ return s+(d.hist_m[i]||0); },0); });
+
+  var datasets = [];
+  if(_sellinMensalSeries.hist)
+    datasets.push({label:'Histórico FY25', data:totalHist, backgroundColor:'rgba(255,255,255,0.12)', borderColor:'rgba(255,255,255,0.3)', borderWidth:1.5, borderRadius:3, order:5});
+  if(_sellinMensalSeries.plan)
+    datasets.push({label:'Planejado', data:totalPlan, type:'line', borderColor:'#38bdf8', backgroundColor:'rgba(56,189,248,0.08)', borderWidth:2, pointRadius:3, pointBackgroundColor:'#38bdf8', fill:false, tension:0.3, order:3});
+  if(_sellinMensalSeries.real)
+    datasets.push({label:'Real', data:totalReal, backgroundColor:'rgba(52,211,153,0.65)', borderColor:'#34d399', borderWidth:1.5, borderRadius:3, order:2});
+  if(_sellinMensalSeries.meta)
+    datasets.push({label:'Meta BI', data:totalMeta, type:'line', borderColor:'#fbbf24', backgroundColor:'rgba(251,191,36,0.1)', borderWidth:2.5, pointRadius:3, pointBackgroundColor:'#fbbf24', fill:false, tension:0.3, order:1});
+
+  var c = document.getElementById('sellin-mensal-chart');
+  if(!c) return;
+  if(c._chart) c._chart.destroy();
+  c._chart = new Chart(c, {
+    type:'bar',
+    data:{ labels: months, datasets: datasets },
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{
+        legend:{display:true,position:'top',labels:{color:'#7aa89e',font:{size:9},boxWidth:10}},
+        tooltip:{...CO,mode:'index',intersect:false,callbacks:{label:function(c){return ' '+c.dataset.label+': '+c.raw.toLocaleString('pt-BR');}}}
+      },
+      scales:{
+        x:{grid:{color:GC},ticks:{color:'#e2e8f0',font:{size:10}}},
+        y:{grid:{color:GC},ticks:{color:TC,font:{size:9},callback:function(v){return v.toLocaleString('pt-BR');}}}
+      }
+    }
+  });
+}
+
+function renderSellinResumoTable(){
+  var el = document.getElementById('sellin-resumo-table');
+  if(!el) return;
+  var rows = SELLIN_DATA.map(function(d){
+    var ating = d.meta>0 ? (d.real/d.meta*100).toFixed(1) : '—';
+    var vsPlan = d.plan>0 ? ((d.real/d.plan-1)*100).toFixed(1) : '—';
+    var vsHist = d.hist_per>0 ? ((d.real/d.hist_per-1)*100).toFixed(1) : '—';
+    var atingNum = d.meta>0 ? d.real/d.meta*100 : 0;
+    var vsPlanNum = d.plan>0 ? (d.real/d.plan-1)*100 : 0;
+    var vsHistNum = d.hist_per>0 ? (d.real/d.hist_per-1)*100 : 0;
+    var cA = atingNum>=100?'#34d399':'#fb7185';
+    var cP = vsPlanNum>=0?'#34d399':'#fb7185';
+    var cH = vsHistNum>=0?'#34d399':'#fb7185';
+    return '<tr style="border-bottom:0.5px solid rgba(255,255,255,0.05);">'
+      +'<td style="padding:10px 8px;font-weight:700;color:'+d.cor+';">'+d.nome+'</td>'
+      +'<td style="padding:10px 8px;color:#5a6478;font-size:10px;">'+d.canal+'</td>'
+      +'<td style="padding:10px 8px;text-align:right;color:#fbbf24;font-weight:600;">'+d.meta.toLocaleString('pt-BR')+'</td>'
+      +'<td style="padding:10px 8px;text-align:right;color:#34d399;font-weight:700;">'+d.real.toLocaleString('pt-BR')+'</td>'
+      +'<td style="padding:10px 8px;text-align:right;font-weight:700;color:'+cA+';">'+ating+'%</td>'
+      +'<td style="padding:10px 8px;text-align:right;color:'+cP+';">'+(vsPlanNum>=0?'+':'')+vsPlan+'%</td>'
+      +'<td style="padding:10px 8px;text-align:right;color:'+cH+';">'+(vsHistNum>=0?'+':'')+vsHist+'%</td>'
+    +'</tr>';
+  }).join('');
+  el.innerHTML = '<table style="width:100%;border-collapse:collapse;font-size:11px;">'
+    +'<thead><tr style="color:#5a6478;border-bottom:1px solid rgba(255,255,255,0.1);font-size:10px;font-weight:700;">'
+    +'<th style="padding:8px;text-align:left;">CLIENTE</th>'
+    +'<th style="padding:8px;text-align:left;">CANAL</th>'
+    +'<th style="padding:8px;text-align:right;">META BI</th>'
+    +'<th style="padding:8px;text-align:right;">REAL</th>'
+    +'<th style="padding:8px;text-align:right;">% ATING</th>'
+    +'<th style="padding:8px;text-align:right;">VS PLAN</th>'
+    +'<th style="padding:8px;text-align:right;">VS HIST</th>'
+    +'</tr></thead>'
+    +'<tbody>'+rows+'</tbody>'
+    +'</table>';
+}
+
 function initSellin(){
   if(sellinInit) return;
   sellinInit = true;
   renderSellinKPIs();
   renderSellinBarGeral();
+  renderSellinMensalChart();
+  renderSellinResumoTable();
   renderSellinCards();
   renderSellinVerbas();
 }
@@ -8012,7 +8122,11 @@ function renderOLDiag(area){
         +'<div class="card-title">Análise de Performance & Oportunidades</div>'
         +'<div class="card-sub">Share · Positivação · Valor Próprio · Categoria · Jul/24–Dez/25</div>'
       +'</div>'
-      +'<div style="display:flex;gap:8px;">'
+      +'<div style="display:flex;gap:8px;align-items:center;">'
+        +'<div class="toggle-group" style="display:flex;gap:4px;">'
+          +'<button class="tgl'+(area==='prsc'?' active blue':'')+'" onclick="setOLView(\'prsc\',this)" style="font-size:10px;padding:4px 10px;">OL PR/SC</button>'
+          +'<button class="tgl'+(area==='rs'?' active blue':'')+'" onclick="setOLView(\'rs\',this)" style="font-size:10px;padding:4px 10px;">OL RS</button>'
+        +'</div>'
         +'<span style="padding:4px 12px;border-radius:6px;font-size:10px;font-weight:700;background:rgba(52,211,153,0.1);color:#34d399;border:0.5px solid rgba(52,211,153,0.3);">Share: '+d.shareAtual+'%</span>'
         +'<span style="padding:4px 12px;border-radius:6px;font-size:10px;font-weight:700;background:'+(d.shareVar>=0?'rgba(52,211,153,0.1)':'rgba(251,113,133,0.1)')+';color:'+(d.shareVar>=0?'#34d399':'#fb7185')+';border:0.5px solid '+(d.shareVar>=0?'rgba(52,211,153,0.3)':'rgba(251,113,133,0.3)')+';">'+(d.shareVar>=0?'▲ +':'▼ ')+Math.abs(d.shareVar).toFixed(1)+'pp</span>'
       +'</div>'
@@ -8745,14 +8859,231 @@ function setCrossView(v, btn){
   renderConsCrossover();
 }
 
+
+/* ═══════════ ESTUDO ED NACIONAL — render functions ═══════════ */
+var _iqviaNacCharts = {};
+
+function setIqviaNacView(mode, btn){
+  iqviaNacViewMode = mode;
+  btn.closest('.toggle-group').querySelectorAll('.tgl').forEach(function(b){b.classList.remove('active','blue');});
+  btn.classList.add('active','blue');
+  renderIqviaNacional();
+}
+
+function renderIqviaNacional(){
+  var el = document.getElementById('iqvia-nac-body');
+  if(!el) return;
+  var d = IQVIA_NACIONAL;
+  var GC='rgba(255,255,255,0.05)', TC='#4a6b65';
+  var CO={backgroundColor:'#0a1a18',titleColor:'#e2e8f0',bodyColor:'#8b95a8',borderColor:'rgba(255,255,255,0.08)',borderWidth:1,padding:10};
+
+  var pct_scj   = Math.round(d.scj_fy26 / d.universe * 100);
+  var pct_opp   = Math.round(d.opp_total / d.universe * 100);
+  var pct_recon = Math.round(d.opp_reconquista / d.opp_total * 100);
+  var pct_novos = Math.round(d.opp_novos / d.opp_total * 100);
+
+  /* ── KPIs ── */
+  var kpis = [
+    {l:'Universe Brasil',       v:d.universe.toLocaleString('pt-BR'),          s:'Total PDVs únicos nacionais',             ac:'#38bdf8'},
+    {l:'SCJ FY26 (Jul–Dez/25)', v:d.scj_fy26.toLocaleString('pt-BR'),          s:pct_scj+'% do universe positivado',        ac:'#34d399'},
+    {l:'SCJ FY25 (Jul–Dez/24)', v:'0',                                          s:'SCJ ainda não atuava neste canal',        ac:'#5a6478'},
+    {l:'CIMED FY26',            v:d.cimed_fy26.toLocaleString('pt-BR'),         s:'vs FY25: '+(d.cimed_fy26-d.cimed_fy25).toLocaleString('pt-BR')+' PDVs', ac:'#3b82f6'},
+    {l:'Reckitt FY26',          v:d.rb_fy26.toLocaleString('pt-BR'),            s:'vs FY25: '+(d.rb_fy26-d.rb_fy25).toLocaleString('pt-BR')+' PDVs',    ac:'#f97316'},
+    {l:'🎯 Oportunidade SCJ',   v:d.opp_total.toLocaleString('pt-BR'),          s:pct_opp+'% — sem SCJ com concorrente ativo', ac:'#fb7185', alert:true},
+    {l:'Reconquista',           v:d.opp_reconquista.toLocaleString('pt-BR'),    s:'Compraram FY25, pararam FY26',            ac:'#a78bfa'},
+    {l:'Novos PDVs',            v:d.opp_novos.toLocaleString('pt-BR'),          s:'Nunca compraram SCJ',                     ac:'#fbbf24'},
+  ];
+  var kpiHtml = '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px;">'
+    + kpis.slice(0,4).map(function(k){
+      return '<div style="background:rgba(0,0,0,0.28);border-radius:10px;padding:14px;border-top:2px solid '+k.ac+(k.alert?';box-shadow:0 0 14px '+k.ac+'33':'')+'">'
+        +'<div style="font-size:9px;font-weight:700;letter-spacing:0.1em;color:#3d6b63;margin-bottom:6px;">'+k.l+'</div>'
+        +'<div style="font-size:20px;font-weight:800;color:'+k.ac+';line-height:1;letter-spacing:-0.3px;">'+k.v+'</div>'
+        +'<div style="font-size:10px;color:#5a6478;margin-top:4px;">'+k.s+'</div>'
+      +'</div>';
+    }).join('') +'</div>'
+    +'<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px;">'
+    + kpis.slice(4).map(function(k){
+      return '<div style="background:rgba(0,0,0,0.28);border-radius:10px;padding:14px;border-top:2px solid '+k.ac+(k.alert?';box-shadow:0 0 14px '+k.ac+'33':'')+'">'
+        +'<div style="font-size:9px;font-weight:700;letter-spacing:0.1em;color:#3d6b63;margin-bottom:6px;">'+k.l+'</div>'
+        +'<div style="font-size:20px;font-weight:800;color:'+k.ac+';line-height:1;letter-spacing:-0.3px;">'+k.v+'</div>'
+        +'<div style="font-size:10px;color:#5a6478;margin-top:4px;">'+k.s+'</div>'
+      +'</div>';
+    }).join('') +'</div>';
+
+  /* ── Barra Universe ── */
+  var barHtml = '<div style="background:rgba(0,0,0,0.2);border-radius:10px;padding:16px;margin-bottom:16px;border:0.5px solid rgba(56,189,248,0.15);">'
+    +'<div style="font-size:10px;font-weight:700;letter-spacing:0.1em;color:#38bdf8;margin-bottom:10px;">📊 COMPOSIÇÃO DO UNIVERSE NACIONAL — '+d.universe.toLocaleString('pt-BR')+' PDVs únicos · 27 UFs · Jul–Dez</div>'
+    +'<div style="display:flex;height:26px;border-radius:6px;overflow:hidden;margin-bottom:8px;">'
+      +'<div style="width:'+pct_scj+'%;background:rgba(52,211,153,0.7);display:flex;align-items:center;justify-content:center;">'
+        +'<span style="font-size:10px;font-weight:700;color:#0a1a18;">SCJ '+pct_scj+'%</span></div>'
+      +'<div style="flex:1;background:rgba(251,113,133,0.6);display:flex;align-items:center;justify-content:center;">'
+        +'<span style="font-size:10px;font-weight:700;color:#0a1a18;">Oport. '+pct_opp+'%</span></div>'
+    +'</div>'
+    +'<div style="display:flex;gap:20px;font-size:10px;color:#5a6478;flex-wrap:wrap;">'
+      +'<span><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:#34d399;margin-right:4px;"></span>'+d.scj_fy26.toLocaleString('pt-BR')+' PDVs já compram SCJ FY26</span>'
+      +'<span><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:#fb7185;margin-right:4px;"></span>'+d.opp_total.toLocaleString('pt-BR')+' PDVs sem SCJ → <strong style="color:#fb7185;">OPORTUNIDADE</strong></span>'
+      +'<span><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:#a78bfa;margin-right:4px;"></span>'+d.opp_reconquista.toLocaleString('pt-BR')+' reconquista (compraram FY25)</span>'
+      +'<span><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:#fbbf24;margin-right:4px;"></span>'+d.opp_novos.toLocaleString('pt-BR')+' novos PDVs</span>'
+    +'</div>'
+  +'</div>';
+
+  /* ── Gráficos ── */
+  var chartsHtml = '<div style="display:grid;grid-template-columns:1.8fr 1fr;gap:14px;margin-bottom:16px;">'
+    +'<div style="background:rgba(0,0,0,0.18);border-radius:10px;padding:14px;">'
+      +'<div style="font-size:10px;font-weight:700;letter-spacing:0.1em;color:#fb7185;margin-bottom:10px;">TOP OPORTUNIDADES POR UF — CNPJs sem SCJ FY26</div>'
+      +'<div style="position:relative;height:260px;"><canvas id="iqvia-nac-bar-opp"></canvas></div>'
+    +'</div>'
+    +'<div style="background:rgba(0,0,0,0.18);border-radius:10px;padding:14px;">'
+      +'<div style="font-size:10px;font-weight:700;letter-spacing:0.1em;color:#a78bfa;margin-bottom:10px;">PRIORIDADE DE ATIVAÇÃO</div>'
+      +'<div style="position:relative;height:260px;"><canvas id="iqvia-nac-pie-prio"></canvas></div>'
+    +'</div>'
+  +'</div>'
+  +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px;">'
+    +'<div style="background:rgba(0,0,0,0.18);border-radius:10px;padding:14px;">'
+      +'<div style="font-size:10px;font-weight:700;letter-spacing:0.1em;color:#38bdf8;margin-bottom:10px;">POSITIVAÇÃO SCJ × CIMED × RB — FY26 por UF (Top 10)</div>'
+      +'<div style="position:relative;height:220px;"><canvas id="iqvia-nac-bar-comp"></canvas></div>'
+    +'</div>'
+    +'<div style="background:rgba(0,0,0,0.18);border-radius:10px;padding:14px;">'
+      +'<div style="font-size:10px;font-weight:700;letter-spacing:0.1em;color:#fbbf24;margin-bottom:10px;">FY25 vs FY26 — VARIAÇÃO CIMED e RB</div>'
+      +'<div style="position:relative;height:220px;"><canvas id="iqvia-nac-bar-fy"></canvas></div>'
+    +'</div>'
+  +'</div>';
+
+  /* ── Tabela UF ── */
+  var prioColor = {'CRITICA':'#fb7185','ALTA':'#f97316','MEDIA':'#fbbf24','BAIXA':'#38bdf8'};
+  var ufs = Object.keys(d.by_uf);
+  var tableRows = ufs.map(function(uf){
+    var u = d.by_uf[uf];
+    var pct = Math.round(u.scj26/u.pdvs*100);
+    var col = prioColor[u.prio] || '#8b95a8';
+    return '<tr style="border-bottom:0.5px solid rgba(255,255,255,0.04);">'
+      +'<td style="padding:7px 8px;font-weight:700;color:#e2e8f0;">'+uf+'</td>'
+      +'<td style="padding:7px 8px;text-align:right;color:#38bdf8;font-weight:700;">'+u.pdvs.toLocaleString('pt-BR')+'</td>'
+      +'<td style="padding:7px 8px;text-align:right;color:#5a6478;">0</td>'
+      +'<td style="padding:7px 8px;text-align:right;color:#34d399;font-weight:700;">'+u.scj26.toLocaleString('pt-BR')+'</td>'
+      +'<td style="padding:7px 8px;text-align:right;color:#3b82f6;">'+u.cimed26.toLocaleString('pt-BR')+'</td>'
+      +'<td style="padding:7px 8px;text-align:right;color:#f97316;">'+u.rb26.toLocaleString('pt-BR')+'</td>'
+      +'<td style="padding:7px 8px;text-align:right;color:#fb7185;font-weight:700;">'+u.opp.toLocaleString('pt-BR')+'</td>'
+      +'<td style="padding:7px 8px;text-align:right;color:#a78bfa;">'+u.recon.toLocaleString('pt-BR')+'</td>'
+      +'<td style="padding:7px 8px;text-align:right;color:#fbbf24;">'+u.novos.toLocaleString('pt-BR')+'</td>'
+      +'<td style="padding:7px 8px;">'
+        +'<span style="padding:2px 7px;border-radius:4px;font-size:9px;font-weight:700;background:'+col+'18;color:'+col+';border:0.5px solid '+col+'44;">'+u.prio+'</span>'
+      +'</td>'
+      +'<td style="padding:7px 8px;">'
+        +'<div style="display:flex;align-items:center;gap:5px;">'
+          +'<div style="background:rgba(52,211,153,0.12);border-radius:3px;height:7px;width:60px;overflow:hidden;">'
+            +'<div style="height:100%;border-radius:3px;background:#34d399;width:'+Math.min(100,pct)+'%;"></div>'
+          +'</div>'
+          +'<span style="color:#34d399;font-size:10px;font-weight:700;">'+pct+'%</span>'
+        +'</div>'
+      +'</td>'
+    +'</tr>';
+  }).join('');
+
+  var tableHtml = '<div style="overflow-x:auto;">'
+    +'<table style="width:100%;border-collapse:collapse;font-size:11px;min-width:780px;">'
+    +'<thead><tr style="color:#5a6478;border-bottom:1px solid rgba(255,255,255,0.1);font-size:10px;">'
+    +'<th style="padding:8px;text-align:left;">UF</th>'
+    +'<th style="padding:8px;text-align:right;color:#38bdf8;">Universe</th>'
+    +'<th style="padding:8px;text-align:right;color:#5a6478;">SCJ FY25</th>'
+    +'<th style="padding:8px;text-align:right;color:#34d399;">SCJ FY26</th>'
+    +'<th style="padding:8px;text-align:right;color:#3b82f6;">CIMED FY26</th>'
+    +'<th style="padding:8px;text-align:right;color:#f97316;">RB FY26</th>'
+    +'<th style="padding:8px;text-align:right;color:#fb7185;">Oportunidade</th>'
+    +'<th style="padding:8px;text-align:right;color:#a78bfa;">Reconquista</th>'
+    +'<th style="padding:8px;text-align:right;color:#fbbf24;">Novos PDVs</th>'
+    +'<th style="padding:8px;text-align:left;">Prioridade</th>'
+    +'<th style="padding:8px;text-align:right;color:#34d399;">Penetração</th>'
+    +'</tr></thead><tbody>'+tableRows+'</tbody></table></div>';
+
+  /* ── Insight ── */
+  var insightHtml = '<div style="margin-top:14px;padding:12px 16px;background:rgba(56,189,248,0.05);border-radius:10px;border-left:3px solid #38bdf8;font-size:11px;color:#8b95a8;line-height:1.9;">'
+    +'🌎 <strong style="color:#38bdf8;">Estudo ED Nacional:</strong> <strong style="color:#38bdf8;">'+d.universe.toLocaleString('pt-BR')+' CNPJs únicos</strong> mapeados no canal farma brasileiro. '
+    +'✅ SCJ entrou em <strong style="color:#34d399;">'+d.scj_fy26.toLocaleString('pt-BR')+' PDVs</strong> no FY26 ('+pct_scj+'% do universe) — partindo de zero no FY25. '
+    +'🚨 <strong style="color:#fb7185;">'+d.opp_total.toLocaleString('pt-BR')+' PDVs ainda sem SCJ</strong> representam a oportunidade real de expansão. '
+    +'🔄 <strong style="color:#a78bfa;">'+d.opp_reconquista.toLocaleString('pt-BR')+' reconquista</strong> (compraram FY25, pararam FY26) · <strong style="color:#fbbf24;">'+d.opp_novos.toLocaleString('pt-BR')+' novos PDVs</strong> nunca compraram SCJ. '
+    +'📊 Prioridade: CRÍTICA <strong style="color:#fb7185;">'+d.opp_alta.toLocaleString('pt-BR')+'</strong> · ALTA+MEDIA <strong style="color:#fbbf24;">'+(d.opp_media+d.opp_baixa).toLocaleString('pt-BR')+'</strong> PDVs.'
+    +'<br><span style="font-size:10px;color:#3d6b63;">Fonte: Estudo ED Giovano · IQVIA NielsenIQ · Período: Jul–Dez FY24 (FY25) vs Jul–Dez FY25 (FY26)</span>'
+  +'</div>';
+
+  el.innerHTML = kpiHtml + barHtml + chartsHtml + tableHtml + insightHtml;
+
+  /* ── Charts ── */
+  setTimeout(function(){
+    // Top opp por UF (ordenado desc)
+    var sorted = ufs.slice().sort(function(a,b){ return d.by_uf[b].opp - d.by_uf[a].opp; }).slice(0,15);
+    var c1 = document.getElementById('iqvia-nac-bar-opp');
+    if(c1){
+      if(_iqviaNacCharts.opp) _iqviaNacCharts.opp.destroy();
+      _iqviaNacCharts.opp = new Chart(c1,{type:'bar',
+        data:{labels:sorted,datasets:[
+          {label:'Oportunidade SCJ', data:sorted.map(function(u){return d.by_uf[u].opp;}),
+           backgroundColor:sorted.map(function(u){ var p=d.by_uf[u].prio; return p==='CRITICA'?'rgba(251,113,133,0.75)':p==='ALTA'?'rgba(249,115,22,0.65)':p==='MEDIA'?'rgba(251,191,36,0.6)':'rgba(56,189,248,0.5)';}),
+           borderColor:sorted.map(function(u){ var p=d.by_uf[u].prio; return p==='CRITICA'?'#fb7185':p==='ALTA'?'#f97316':p==='MEDIA'?'#fbbf24':'#38bdf8';}),
+           borderWidth:1.5,borderRadius:4},
+          {label:'Reconquista', data:sorted.map(function(u){return d.by_uf[u].recon;}),
+           backgroundColor:'rgba(167,139,250,0.5)',borderColor:'#a78bfa',borderWidth:1,borderRadius:4},
+        ]},
+        options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'top',labels:{color:'#7aa89e',font:{size:9},boxWidth:8}},tooltip:{...CO,mode:'index',intersect:false}},
+          scales:{x:{grid:{color:GC},ticks:{color:'#e2e8f0',font:{size:10}}},y:{grid:{color:GC},ticks:{color:TC,font:{size:9}}}}}});
+    }
+
+    // Prioridade donut
+    var c2 = document.getElementById('iqvia-nac-pie-prio');
+    if(c2){
+      if(_iqviaNacCharts.pie) _iqviaNacCharts.pie.destroy();
+      _iqviaNacCharts.pie = new Chart(c2,{type:'doughnut',
+        data:{labels:['CRÍTICA (3 marcas)','ALTA','MEDIA','BAIXA'],
+          datasets:[{data:[d.opp_alta,
+            ufs.reduce(function(s,u){return d.by_uf[u].prio==='ALTA'?s+d.by_uf[u].opp:s;},0),
+            ufs.reduce(function(s,u){return d.by_uf[u].prio==='MEDIA'?s+d.by_uf[u].opp:s;},0),
+            ufs.reduce(function(s,u){return d.by_uf[u].prio==='BAIXA'?s+d.by_uf[u].opp:s;},0)],
+            backgroundColor:['rgba(251,113,133,0.8)','rgba(249,115,22,0.75)','rgba(251,191,36,0.7)','rgba(56,189,248,0.6)'],
+            borderColor:['#fb7185','#f97316','#fbbf24','#38bdf8'],borderWidth:2}]},
+        options:{responsive:true,maintainAspectRatio:false,cutout:'62%',
+          plugins:{legend:{display:true,position:'bottom',labels:{color:'#7aa89e',font:{size:9},boxWidth:10,padding:8}},
+            tooltip:{...CO,callbacks:{label:function(c){return ' '+c.label+': '+c.raw.toLocaleString('pt-BR')+' PDVs';}}}}}});
+    }
+
+    // Comparação SCJ×CIMED×RB FY26 top 10 por universe
+    var top10 = ufs.slice().sort(function(a,b){ return d.by_uf[b].pdvs - d.by_uf[a].pdvs; }).slice(0,10);
+    var c3 = document.getElementById('iqvia-nac-bar-comp');
+    if(c3){
+      if(_iqviaNacCharts.comp) _iqviaNacCharts.comp.destroy();
+      _iqviaNacCharts.comp = new Chart(c3,{type:'bar',
+        data:{labels:top10,datasets:[
+          {label:'SCJ FY26',   data:top10.map(function(u){return d.by_uf[u].scj26;}),   backgroundColor:'rgba(52,211,153,0.65)', borderColor:'#34d399',borderWidth:1.5,borderRadius:3},
+          {label:'CIMED FY26', data:top10.map(function(u){return d.by_uf[u].cimed26;}), backgroundColor:'rgba(59,130,246,0.6)',  borderColor:'#3b82f6',borderWidth:1.5,borderRadius:3},
+          {label:'RB FY26',    data:top10.map(function(u){return d.by_uf[u].rb26;}),    backgroundColor:'rgba(249,115,22,0.6)',  borderColor:'#f97316',borderWidth:1.5,borderRadius:3},
+        ]},
+        options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'top',labels:{color:'#7aa89e',font:{size:9},boxWidth:8}},tooltip:{...CO,mode:'index',intersect:false}},
+          scales:{x:{grid:{color:GC},ticks:{color:'#e2e8f0',font:{size:9}}},y:{grid:{color:GC},ticks:{color:TC,font:{size:9}}}}}});
+    }
+
+    // FY25 vs FY26 nacional (CIMED e RB)
+    var c4 = document.getElementById('iqvia-nac-bar-fy');
+    if(c4){
+      if(_iqviaNacCharts.fy) _iqviaNacCharts.fy.destroy();
+      _iqviaNacCharts.fy = new Chart(c4,{type:'bar',
+        data:{labels:['SCJ','CIMED','Reckitt'],
+          datasets:[
+            {label:'FY25 (Jul–Dez/24)', data:[0, d.cimed_fy25, d.rb_fy25], backgroundColor:['rgba(90,100,120,0.6)','rgba(59,130,246,0.4)','rgba(249,115,22,0.4)'],borderColor:['#5a6478','#3b82f6','#f97316'],borderWidth:1.5,borderRadius:4},
+            {label:'FY26 (Jul–Dez/25)', data:[d.scj_fy26, d.cimed_fy26, d.rb_fy26], backgroundColor:['rgba(52,211,153,0.75)','rgba(59,130,246,0.75)','rgba(249,115,22,0.75)'],borderColor:['#34d399','#3b82f6','#f97316'],borderWidth:1.5,borderRadius:4},
+          ]},
+        options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'top',labels:{color:'#7aa89e',font:{size:9},boxWidth:8}},tooltip:{...CO,mode:'index',intersect:false,callbacks:{label:function(c){return ' '+c.dataset.label+': '+c.raw.toLocaleString('pt-BR')+' PDVs';}}}},
+          scales:{x:{grid:{color:GC},ticks:{color:'#e2e8f0',font:{size:11}}},y:{grid:{color:GC},ticks:{color:TC,font:{size:9},callback:function(v){return v>=1000?(v/1000).toFixed(0)+'K':v;}}}}}});
+    }
+  }, 100);
+}
+
 function renderConsCrossover(){
   var el = document.getElementById('cons-cross-body');
   if(!el) return;
   var d = CROSS_DATA[consCrossView];
   if(!d) return;
 
-  var label   = consCrossView === 'gam' ? 'DD-GAM' : 'DD-Gaúcha';
-  var acColor = consCrossView === 'gam' ? '#34d399' : '#f97316';
+  var label   = consCrossView === 'gam' ? 'DD-GAM' : consCrossView === 'gaucha' ? 'DD-Gaúcha' : 'Consolidado (GAM + Gaúcha)';
+  var acColor = consCrossView === 'gam' ? '#34d399' : consCrossView === 'gaucha' ? '#f97316' : '#a78bfa';
   var ufs     = Object.keys(d.by_uf);
 
   /* Universe = PDVs únicos com pelo menos 1 marca (SCJ ou concorrente)
@@ -8852,6 +9183,7 @@ function renderConsCrossover(){
     +' &nbsp;🚨 <strong style="color:#fb7185;">'+d.opp_total.toLocaleString('pt-BR')+' PDVs NÃO compram SCJ</strong> mas têm CIMED ou Reckitt ativo — são a <strong style="color:#fbbf24;">oportunidade real de venda</strong>.'
     +' &nbsp;💰 Potencial estimado: <strong style="color:#fbbf24;">R$ '+d.opp_val_bench.toFixed(2)+'M</strong> se SCJ penetrar esses PDVs.'
     +(topOpp ? ' &nbsp;📍 Maior oportunidade por estado: <strong style="color:'+acColor+';">'+topOpp+' (R$ '+d.by_uf[topOpp].opp_val+'K)</strong>.' : '')
+    +(consCrossView==='consolidated' ? ' &nbsp;<span style="color:#a78bfa;">GAM + Gaúcha · PR e SC deduplicados (mesmos CNPJs nos dois distribuidores).</span>' : '')
     +'<br><span style="font-size:10px;color:#3d6b63;">Fonte: IQVIA Estudo ED FY26 · Sell-Out SCJ Giovano FY26 · CNPJs únicos sem duplicatas entre marcas</span>'
     +'</div>';
 
@@ -11346,6 +11678,20 @@ const SJ_ESTOQUE = [
   {sku:"Off 100ml Locao Longa Duracao",marca:"OFF!",estoque:673,venda:282,cob:72,risco:"atencao"},
   {sku:"Exposis 100ml Ultra Suave S/PERFUME",marca:"EXPOSIS",estoque:3561,venda:236,cob:453,risco:"ok"},
   {sku:"Exposis 100ml Aero Extreme",marca:"EXPOSIS",estoque:2083,venda:214,cob:292,risco:"ok"},
+  /* ── RAID ── */
+  {sku:"Raid Liq 32,9ml Rfl 45 Noites Family 50%DESC 2*UN",  marca:"RAID",estoque:645, venda:334,cob:58, risco:"critico"},
+  {sku:"Raid Aero 420ml Aqua Protection Economica",           marca:"RAID",estoque:549, venda:302,cob:55, risco:"critico"},
+  {sku:"Raid Liq Refil 32,9ml 50%DESC 2*UN",                 marca:"RAID",estoque:403, venda:254,cob:48, risco:"critico"},
+  {sku:"Raid Aero 420ml Base Agua LV+ PG-",                  marca:"RAID",estoque:282, venda:238,cob:36, risco:"critico"},
+  {sku:"Raid Elet Liq 45 Noites + Refil 32,9ml",             marca:"RAID",estoque:164, venda:113,cob:44, risco:"critico"},
+  {sku:"Raid Inset Aero 420ml Essencial",                     marca:"RAID",estoque:67,  venda:32, cob:63, risco:"atencao"},
+  {sku:"Raid Elet Liq 45 Noites + Refil 32,9ml Family",      marca:"RAID",estoque:54,  venda:29, cob:56, risco:"critico"},
+  /* ── EXPOSIS (Kits Caroline → Isadora) ── */
+  {sku:"Exposis 100ml Gel",                                   marca:"EXPOSIS",estoque:3047,venda:210,cob:435,risco:"ok"},
+  {sku:"Kit Exposis Liq Casa 32,9ml Eletrico",               marca:"EXPOSIS",estoque:365, venda:155,cob:71, risco:"atencao"},
+  {sku:"Kit Exposis Gel+Inf 52ml S/Perfume",                 marca:"EXPOSIS",estoque:834, venda:65, cob:385,risco:"ok"},
+  {sku:"Kit Exposis Liq+Extreme 52ml S/Perfume",             marca:"EXPOSIS",estoque:869, venda:32, cob:815,risco:"ok"},
+  {sku:"Kit Exposis Gel+Gel Bebê 117g S/Perfume",            marca:"EXPOSIS",estoque:991, venda:13,cob:2288,risco:"ok"},
 ];
 
 var sjEstoqueView = 'barras';
@@ -11621,6 +11967,7 @@ function setOLView(v, btn){
   olView = v;
   if(btn){ btn.closest('.toggle-group').querySelectorAll('.tgl').forEach(function(b){b.classList.remove('active','blue');}); btn.classList.add('active','blue'); }
   renderOL();
+  renderOLDiag(v);
 }
 function setOLSort(s, btn){
   olSort = s;
@@ -12393,7 +12740,10 @@ function initCoberturaCharts(){
 
 function initCobertura(){
   cobInitialized = true;
-  setTimeout(initCoberturaCharts, 80);
+  setTimeout(function(){
+    initCoberturaCharts();
+    renderIqviaNacional();
+  }, 80);
 }
 
 function switchClient(id,btn){
@@ -13765,7 +14115,7 @@ function parseAndApplyExcel(file) {
       var hasSheet = function(n){ return wb.SheetNames.indexOf(n) >= 0; };
       var getRows  = function(n){ return XLSX.utils.sheet_to_json(wb.Sheets[n]); };
       var MESES_CAL = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
-      var MESES_SI  = ['JUL','AGO','SET','OUT','NOV','DEZ','JAN','FEV','MAR','ABR','MAI','JUN'];
+      var MESES_SI  = ['JUL_3','AGO_3','SET_3','OUT_3','NOV_3','DEZ_3','JAN_3','FEV_3','MAR_3','ABR_3','MAI_3','JUN_3']; /* _3 = 4ª col = Real FY26 */
       var toNum = function(v){ return (v === undefined || v === null || v === '') ? null : Number(v); };
 
       /* ══════════════════════════════════════════════════════════════════
@@ -14045,4 +14395,287 @@ function parseAndApplyExcel(file) {
         });
         /* Recalcular hist_per e cx_falt_hist após atualização */
         SELLIN_DATA.forEach(function(d) {
-          var nMths = d.real_m.reduce(function(n,v,i){ return v>0 ? 
+          var nMths = d.real_m.reduce(function(n,v,i){ return v>0 ? n+1 : n; }, 0);
+          if (nMths > 0) d.hist_per = Math.round(d.real / nMths);
+        });
+        /* Recalcular SELLIN_TOTAL consolidado */
+        var _totH=0,_totP=0,_totM=0,_totR=0;
+        SELLIN_DATA.forEach(function(d){ _totH+=d.hist||0; _totP+=d.plan||0; _totM+=d.meta||0; _totR+=d.real||0; });
+        SELLIN_TOTAL.hist = _totH; SELLIN_TOTAL.plan = _totP;
+        SELLIN_TOTAL.meta = _totM; SELLIN_TOTAL.real = _totR;
+        SELLIN_TOTAL.cres_meta = _totM>0 ? Math.round((_totR/_totM-1)*1000)/10 : 0;
+        SELLIN_TOTAL.cres_hist = _totH>0 ? Math.round((_totR/_totH-1)*1000)/10 : 0;
+        log.push('SELLIN_TOTAL recalculado');
+      }
+
+      /* ══════════════════════════════════════════════════════════════════
+         5. SO_Nissei / SO_Nissei_Andre / SO_Nissei_Edmar → NS object
+         Colunas: Tipo | Ano | Jan..Dez  (range:1)
+      ══════════════════════════════════════════════════════════════════ */
+      function _updNS(subkey, rows) {
+        rows.forEach(function(r) {
+          var tipo = _soTipo(r);
+          var ano  = String(r['Ano']||'').trim();
+          if (!ano || !NS[subkey]) return;
+          var vals = _soVals(r);
+          if (tipo.indexOf('receita') !== -1) {
+            if (!NS[subkey].rec[ano]) NS[subkey].rec[ano] = new Array(12).fill(null);
+            _soUpd(NS[subkey].rec[ano], vals);
+          } else if (tipo.indexOf('volume') !== -1) {
+            if (!NS[subkey].vol[ano]) NS[subkey].vol[ano] = new Array(12).fill(null);
+            _soUpd(NS[subkey].vol[ano], vals);
+          }
+        });
+      }
+      if (hasSheet('SO_Nissei')) {
+        _updNS('total', XLSX.utils.sheet_to_json(wb.Sheets['SO_Nissei'], {range:1, defval:null}));
+        log.push('SO_Nissei atualizado');
+      }
+      if (hasSheet('SO_Nissei_Andre')) {
+        _updNS('andre', XLSX.utils.sheet_to_json(wb.Sheets['SO_Nissei_Andre'], {range:1, defval:null}));
+        log.push('SO_Nissei_Andre atualizado');
+      }
+      if (hasSheet('SO_Nissei_Edmar')) {
+        _updNS('edmar', XLSX.utils.sheet_to_json(wb.Sheets['SO_Nissei_Edmar'], {range:1, defval:null}));
+        log.push('SO_Nissei_Edmar atualizado');
+      }
+
+      /* ══════════════════════════════════════════════════════════════════
+         6. Re-render — resetar initialized e re-executar todos os inits
+         para que os gráficos reflitam os novos dados imediatamente
+      ══════════════════════════════════════════════════════════════════ */
+      Object.keys(initialized).forEach(function(k){ delete initialized[k]; });
+
+      /* Re-render painel ativo imediatamente */
+      setTimeout(function(){
+        try { initSJ(); }      catch(e){ console.warn('initSJ',e); }
+        try { initNissei(); }  catch(e){ console.warn('initNissei',e); }
+        try { initClamed(); }  catch(e){ console.warn('initClamed',e); }
+        try { initPanvel(); }  catch(e){ console.warn('initPanvel',e); }
+        try { initGAM(); }     catch(e){ console.warn('initGAM',e); }
+        try { initGCH(); }     catch(e){ console.warn('initGCH',e); }
+        try { initRiomed(); }  catch(e){ console.warn('initRiomed',e); }
+      }, 100);
+
+      setTimeout(function(){
+        sellinInit = false; /* reset para forçar re-render após upload */
+        try { if(typeof initSellin    === 'function') initSellin(); }     catch(e){}
+        try { if(typeof initCobertura === 'function') initCobertura(); }  catch(e){}
+        try { if(typeof renderIqviaNacional === 'function') renderIqviaNacional(); } catch(e){}
+        try { if(typeof initDiagnostico === 'function') initDiagnostico(); } catch(e){}
+        try { if(typeof initOL        === 'function') initOL(); }         catch(e){}
+      }, 400);
+
+      /* ══════════════════════════════════════════════════════════════════
+         7. Mensagem de status final
+      ══════════════════════════════════════════════════════════════════ */
+      status.style.color   = '#34d399';
+      status.textContent   = '✓ ' + log.length + ' seção(ões) atualizada(s). Navegue pelas abas para ver os dados atualizados.';
+      console.log('[parseAndApplyExcel] Concluído:', log);
+
+    } catch(err) {
+      status.style.color   = '#f87171';
+      status.textContent   = '✗ Erro ao processar arquivo: ' + (err.message || String(err));
+      console.error('[parseAndApplyExcel] Erro:', err);
+    }
+  };
+  reader.readAsArrayBuffer(file);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   saveDashboard() — Gera novo HTML com os dados atualizados embutidos
+   Abordagem: outerHTML + script de override dos dados no final do body.
+   Funciona com file:// e http:// sem necessidade de servidor.
+═══════════════════════════════════════════════════════════════════════ */
+function saveDashboard() {
+  var btn    = document.getElementById('btn-save-dashboard');
+  var status = document.getElementById('upload-status');
+
+  if (btn)    { btn.disabled = true; btn.textContent = '⏳ Gerando...'; }
+  if (status) { status.style.display = 'inline'; status.style.color = '#fbbf24';
+                status.textContent = '⏳ Gerando arquivo — aguarde...'; }
+
+  setTimeout(function() {
+    try {
+      /* ── helpers ──────────────────────────────────────────────────── */
+      var ts = new Date().toISOString();
+      function ser(v){ return JSON.stringify(v, function(k,x){ return x===undefined?null:x; }); }
+      function arrAssign(name, arr){
+        return arr.map(function(v,i){ return name+'['+i+']='+ser(v)+';'; }).join('');
+      }
+      function objYears(obj, varName){
+        var lines = [];
+        Object.keys(obj).forEach(function(yr){
+          obj[yr].forEach(function(v,i){ lines.push(varName+'["'+yr+'"]['+i+']='+ser(v)+';'); });
+        });
+        return lines.join('\n');
+      }
+
+      var parts = ['/* OVERRIDE DATA — gerado em: '+ts+' */'];
+
+      /* ── São João (Isadora) ─────────────────────────────────────── */
+      if(typeof SJ_REC!=='undefined')  parts.push(objYears(SJ_REC,  'SJ_REC'));
+      if(typeof SJ_UNID!=='undefined') parts.push(objYears(SJ_UNID, 'SJ_UNID'));
+
+      /* ── São João Caroline (arrays simples) ───────────────────── */
+      var _sjcMap = {
+        SJC_VOL_24: typeof SJC_VOL_24!=='undefined'?SJC_VOL_24:null,
+        SJC_VOL:    typeof SJC_VOL!=='undefined'?SJC_VOL:null,
+        SJC_VOL_26: typeof SJC_VOL_26!=='undefined'?SJC_VOL_26:null,
+        SJC_REC_24: typeof SJC_REC_24!=='undefined'?SJC_REC_24:null,
+        SJC_REC:    typeof SJC_REC!=='undefined'?SJC_REC:null,
+        SJC_REC_26: typeof SJC_REC_26!=='undefined'?SJC_REC_26:null
+      };
+      Object.keys(_sjcMap).forEach(function(nm){
+        if(_sjcMap[nm]) parts.push(arrAssign(nm, _sjcMap[nm]));
+      });
+
+      /* ── Nissei ─────────────────────────────────────────────────── */
+      if(typeof NS!=='undefined'){
+        ['total','andre','edmar'].forEach(function(sub){
+          if(!NS[sub]) return;
+          Object.keys(NS[sub].rec||{}).forEach(function(yr){
+            NS[sub].rec[yr].forEach(function(v,i){
+              parts.push('NS.'+sub+'.rec["'+yr+'"]['+i+']='+ser(v)+';');
+            });
+          });
+          Object.keys(NS[sub].vol||{}).forEach(function(yr){
+            NS[sub].vol[yr].forEach(function(v,i){
+              parts.push('NS.'+sub+'.vol["'+yr+'"]['+i+']='+ser(v)+';');
+            });
+          });
+        });
+      }
+
+      /* ── Panvel ─────────────────────────────────────────────────── */
+      if(typeof PV_REC!=='undefined') parts.push(objYears(PV_REC, 'PV_REC'));
+      if(typeof PV_VOL!=='undefined') parts.push(objYears(PV_VOL, 'PV_VOL'));
+
+      /* ── Clamed (arrays simples) ────────────────────────────────── */
+      ['CL_REC_2024','CL_REC_2025','CL_REC_2026',
+       'CL_VOL_2024','CL_VOL_2025','CL_VOL_2026'].forEach(function(nm){
+        try{
+          var v=window[nm];
+          if(v&&v.length) parts.push(arrAssign(nm, v));
+        }catch(e){}
+      });
+
+      /* ── DD-GAM ─────────────────────────────────────────────────── */
+      if(typeof GAM_REC!=='undefined') parts.push(objYears(GAM_REC, 'GAM_REC'));
+      if(typeof GAM_VOL!=='undefined') parts.push(objYears(GAM_VOL, 'GAM_VOL'));
+
+      /* ── DD-Gaúcha ──────────────────────────────────────────────── */
+      if(typeof GAUCHA_REC!=='undefined') parts.push(objYears(GAUCHA_REC, 'GAUCHA_REC'));
+      if(typeof GAUCHA_VOL!=='undefined') parts.push(objYears(GAUCHA_VOL, 'GAUCHA_VOL'));
+
+      /* ── DD-Riomed (arrays simples) ─────────────────────────────── */
+      ['RIOMED_REC_2024','RIOMED_REC_2025','RIOMED_REC_2026',
+       'RIOMED_VOL_2024','RIOMED_VOL_2025','RIOMED_VOL_2026'].forEach(function(nm){
+        try{
+          var v=window[nm];
+          if(v&&v.length) parts.push(arrAssign(nm, v));
+        }catch(e){}
+      });
+
+      /* ── Sell-In ────────────────────────────────────────────────── */
+      if(typeof SELLIN_DATA!=='undefined'){
+        parts.push('(function(){'
+          +'var _nd='+ser(SELLIN_DATA.map(function(d){
+              return {nome:d.nome,hist:d.hist,plan:d.plan,meta:d.meta,
+                      real:d.real,verba:d.verba,real_m:d.real_m};
+            }))+';'
+          +'_nd.forEach(function(nd,i){'
+          +'var d=SELLIN_DATA[i];if(!d)return;'
+          +'d.hist=nd.hist;d.plan=nd.plan;d.meta=nd.meta;d.real=nd.real;d.verba=nd.verba;'
+          +'d.real_m.splice(0,12);nd.real_m.forEach(function(v){d.real_m.push(v);});'
+          +'});'
+          +'})();'
+        );
+      }
+
+      /* ── Montar script de override ──────────────────────────────── */
+      var overrideBlock = '\n<scri'+'pt>\n' + parts.join('\n') + '\n<\/sc'+'ript>';
+
+      /* ── HTML corrente (outerHTML) + remover overrides anteriores ─ */
+      var html = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+      html = html.replace(/<scri(?:pt)>\s*\/\* OVERRIDE DATA[\s\S]*?<\/sc(?:ript)>\n?/g, '');
+
+      /* ── Injetar antes de </body> ───────────────────────────────── */
+      if(html.indexOf('</body>')>=0){
+        html = html.replace('</body>', overrideBlock+'\n</body>');
+      } else {
+        html += overrideBlock;
+      }
+
+      /* ── Download ───────────────────────────────────────────────── */
+      var fname = 'Dashboard_FarmaSul_ABR2026_GIOVANO_' + ts.slice(0,10).replace(/-/g,'') + '.html';
+      var blob  = new Blob([html], {type:'text/html;charset=utf-8'});
+      var a     = document.createElement('a');
+      a.href    = URL.createObjectURL(blob);
+      a.download = fname;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(function(){ URL.revokeObjectURL(a.href); }, 15000);
+
+      if(status){ status.style.color='#34d399';
+                  status.textContent='✓ Dashboard salvo: '+fname; }
+
+    } catch(err) {
+      if(status){ status.style.color='#f87171';
+                  status.textContent='✗ Erro ao salvar: '+(err.message||String(err)); }
+      console.error('saveDashboard:', err);
+    } finally {
+      if(btn){ btn.disabled=false; btn.textContent='💾 Salvar Dashboard'; }
+    }
+  }, 80);
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   ESTUDO ED NACIONAL · IQVIA Universe × SCJ Brasil
+   Fonte: Estudo ED Jul–Dez FY24 (Jul/24–Dez/24) vs FY26 (Jul/25–Dez/25)
+   90.095 PDVs únicos · 27 UFs
+════════════════════════════════════════════════════════════════ */
+const IQVIA_NACIONAL = {
+  universe:90095,
+  scj_fy25:0,       scj_fy26:53511,
+  cimed_fy25:58857, cimed_fy26:56684,
+  rb_fy25:54232,    rb_fy26:49070,
+  opp_total:58664,  opp_reconquista:10324, opp_novos:48340,
+  opp_alta:15398,   opp_media:21082,       opp_baixa:22184,
+  by_uf:{
+    'AC':{pdvs:306,  scj26:56,   cimed25:217,  cimed26:217,  rb25:134,  rb26:122,  opp:250,  recon:5,    novos:245,  prio:'BAIXA'},
+    'AL':{pdvs:1656, scj26:880,  cimed25:1217, cimed26:1226, rb25:745,  rb26:546,  opp:1282, recon:186,  novos:1096, prio:'ALTA'},
+    'AM':{pdvs:1173, scj26:300,  cimed25:776,  cimed26:757,  rb25:460,  rb26:379,  opp:925,  recon:69,   novos:856,  prio:'MEDIA'},
+    'AP':{pdvs:237,  scj26:30,   cimed25:168,  cimed26:168,  rb25:138,  rb26:141,  opp:206,  recon:7,    novos:199,  prio:'BAIXA'},
+    'BA':{pdvs:6577, scj26:3522, cimed25:3869, cimed26:4026, rb25:3383, rb26:3022, opp:4749, recon:809,  novos:3940, prio:'CRITICA'},
+    'CE':{pdvs:3313, scj26:1758, cimed25:2133, cimed26:2051, rb25:1652, rb26:1339, opp:2412, recon:342,  novos:2070, prio:'ALTA'},
+    'DF':{pdvs:1468, scj26:757,  cimed25:920,  cimed26:698,  rb25:882,  rb26:828,  opp:988,  recon:179,  novos:809,  prio:'MEDIA'},
+    'ES':{pdvs:2159, scj26:1616, cimed25:1596, cimed26:1454, rb25:1562, rb26:1301, opp:1247, recon:265,  novos:982,  prio:'ALTA'},
+    'GO':{pdvs:4428, scj26:2902, cimed25:2674, cimed26:2346, rb25:3208, rb26:3126, opp:2788, recon:551,  novos:2237, prio:'ALTA'},
+    'MA':{pdvs:2879, scj26:1045, cimed25:1843, cimed26:1729, rb25:827,  rb26:842,  opp:2399, recon:428,  novos:1971, prio:'ALTA'},
+    'MG':{pdvs:9890, scj26:6268, cimed25:5485, cimed26:5467, rb25:6785, rb26:6007, opp:6559, recon:1464, novos:5095, prio:'CRITICA'},
+    'MS':{pdvs:1163, scj26:637,  cimed25:880,  cimed26:883,  rb25:829,  rb26:763,  opp:668,  recon:118,  novos:550,  prio:'MEDIA'},
+    'MT':{pdvs:1792, scj26:596,  cimed25:1374, cimed26:1334, rb25:1141, rb26:1030, opp:1292, recon:179,  novos:1113, prio:'ALTA'},
+    'PA':{pdvs:2922, scj26:560,  cimed25:1983, cimed26:1926, rb25:1237, rb26:972,  opp:2438, recon:99,   novos:2339, prio:'ALTA'},
+    'PB':{pdvs:1923, scj26:990,  cimed25:1322, cimed26:1358, rb25:839,  rb26:816,  opp:1404, recon:232,  novos:1172, prio:'ALTA'},
+    'PE':{pdvs:4232, scj26:2536, cimed25:2628, cimed26:2606, rb25:2191, rb26:1833, opp:3072, recon:504,  novos:2568, prio:'CRITICA'},
+    'PI':{pdvs:1714, scj26:762,  cimed25:744,  cimed26:782,  rb25:443,  rb26:355,  opp:1489, recon:217,  novos:1272, prio:'ALTA'},
+    'PR':{pdvs:5302, scj26:3683, cimed25:4105, cimed26:4042, rb25:3681, rb26:3438, opp:2767, recon:461,  novos:2306, prio:'ALTA'},
+    'RJ':{pdvs:7259, scj26:5307, cimed25:4878, cimed26:4387, rb25:4466, rb26:3716, opp:4597, recon:956,  novos:3641, prio:'CRITICA'},
+    'RN':{pdvs:1805, scj26:1008, cimed25:1169, cimed26:1136, rb25:975,  rb26:770,  opp:1350, recon:283,  novos:1067, prio:'ALTA'},
+    'RO':{pdvs:662,  scj26:105,  cimed25:504,  cimed26:505,  rb25:333,  rb26:317,  opp:554,  recon:6,    novos:548,  prio:'MEDIA'},
+    'RR':{pdvs:247,  scj26:38,   cimed25:175,  cimed26:187,  rb25:103,  rb26:100,  opp:214,  recon:10,   novos:204,  prio:'BAIXA'},
+    'RS':{pdvs:5157, scj26:4020, cimed25:3634, cimed26:3481, rb25:3780, rb26:3714, opp:2391, recon:514,  novos:1877, prio:'ALTA'},
+    'SC':{pdvs:4087, scj26:3301, cimed25:3128, cimed26:2963, rb25:2736, rb26:2694, opp:1983, recon:394,  novos:1589, prio:'ALTA'},
+    'SE':{pdvs:1124, scj26:624,  cimed25:750,  cimed26:790,  rb25:641,  rb26:585,  opp:771,  recon:171,  novos:600,  prio:'MEDIA'},
+    'SP':{pdvs:15779,scj26:9801, cimed25:10179,cimed26:9688, rb25:10547,rb26:9783, opp:9296, recon:1756, novos:7540, prio:'CRITICA'},
+    'TO':{pdvs:841,  scj26:409,  cimed25:506,  cimed26:477,  rb25:514,  rb26:531,  opp:573,  recon:119,  novos:454,  prio:'MEDIA'},
+  }
+};
+var iqviaNacViewMode = 'opp'; /* opp | posit | compare */
+
+</script>
+</body>
+</html>
