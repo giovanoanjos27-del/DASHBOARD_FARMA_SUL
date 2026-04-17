@@ -1369,6 +1369,15 @@ canvas{max-width:100% !important;}
           <div class="card-title">Products vs Preço Médio Unidades — Evolução Jul/25–Fev/26</div>
           <div class="card-sub">R$ por unidade · NielsenIQ · Pato Block vs Freeco vs All Others</div>
         </div>
+        <select id="obMarketSel2" onchange="setOBMarketFromSel(this.value)" style="font-size:11px;padding:6px 28px 6px 10px;border-radius:7px;border:1px solid rgba(167,139,250,0.3);background:#1a2235;color:#e2e8f0;cursor:pointer;outline:none;min-width:140px;">
+          <option value="T.BR Farma">T.BR Farma</option>
+          <option value="AS+C&amp;C+Farma Sul">Farma Sul</option>
+          <option value="AS+C&amp;C+Farma Gde SP">Farma Gde SP</option>
+          <option value="AS+C&amp;C+Farma Gde RJ">Farma Gde RJ</option>
+          <option value="AS+C&amp;C+Farma NE">Farma NE</option>
+          <option value="AS+C&amp;C+Farma CO">Farma CO</option>
+          <option value="AS+C&amp;C+Farma MG+ES+Int RJ">Farma MG+ES+Int RJ</option>
+        </select>
       </div>
       <div id="ob-preco-kpis" style="display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-bottom:16px;"></div>
       <div style="position:relative;width:100%;height:280px;"><canvas id="ob-preco-chart"></canvas></div>
@@ -1383,7 +1392,16 @@ canvas{max-width:100% !important;}
           <div class="card-title">Evolução Vendas Valor (R$) e Unidades · Jul/25–Fev/26</div>
           <div class="card-sub">Pato Block Algodão · Lavanda · Eucalipto · Freeco · All Others · NielsenIQ</div>
         </div>
-        <div style="display:flex;gap:6px;">
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+          <select id="obMarketSel3" onchange="setOBMarketFromSel(this.value)" style="font-size:11px;padding:6px 28px 6px 10px;border-radius:7px;border:1px solid rgba(52,211,153,0.3);background:#1a2235;color:#e2e8f0;cursor:pointer;outline:none;min-width:140px;">
+          <option value="T.BR Farma">T.BR Farma</option>
+          <option value="AS+C&amp;C+Farma Sul">Farma Sul</option>
+          <option value="AS+C&amp;C+Farma Gde SP">Farma Gde SP</option>
+          <option value="AS+C&amp;C+Farma Gde RJ">Farma Gde RJ</option>
+          <option value="AS+C&amp;C+Farma NE">Farma NE</option>
+          <option value="AS+C&amp;C+Farma CO">Farma CO</option>
+          <option value="AS+C&amp;C+Farma MG+ES+Int RJ">Farma MG+ES+Int RJ</option>
+        </select>
           <button class="tgl active blue" onclick="setOBVendasMetric('valor',this)" style="font-size:10px;padding:4px 10px;">R$ Valor</button>
           <button class="tgl" onclick="setOBVendasMetric('unid',this)" style="font-size:10px;padding:4px 10px;">Unidades</button>
         </div>
@@ -14855,9 +14873,8 @@ var iqviaNacViewMode = 'opp'; /* opp | posit | compare */
 /* ═══ ODOR BLOCK NIELSEN RENDER ═══ */
 
 function initOdorBlock(){
-  /* Sync dropdown to current market */
-  var sel = document.getElementById('obMarketSel');
-  if(sel) sel.value = obMarket;
+  /* Sync all dropdowns to current market */
+  ['obMarketSel','obMarketSel2','obMarketSel3'].forEach(function(id){var s=document.getElementById(id);if(s)s.value=obMarket;});
   renderOBShare();
   renderOBPreco();
   renderOBVendas();
@@ -14877,7 +14894,7 @@ function setOBMarket(mkt,btn){
   btn.closest('[id="ob-market-btns"]')||btn.parentNode;
   btn.parentNode.querySelectorAll('.tgl').forEach(function(b){b.classList.remove('active','blue');});
   btn.classList.add('active','blue');
-  var sel=document.getElementById('obMarketSel'); if(sel) sel.value=mkt;
+  ['obMarketSel','obMarketSel2','obMarketSel3'].forEach(function(id){var s=document.getElementById(id);if(s)s.value=mkt;});
   var lbl=document.getElementById('ob-share-mkt-lbl');
   if(lbl) lbl.textContent=mkt==='T.BR Farma'?'T.BR Farma':mkt.replace('AS+C&C+Farma ','').replace('AS+Farma ','');
   renderOBShare(); renderOBPreco(); renderOBVendas();
@@ -14885,11 +14902,7 @@ function setOBMarket(mkt,btn){
 
 function setOBMarketFromSel(mkt){
   obMarket=mkt;
-  var btns=document.querySelectorAll('#ob-market-btns .tgl');
-  btns.forEach(function(b,i){
-    b.classList.remove('active','blue');
-    if(OB_MARKETS[i]===mkt) b.classList.add('active','blue');
-  });
+  ['obMarketSel','obMarketSel2','obMarketSel3'].forEach(function(id){var s=document.getElementById(id);if(s)s.value=mkt;});
   var lbl=document.getElementById('ob-share-mkt-lbl');
   if(lbl) lbl.textContent=mkt==='T.BR Farma'?'T.BR Farma':mkt.replace('AS+C&C+Farma ','').replace('AS+Farma ','');
   renderOBShare(); renderOBPreco(); renderOBVendas();
