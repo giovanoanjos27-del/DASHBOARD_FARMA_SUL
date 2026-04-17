@@ -1338,20 +1338,23 @@ canvas{max-width:100% !important;}
       🧴 ODOR BLOCK — ANÁLISE NIELSEN · PATO BLOCK vs MARCAS
     </div>
 
-    <!-- Market filter -->
-    <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
-      <span style="font-size:10px;color:#5a6478;font-weight:700;">MARKET:</span>
-      <div id="ob-market-btns" style="display:flex;gap:6px;flex-wrap:wrap;"></div>
-    </div>
-
     <!-- CARD 1: Market Share Overview -->
     <div class="card full" style="margin-bottom:14px;border-color:rgba(96,165,250,0.2);">
       <div class="card-header">
         <div>
           <div style="font-size:10px;font-weight:700;letter-spacing:0.1em;color:#60a5fa;margin-bottom:4px;">MARKET SHARE OVERVIEW — PARTICIPAÇÃO EM VALOR</div>
           <div class="card-title">Products vs Participação em Valor — Evolução Jul/25–Fev/26</div>
-          <div class="card-sub">% Share · NielsenIQ · Odor Block · T.BR Farma · Categoria: T. Odor Block</div>
+          <div class="card-sub">% Share · NielsenIQ · Odor Block · <span id="ob-share-mkt-lbl">T.BR Farma</span> · Categoria: T. Odor Block</div>
         </div>
+        <select id="obMarketSel" onchange="setOBMarketFromSel(this.value)" style="font-size:11px;padding:6px 28px 6px 10px;border-radius:7px;border:1px solid rgba(96,165,250,0.3);background:#1a2235;color:#e2e8f0;cursor:pointer;outline:none;min-width:140px;">
+          <option value="T.BR Farma">T.BR Farma</option>
+          <option value="AS+C&amp;C+Farma Sul">Farma Sul</option>
+          <option value="AS+C&amp;C+Farma Gde SP">Farma Gde SP</option>
+          <option value="AS+C&amp;C+Farma Gde RJ">Farma Gde RJ</option>
+          <option value="AS+C&amp;C+Farma NE">Farma NE</option>
+          <option value="AS+C&amp;C+Farma CO">Farma CO</option>
+          <option value="AS+C&amp;C+Farma MG+ES+Int RJ">Farma MG+ES+Int RJ</option>
+        </select>
       </div>
       <div id="ob-share-kpis" style="display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-bottom:16px;"></div>
       <div style="position:relative;width:100%;height:280px;"><canvas id="ob-share-chart"></canvas></div>
@@ -14852,13 +14855,9 @@ var iqviaNacViewMode = 'opp'; /* opp | posit | compare */
 /* ═══ ODOR BLOCK NIELSEN RENDER ═══ */
 
 function initOdorBlock(){
-  /* Market buttons */
-  var btnWrap = document.getElementById('ob-market-btns');
-  if(!btnWrap) return;
-  btnWrap.innerHTML = OB_MARKETS.map(function(m,i){
-    var lbl = m==='T.BR Farma'?'T.BR Farma':m.replace('AS+C&C+Farma ','').replace('AS+Farma ','');
-    return '<button class="tgl'+(i===0?' active blue':'')+'" onclick="setOBMarket('+JSON.stringify(m)+',this)" style="font-size:10px;padding:4px 10px;">'+lbl+'</button>';
-  }).join('');
+  /* Sync dropdown to current market */
+  var sel = document.getElementById('obMarketSel');
+  if(sel) sel.value = obMarket;
   renderOBShare();
   renderOBPreco();
   renderOBVendas();
@@ -14878,6 +14877,21 @@ function setOBMarket(mkt,btn){
   btn.closest('[id="ob-market-btns"]')||btn.parentNode;
   btn.parentNode.querySelectorAll('.tgl').forEach(function(b){b.classList.remove('active','blue');});
   btn.classList.add('active','blue');
+  var sel=document.getElementById('obMarketSel'); if(sel) sel.value=mkt;
+  var lbl=document.getElementById('ob-share-mkt-lbl');
+  if(lbl) lbl.textContent=mkt==='T.BR Farma'?'T.BR Farma':mkt.replace('AS+C&C+Farma ','').replace('AS+Farma ','');
+  renderOBShare(); renderOBPreco(); renderOBVendas();
+}
+
+function setOBMarketFromSel(mkt){
+  obMarket=mkt;
+  var btns=document.querySelectorAll('#ob-market-btns .tgl');
+  btns.forEach(function(b,i){
+    b.classList.remove('active','blue');
+    if(OB_MARKETS[i]===mkt) b.classList.add('active','blue');
+  });
+  var lbl=document.getElementById('ob-share-mkt-lbl');
+  if(lbl) lbl.textContent=mkt==='T.BR Farma'?'T.BR Farma':mkt.replace('AS+C&C+Farma ','').replace('AS+Farma ','');
   renderOBShare(); renderOBPreco(); renderOBVendas();
 }
 
